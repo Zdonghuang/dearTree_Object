@@ -83,7 +83,7 @@
           size="mini"
           :height="rId?null:'300px'"
         >
-          <el-table-column type="index" width="55"  label="序号"></el-table-column>
+          <el-table-column type="index" width="55" label="序号"></el-table-column>
           <el-table-column sortable width="100" align="center" property="gItemnum" label="货号"></el-table-column>
           <el-table-column sortable prop="gImage" label="图片" width="120" align="center">
             <template slot-scope="scope" v-if="scope.row.gImage">
@@ -107,7 +107,8 @@
           <el-table-column sortable property="gName" label="商品名称"></el-table-column>
           <el-table-column sortable property="rdQuantity" label="数量"></el-table-column>
           <el-table-column sortable property="gUnitv" label="单位"></el-table-column>
-          <el-table-column sortable
+          <el-table-column
+            sortable
             width="120"
             align="center"
             show-overflow-tooltip
@@ -115,7 +116,8 @@
             label="品牌"
           ></el-table-column>
           <el-table-column sortable property="gSpec" label="规格"></el-table-column>
-          <el-table-column sortable
+          <el-table-column
+            sortable
             width="100"
             align="center"
             property="gPzysv"
@@ -165,7 +167,8 @@
           <el-table-column sortable property="gName" label="商品名称"></el-table-column>
           <el-table-column sortable property="rdQuantity" label="数量"></el-table-column>
           <el-table-column sortable property="gUnitv" label="单位"></el-table-column>
-          <el-table-column sortable
+          <el-table-column
+            sortable
             width="120"
             align="center"
             show-overflow-tooltip
@@ -173,7 +176,8 @@
             label="品牌"
           ></el-table-column>
           <el-table-column sortable property="gSpec" label="规格"></el-table-column>
-          <el-table-column sortable
+          <el-table-column
+            sortable
             width="100"
             align="center"
             property="gPzysv"
@@ -200,7 +204,7 @@
           :height="rId?null:'300px'"
           sum-text="合计"
         >
-          <el-table-column type="index" width="55" label="序号" align="center" ></el-table-column>
+          <el-table-column type="index" width="55" label="序号" align="center"></el-table-column>
           <!-- <el-table-column property="tools" label="操作" align="center" width="80" v-if="!showbank">
             <template slot-scope="scope">
               <i class="el-icon-circle-plus add" @click="adddate(3)"></i>
@@ -463,7 +467,7 @@
           :show-summary="true"
           :summary-method="getSummaries4"
         >
-          <el-table-column label="序号" type="index" align="center" width="80" ></el-table-column>
+          <el-table-column label="序号" type="index" align="center" width="80"></el-table-column>
           <el-table-column label="操作" align="center" width="80" v-if="!showbank">
             <template slot-scope="scope">
               <i class="el-icon-circle-plus add" @click="adddate('con')"></i>
@@ -497,7 +501,6 @@
                   size="mini"
                   v-if="scope.row.reTypecode"
                   :controls="false"
-                  :precision="0"
                   :disabled="showbank"
                 ></el-input-number>
               </div>
@@ -511,6 +514,7 @@
                   :min="1"
                   :max="999999999"
                   size="mini"
+                  :precision="0"
                   v-if="scope.row.reTypecode"
                   :controls="false"
                   :disabled="showbank"
@@ -610,7 +614,7 @@
       :hideBtn1="false"
       :hideBtn2="!showbanks"
       BtnText="确认结算"
-      v-has='2041'
+      v-has="2041"
     ></my-footer>
     <el-dialog
       title="审核人"
@@ -620,7 +624,7 @@
       width="50%"
     >
       <el-dialog
-        title=""
+        title
         :close-on-click-modal="false"
         v-dialogDrag
         :visible.sync="showexamine"
@@ -876,13 +880,14 @@ export default {
           res.data.map((item, index) => {
             item.iQuantity = item.rdQuantity;
             if (item.gImage) {
-                item.gImage = item.gImage.split(",");
+              item.gImage = item.gImage.split(",");
             }
             item.iSellingprice = item.rdSellingprice;
             item.gRemark = item.rdRemark;
             if (item.rdIotype == 2) {
               this.tableData.push(item);
             } else if (item.rdIotype == 3) {
+              item.iSellingprice = 55.5;
               this.tableData2.push(item);
             }
           });
@@ -1008,7 +1013,7 @@ export default {
       let values = [];
       columns.forEach((column, index) => {
         if (index === 0) {
-          sums[index] ="合计";
+          sums[index] = "合计";
           return;
         }
         const values = data.map(item => Number(item[column.property]));
@@ -1016,16 +1021,16 @@ export default {
           !values.every(value => isNaN(value)) &&
           column.property == "reTolprice"
         ) {
-          sums[index] =values.reduce((prev, curr)=> {
+          sums[index] = values.reduce((prev, curr) => {
             const value = Number(curr);
             if (!isNaN(value)) {
-              return parseFloat((prev + curr).toPrecision(12))
+              return parseFloat((prev + curr).toPrecision(12));
             } else {
               return prev;
             }
           }, 0);
           if (column.property === "reTolprice") {
-            this.SGFY = parseFloat((sums[index]).toPrecision(12));
+            this.SGFY = parseFloat(sums[index].toPrecision(12));
           }
           if (column.property !== "reQuantity") {
             sums[index] = this.$PublicJS.money(sums[index], 2);

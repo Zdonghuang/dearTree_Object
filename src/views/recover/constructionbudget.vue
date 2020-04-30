@@ -476,7 +476,6 @@
                   size="mini"
                   v-if="scope.row.reTypecode"
                   :controls="false"
-                  :precision="0"
                   :disabled="showbank"
                 ></el-input-number>
               </div>
@@ -490,6 +489,7 @@
                   :min="1"
                   :max="999999999"
                   size="mini"
+                  :precision="0"
                   v-if="scope.row.reTypecode"
                   :controls="false"
                   :disabled="showbank"
