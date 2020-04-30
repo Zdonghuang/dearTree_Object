@@ -276,7 +276,7 @@ export default {
     this.getList();
     // 客户
     // 区分：16-客户，12-供应商，24-客户回收供应商，20-客户采购供应商，8-回收供应商，4-采购供应商，2-物流公司，1-合作伙伴
-    this.$api.Customer.get({ div: 20, size: 9999 }).then(res => {
+    this.$api.Customer.get({ div: 36, size: 9999 }).then(res => {
       if (res.code == 200) {
         this.rCuidOptions = res.data.records.map(item => {
           return {

@@ -296,6 +296,7 @@ export default {
               this.form.rHandman = item.PD_HANDMAN;
               this.form.rHandmanv = item.PD_HANDMANV;
               this.form.banknamegh = item.PD_BANKNAMEGH;
+              this.form.pdpid = item.PD_PID;
               this.form.bankaccountgh = item.PD_BANKACCOUNTGH;
             }
             let obj = {};
@@ -424,8 +425,7 @@ export default {
       if (val) {
         val["index"] = this.rowindex;
         val["PAmount"] = "0";
-        if (this.tableData[this.rowindex].pdPid)
-          val["pdPid"] = this.tableData[this.rowindex].pdPid;
+        val["pdPid"] = this.form.pdpid;
         if (this.tableData[this.rowindex].pdId)
           val["pdId"] = this.tableData[this.rowindex].pdId;
         this.tableData.splice(

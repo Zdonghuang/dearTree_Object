@@ -176,7 +176,7 @@ export default {
   },
   methods: {
     getC() {
-            let obj = { id: this.cuid };
+      let obj = { id: this.cuid };
       if (this.$route.query.from) {
         obj.auth = 2;
       }
@@ -199,20 +199,23 @@ export default {
       let values = [];
       columns.forEach((column, index) => {
         if (index === 0) {
-          sums[index] ="合计";
+          sums[index] = "合计";
           return;
         }
         if (column.property === "PAmount") {
           values = data.map(item => Number(item.PAmount));
-          sums[index] =values.reduce((prev, curr)=> {
+          sums[index] = values.reduce((prev, curr) => {
             const value = Number(curr);
             if (!isNaN(value)) {
-              return parseFloat((prev + curr).toPrecision(12))
+              return parseFloat((prev + curr).toPrecision(12));
             } else {
               return prev;
             }
           }, 0);
-          this.rTotalprice = this.$PublicJS.money(parseFloat((sums[index]).toPrecision(12)), 2);
+          this.rTotalprice = this.$PublicJS.money(
+            parseFloat(sums[index].toPrecision(12)),
+            2
+          );
           sums[index] += " 元";
         } else {
           sums[index] = " ";
@@ -225,7 +228,7 @@ export default {
       const params = { pid: this.pid };
       if (this.$route.query.from) {
         params.from = this.$route.query.from;
-params.auth=3
+        params.auth = 3;
       } else {
         delete params.from;
       }
@@ -246,10 +249,11 @@ params.auth=3
               this.form.rDate = item.PD_CTIME;
               this.form.bankaccountgh = item.PD_BANKACCOUNTGH;
               this.form.PD_STATUS = item.PD_STATUS;
+              this.form.pdpid = item.PD_PID;
               if (item.PD_FILESTR) {
                 this.form.pdfilestr = Array.isArray(JSON.parse(item.PD_FILESTR))
-                    ? JSON.parse(item.PD_FILESTR)
-                    : JSON.parse(JSON.parse(item.PD_FILESTR));
+                  ? JSON.parse(item.PD_FILESTR)
+                  : JSON.parse(JSON.parse(item.PD_FILESTR));
                 this.fileList = this.form.pdfilestr;
               }
               if (item.PD_APPROVALSTATUS == 1 || item.PD_APPROVALSTATUS == 2) {
@@ -447,8 +451,7 @@ params.auth=3
       if (val) {
         val["index"] = this.rowindex;
         val["PAmount"] = "0";
-        if (this.tableData[this.rowindex].pdPid)
-          val["pdPid"] = this.tableData[this.rowindex].pdPid;
+        val["pdPid"] = this.form.pdpid;
         if (this.tableData[this.rowindex].pdId)
           val["pdId"] = this.tableData[this.rowindex].pdId;
         this.tableData.splice(
@@ -472,7 +475,7 @@ params.auth=3
       this.form.pCuid = val.cuId;
       this.form.rCuidv = val.cuName;
       this.form.cuBankname = val.cuBankname;
-this.form.cuTaxnum = val.cuTaxnum;
+      this.form.cuTaxnum = val.cuTaxnum;
       this.form.cuBankcardnum = val.cuBankcardnum;
       this.form.cuRemark = val.cuRemark;
       this.showSelectClient = false;
@@ -497,7 +500,7 @@ table,
 div {
   color: rgb(80, 80, 80);
   font-weight: 100;
-  font-family: '宋体' !important;
+  font-family: "宋体" !important;
 }
 div {
   font-weight: 500;

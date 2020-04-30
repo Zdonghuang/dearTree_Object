@@ -305,7 +305,7 @@ export default {
   },
   methods: {
     getC() {
-            let obj = { id: this.cuid };
+      let obj = { id: this.cuid };
       if (this.$route.query.from) {
         obj.auth = 2;
       }
@@ -328,20 +328,23 @@ export default {
       let values = [];
       columns.forEach((column, index) => {
         if (index === 0) {
-          sums[index] ="合计";
+          sums[index] = "合计";
           return;
         }
         if (column.property === "PAmount") {
           values = data.map(item => Number(item.PAmount));
-          sums[index] =values.reduce((prev, curr)=> {
+          sums[index] = values.reduce((prev, curr) => {
             const value = Number(curr);
             if (!isNaN(value)) {
-              return parseFloat((prev + curr).toPrecision(12))
+              return parseFloat((prev + curr).toPrecision(12));
             } else {
               return prev;
             }
           }, 0);
-          this.rTotalprice = this.$PublicJS.money(parseFloat((sums[index]).toPrecision(12)), 2);
+          this.rTotalprice = this.$PublicJS.money(
+            parseFloat(sums[index].toPrecision(12)),
+            2
+          );
           sums[index] += " 元";
         } else {
           sums[index] = " ";
@@ -354,7 +357,7 @@ export default {
       const params = { pid: this.pid };
       if (this.$route.query.from) {
         params.from = this.$route.query.from;
-params.auth=3
+        params.auth = 3;
       } else {
         delete params.from;
       }
@@ -376,6 +379,7 @@ params.auth=3
               this.form.rDate = item.PD_CTIME;
               this.form.bankaccountgh = item.PD_BANKACCOUNTGH;
               this.form.PD_STATUS = item.PD_STATUS;
+              this.form.pdpid = item.PD_PID;
               this.$api.Premoney.get({ cuid: this.cuid }).then(res => {
                 if (res.data && res.data.length) {
                   this.pFamount = res.data[0].pSamount;
@@ -565,8 +569,7 @@ params.auth=3
       if (val) {
         val["index"] = this.rowindex;
         val["PAmount"] = "0";
-        if (this.tableData[this.rowindex].pdPid)
-          val["pdPid"] = this.tableData[this.rowindex].pdPid;
+        val["pdPid"] = this.form.pdpid;
         if (this.tableData[this.rowindex].pdId)
           val["pdId"] = this.tableData[this.rowindex].pdId;
         this.tableData.splice(
@@ -596,10 +599,10 @@ params.auth=3
     getClientData(val) {
       this.form.cuid = val.cuId;
       this.form.cuidv = val.cuName;
-        this.form.cuBankname = val.cuBankname;
-        this.form.cuTaxnum = val.cuTaxnum;
-        this.form.cuBankcardnum = val.cuBankcardnum;
-        this.form.cuRemark = val.cuRemark;
+      this.form.cuBankname = val.cuBankname;
+      this.form.cuTaxnum = val.cuTaxnum;
+      this.form.cuBankcardnum = val.cuBankcardnum;
+      this.form.cuRemark = val.cuRemark;
       this.$api.Premoney.get({ cuid: val.cuId }).then(res => {
         if (res.data) {
           this.pFamount = res.data[0].pSamount;

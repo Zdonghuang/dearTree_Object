@@ -543,7 +543,7 @@ export default {
         } else {
           val.PAmount = this.tableData[this.rowindex].PAmount;
         }
-        val.pdPid = this.tableData[this.rowindex].pdPid;
+        val["pdPid"] = this.form.pdpid;
         this.tableData.splice(
           this.rowindex,
           1,

@@ -1073,7 +1073,7 @@ export default {
       }
     },
     deldate(index, n) {
-      if (this.ConstructionData.length > 1) {
+      if (this.ConstructionData.length > 0) {
         if (n == "con") {
           this.ConstructionData.splice(index, 1);
         }

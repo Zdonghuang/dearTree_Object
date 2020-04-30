@@ -327,6 +327,7 @@ export default {
               this.form.banknamegh = item.PD_BANKNAMEGH;
               this.form.bankaccountgh = item.PD_BANKACCOUNTGH;
               this.form.status = item.PD_STATUS;
+              this.form.pipid = item.PD_PID;
               if (item.PD_STATUS == 4 || item.PD_STATUS == 5)
                 this.disabled = true;
             }
@@ -355,6 +356,7 @@ export default {
               this.form.rHandman = item.PD_HANDMAN;
               this.form.rHandmanv = item.PD_HANDMANV;
               this.form.banknamegh = item.PD_BANKNAMEGH;
+              this.form.pdpid = item.PD_PID;
               this.form.bankaccountgh = item.PD_BANKACCOUNTGH;
             }
             let obj = {};
@@ -543,7 +545,7 @@ export default {
         } else {
           val.PAmount = this.tableData[this.rowindex].PAmount;
         }
-        val.pdPid = this.tableData[this.rowindex].pdPid;
+        val["pdPid"] = this.form.pdpid;
         this.tableData.splice(
           this.rowindex,
           1,

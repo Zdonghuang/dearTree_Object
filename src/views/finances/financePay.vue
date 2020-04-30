@@ -422,6 +422,7 @@ export default {
               this.form.rDate = item.PD_CTIME;
               this.form.bankaccountgh = item.PD_BANKACCOUNTGH;
               this.form.PD_STATUS = item.PD_STATUS;
+              this.form.pdpid = item.PD_PID;
               if (item.PD_FILESTR) {
                 this.form.pdfilestr = Array.isArray(JSON.parse(item.PD_FILESTR))
                     ? JSON.parse(item.PD_FILESTR)
@@ -624,8 +625,7 @@ export default {
       if (val) {
         val["index"] = this.rowindex;
         val["PAmount"] = "0";
-        if (this.tableData[this.rowindex].pdPid)
-          val["pdPid"] = this.tableData[this.rowindex].pdPid;
+        val["pdPid"] = this.form.pdpid;
         if (this.tableData[this.rowindex].pdId)
           val["pdId"] = this.tableData[this.rowindex].pdId;
         this.tableData.splice(

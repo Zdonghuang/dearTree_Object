@@ -302,20 +302,23 @@ export default {
       let values = [];
       columns.forEach((column, index) => {
         if (index === 0) {
-          sums[index] ="合计";
+          sums[index] = "合计";
           return;
         }
         if (column.property === "PAmount") {
           values = data.map(item => Number(item.PAmount));
-          sums[index] =values.reduce((prev, curr)=> {
+          sums[index] = values.reduce((prev, curr) => {
             const value = Number(curr);
             if (!isNaN(value)) {
-              return parseFloat((prev + curr).toPrecision(12))
+              return parseFloat((prev + curr).toPrecision(12));
             } else {
               return prev;
             }
           }, 0);
-          this.rTotalprice = this.$PublicJS.money(parseFloat((sums[index]).toPrecision(12)), 2);
+          this.rTotalprice = this.$PublicJS.money(
+            parseFloat(sums[index].toPrecision(12)),
+            2
+          );
           sums[index] += " 元";
         } else {
           sums[index] = " ";
@@ -328,7 +331,7 @@ export default {
       const params = { pid: this.pid };
       if (this.$route.query.from) {
         params.from = this.$route.query.from;
-        params.auth=3
+        params.auth = 3;
       } else {
         delete params.from;
       }
@@ -351,6 +354,7 @@ export default {
               this.form.rDate = item.PD_CTIME;
               this.form.bankaccountgh = item.PD_BANKACCOUNTGH;
               this.form.PD_STATUS = item.PD_STATUS;
+              this.form.pdpid = item.PD_PID;
               this.$api.Premoney.get({ cuid: this.cuid }).then(res => {
                 if (res.data && res.data.length) {
                   this.pFamount = res.data[0].pFamount;
@@ -503,8 +507,7 @@ export default {
       if (val) {
         val["index"] = this.rowindex;
         val["PAmount"] = "0";
-        if (this.tableData[this.rowindex].pdPid)
-          val["pdPid"] = this.tableData[this.rowindex].pdPid;
+        val["pdPid"] = this.form.pdpid;
         if (this.tableData[this.rowindex].pdId)
           val["pdId"] = this.tableData[this.rowindex].pdId;
         this.tableData.splice(
