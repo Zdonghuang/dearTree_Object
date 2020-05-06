@@ -438,6 +438,20 @@
         sortable
         align="center"
         show-overflow-tooltip
+        property="custFromValue"
+        label="客户来源"
+      ></el-table-column>
+      <el-table-column
+        sortable
+        align="center"
+        show-overflow-tooltip
+        property="custTypeValue"
+        label="客户分类"
+      ></el-table-column>
+      <el-table-column
+        sortable
+        align="center"
+        show-overflow-tooltip
         property="rGetguestv"
         label="获客人"
       ></el-table-column>
