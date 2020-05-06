@@ -470,7 +470,7 @@
         </el-col>
       </el-row>
     </el-dialog>
-    <table class="table" border="1" cellspacing="0" width="100%" id="tab">
+    <table class="table" border="1" cellspacing="0" width="100%" id="tab" align="center">
       <thead>
         <tr>
           <th>序号</th>
@@ -500,7 +500,7 @@
               width="40"
               alt
             />
-            <td>{{item.goodsColor}}</td>
+            <td>{{item.goodsColorName}}</td>
             <td>{{item.goodsSpec}}</td>
             <td>{{item.goodsQty}}</td>
             <td>{{item.goodsSalesQty}}</td>
@@ -665,7 +665,6 @@ export default {
       });
     },
     exportTable() {
-        console.log(1)
       let box = this.$xlsx.utils.table_to_book(
         document.querySelector("#table-data")
       );
@@ -694,7 +693,7 @@ export default {
         "</body></html>";
       // console.log(html);
       // 实例化一个Blob对象，其构造函数的第一个参数是包含文件内容的数组，第二个参数是包含文件类型属性的对象
-      const blob = new Blob([html], { type: "text/excel" });
+      const blob = new Blob([html], { type: "text/html" });
       // 利用URL.createObjectURL()方法为a元素生成blob URL
       e.target.href = URL.createObjectURL(blob);
       e.target.download = "库存.html";
@@ -997,6 +996,7 @@ li {
   text-align: center;
   tr th,
   tr td {
+    text-align: center;
     padding: 2px;
   }
 }
