@@ -74,7 +74,8 @@
       header-cell-class-name="thbgc"
     >
       <el-table-column sortable align="center" type="index" width="55" label="序号"></el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
         align="center"
         show-overflow-tooltip
         property="tools"
@@ -107,7 +108,7 @@
         </template>
       </el-table-column>
       <el-table-column sortable align="center" property="gName" label="商品名称"></el-table-column>
-      <el-table-column sortable align="center" property="iQuantity" label="已购数量" v-if="form.rType==8"></el-table-column>
+      <el-table-column sortable align="center" property="iQuantity" label="数量" v-if="form.rType==8"></el-table-column>
       <el-table-column sortable align="center" property="gUnitv" label="单位"></el-table-column>
       <el-table-column sortable align="center" property="rdQuantity" label="退货数量">
         <template slot="header">
@@ -128,15 +129,24 @@
       <el-table-column sortable align="center" label="金额" property="money">
         <template v-if="money">{{money}}</template>
       </el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
         width="120"
         align="center"
         show-overflow-tooltip
         property="gBrandv"
         label="品牌"
       ></el-table-column>
-      <el-table-column sortable width="120" align="center" show-overflow-tooltip property="gSpec" label="规格"></el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
+        width="120"
+        align="center"
+        show-overflow-tooltip
+        property="gSpec"
+        label="规格"
+      ></el-table-column>
+      <el-table-column
+        sortable
         width="100"
         align="center"
         property="gPzysv"
@@ -362,31 +372,16 @@ export default {
           this.tableData = [];
           res.data.map((item, index) => {
             if (!item.rdQuantity) return false;
-            item.iQuantity = item.rdQuantity;
             if (item.gImage) {
               item.gImage = item.gImage.split(",");
             }
+            item.rdQuantity = 0;
             item.iSellingprice = item.rdSellingprice;
             item.gRemark = item.rdRemark;
             item.gRemark = item.rdRemark;
             item.gConstructcostweight = item.rdConstructcostweight;
             this.tableData.splice(index, 1, JSON.parse(JSON.stringify(item)));
           });
-          if (this.form.rType == 8) {
-            let params = `rootid=${this.form.rRootid}&rtype=10`;
-            this.$api.Receipt.getReturnNum(params).then(r => {
-              if (r.length) {
-                this.tableData.map(items => {
-                  r.map(item => {
-                    if (items.gId == item.gid) {
-                      items.iQuantity -= item.quantity;
-                      items.rdQuantity -= item.quantity;
-                    }
-                  });
-                });
-              }
-            });
-          }
         });
         if (
           res.data.records[0].rType == 10 &&
@@ -423,10 +418,7 @@ export default {
     },
     setnum(e) {
       if (!isNaN(e.rdQuantity)) {
-        if (!e.rdQuantity) {
-          this.$message("请输入退货数量");
-          e.rdQuantity = e.iQuantity;
-        } else if (e.rdQuantity < 1) {
+        if (e.rdQuantity < 1) {
           e.rdQuantity = e.iQuantity;
           this.$message("退货数量不得小于1");
         } else if (e.rdQuantity > e.iQuantity) {
@@ -490,7 +482,7 @@ export default {
       let values = [];
       columns.forEach((column, index) => {
         if (index === 0) {
-          sums[index] ="合计";
+          sums[index] = "合计";
           return;
         }
         const values = data.map(item => Number(item[column.property]));
@@ -499,19 +491,19 @@ export default {
             column.property === "money") ||
           column.property === "rdQuantity"
         ) {
-          sums[index] =values.reduce((prev, curr)=> {
+          sums[index] = values.reduce((prev, curr) => {
             const value = Number(curr);
             if (!isNaN(value)) {
-              return parseFloat((prev + curr).toPrecision(12))
+              return parseFloat((prev + curr).toPrecision(12));
             } else {
               return prev;
             }
           }, 0);
           if (column.property === "money") {
-            this.TotalPrice = parseFloat((sums[index]).toPrecision(12));
+            this.TotalPrice = parseFloat(sums[index].toPrecision(12));
           }
           if (column.property === "rdQuantity") {
-            this.number = parseFloat((sums[index]).toPrecision(12));
+            this.number = parseFloat(sums[index].toPrecision(12));
           } else {
             sums[index] = this.$PublicJS.money(sums[index], 2);
             sums[index] += " 元";
