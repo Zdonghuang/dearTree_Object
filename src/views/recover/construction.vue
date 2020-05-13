@@ -842,10 +842,12 @@ export default {
           this.form.rFile = JSON.parse(this.form.rFile);
           this.fileList = [];
           this.form.rFile.forEach(el => {
-            let obj = new Object();
-            obj.url = this.$baseUrl + "api" + el;
-            obj.name = el.split("/")[2];
-            this.fileList.push(obj);
+            if (el) {
+              let obj = new Object();
+              obj.url = this.$baseUrl + "api" + el;
+              obj.name = el.split("/")[2];
+              this.fileList.push(obj);
+            }
           });
         } else {
           this.form.rFile = [];

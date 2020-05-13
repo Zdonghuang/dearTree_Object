@@ -420,6 +420,13 @@
                 show-overflow-tooltip
                 sortable
                 align="center"
+                prop="customerId"
+                label="客户ID"
+              ></el-table-column>
+              <el-table-column
+                show-overflow-tooltip
+                sortable
+                align="center"
                 prop="customerName"
                 label="客户"
               ></el-table-column>
