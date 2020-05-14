@@ -39,6 +39,13 @@ const recoverRouter = {
       hidden: true
     },
     {
+      path: 'printingRecoverSettlement',
+      name: 'printingRecoverSettlement',
+      component: () => import('@/views/recover/printingRecoverSettlement'),
+      meta: { title: '回收施工单', roles: ['204'] },
+      hidden: true
+    },
+    {
       path: 'constructionbudgetList',
       name: 'constructionbudgetList',
       component: () => import('@/views/recover/constructionbudgetList'),

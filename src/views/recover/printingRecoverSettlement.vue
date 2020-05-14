@@ -6,7 +6,7 @@
         <div v-if="BH"></div>
       </el-col>
       <el-col :xs="24" :sm="16" align="center" style="height:10px">
-        <h3 class="title">第 二 树 循 环 家 具 回 收 项 目 施 工 单</h3>
+        <h3 class="title">第 二 树 循 环 家 具 回 收 项 目 结 算 单</h3>
       </el-col>
       <el-col :xs="24" :sm="4" align="right">
         <el-button-group v-if="!$router.history.current.query.from">
@@ -93,7 +93,7 @@
           <td v-if="i!=tableData2.length-1">{{item.gSpec}}</td>
           <td v-if="i!=tableData2.length-1">{{item.rdQuantity}}</td>
           <td v-if="i!=tableData2.length-1">{{item.gUnitv}}</td>
-          <td v-if="i!=tableData.length-1" class="bz">{{item.gRemark}}</td>
+          <td v-if="i!=tableData2.length-1" class="bz">{{item.gRemark}}</td>
         </tr>
       </tbody>
     </table>
@@ -120,7 +120,55 @@
             </select>
           </td>
           <td v-if="i!=tableData3.length-1">{{item.rdQuantity}}</td>
-          <td v-if="i!=tableData.length-1" class="bz">{{item.gRemark}}</td>
+          <td v-if="i!=tableData3.length-1" class="bz">{{item.gRemark}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="color:balck;font-weight:700">施工费用</div>
+    <table class="table" border="1" cellspacing="0" width="100%">
+      <thead>
+        <tr>
+          <th>序号</th>
+          <th>费用科目</th>
+          <th>费用单据</th>
+          <th>费用数量</th>
+          <th>总金额</th>
+          <th>合作伙伴</th>
+          <th>银行卡名称</th>
+          <th>银行卡卡号</th>
+          <th>手机号</th>
+          <th>科目</th>
+          <th>付款账户</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="( item , i) in ConstructionData" :key="i">
+          <td v-if="i==ConstructionData.length-1">合计</td>
+          <td v-if="i==ConstructionData.length-1"></td>
+          <td v-if="i==ConstructionData.length-1"></td>
+          <td v-if="i==ConstructionData.length-1"></td>
+          <td v-if="i==ConstructionData.length-1">{{item.prices}}</td>
+          <td v-if="i==ConstructionData.length-1"></td>
+          <td v-if="i==ConstructionData.length-1"></td>
+          <td v-if="i==ConstructionData.length-1"></td>
+          <td v-if="i==ConstructionData.length-1"></td>
+          <td v-if="i==ConstructionData.length-1"></td>
+          <td v-if="i==ConstructionData.length-1"></td>
+          <td v-if="i!=ConstructionData.length-1">{{i+1}}</td>
+          <td v-if="i!=ConstructionData.length-1">
+            <select v-model="item.reTypecode" disabled>
+              <option v-for="( items , i) in Conoptions" :key="i" :value="items.value">{{items.label}}</option>
+            </select>
+          </td>
+          <td v-if="i!=ConstructionData.length-1">{{item.reUnitprice}}</td>
+          <td v-if="i!=ConstructionData.length-1">{{item.reQuantity}}</td>
+          <td v-if="i!=ConstructionData.length-1">{{item.price}}</td>
+          <td v-if="i!=ConstructionData.length-1">{{item.partner}}</td>
+          <td v-if="i!=ConstructionData.length-1">{{item.banknames}}</td>
+          <td v-if="i!=ConstructionData.length-1">{{item.banknums}}</td>
+          <td v-if="i!=ConstructionData.length-1">{{item.rCmobile}}</td>
+          <td v-if="i!=ConstructionData.length-1">{{item.subjectname}}</td>
+          <td v-if="i!=ConstructionData.length-1">{{item.banknamef}}</td>
         </tr>
       </tbody>
     </table>
@@ -146,14 +194,6 @@
       <li>18、预计发货日期:&nbsp;{{Envform.rcSgrq>0?Envform.rcSgrq:''}}</li>
       <li>19、备注:&nbsp;{{Envform.rcRemark?Envform.rcRemark:''}}</li>
     </ul>
-    <ul class="ul55">
-      <li>客户签字确认：</li>
-      <li>司机签字：</li>
-      <li>回收督导签字：</li>
-      <li>仓管签字：</li>
-      <li>开单日期：</li>
-    </ul>
-    <h4 style="text-align:center">此单据1式4份，客户、运作部经理、回收督导、仓管各执一份</h4>
   </div>
 </template>
 
@@ -196,6 +236,8 @@ export default {
         rShipmentnumber: ""
         // rCuserid: this.$storage.userName
       },
+      ConstructionData: [{ reTypecode: "" }],
+      Conoptions: [],
       rMobile: "",
       client: {},
       formData: null,
@@ -310,6 +352,7 @@ export default {
       this.getrecoverOrder();
     }
     this.getService();
+    this.getSGHJ();
     // window.addEventListener("keydown", this.printOut);
   },
   methods: {
@@ -385,9 +428,9 @@ export default {
               this.tableData3.push(item);
             }
           });
-          if(this.tableData3.length){
-                this.tableData3.push({});
-              } 
+          if (this.tableData3.length) {
+            this.tableData3.push({});
+          }
           this.tableData3 = this.deepCopy(this.tableData3);
           this.tableData3.map(item => {
             if (item.rdQuantity) {
@@ -396,6 +439,29 @@ export default {
           });
         });
         this.BH = res.data.records[0].rItemnum;
+        this.$api.Receiptexpense.get({ rid: this.rId }).then(res => {
+          if (res.data.records.length) {
+            let prices = 0;
+            res.data.records.map(item => {
+              const obj = JSON.parse(item.partner);
+              item.partner = obj.partner;
+              item.banknames = obj.banknames;
+              item.price = item.reUnitprice * item.reQuantity;
+              prices += item.price;
+              item.banknums = obj.banknums;
+              item.banknamef = obj.fsBankname;
+              item.banknumf = obj.fsBankaccount;
+              item.subjectname = obj.subjectname;
+              item.subjectnum = obj.subjectnum;
+              item.rCmobile = obj.rCmobile;
+              item.partnerId = obj.partnerId;
+              item.subjectname = "预付帐款";
+              item.subjectnum = 1006;
+            });
+            this.ConstructionData = res.data.records;
+            this.ConstructionData.push({ prices: prices });
+          }
+        });
         if (
           res.data.records[0].rApprovalstatus == 2 ||
           res.data.records[0].rApprovalstatus == 3 ||
@@ -414,6 +480,21 @@ export default {
         this.$api.Receipt.gettconstruct({ rid: this.rId }).then(res => {
           if (res.data) {
             this.Envform = res.data;
+          }
+        });
+      });
+    },
+    getSGHJ() {
+      this.$api.Common.get({ typeCode: "SGHJ" }).then(res => {
+        this.ConstructionData = this.deepCopy(
+          new Array(5).fill({ reTypecode: "" })
+        );
+        res.data.map(item => {
+          if (item.cStatus == 1) {
+            this.Conoptions.push({
+              label: item.cAttrvalue,
+              value: item.cAttrcode
+            });
           }
         });
       });

@@ -28,6 +28,7 @@ export default {
       "/XStransfer/printingTransfer",
       "/CGBJprinting",
       "/recover/printingRecoverCon",
+      "/recover/printingRecoverSettlement",
       "/warehouse/inventory/inventoryPrinting",
       "/printingFinancePay",
       "/printingJK",

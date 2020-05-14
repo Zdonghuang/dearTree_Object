@@ -13,8 +13,8 @@
       <el-col :xs="24" :sm="8" align="right">
         <el-button-group v-if="!$router.history.current.query.from">
           <el-button size="small" icon="el-icon-refresh" @click="reload">刷新</el-button>
-          <el-button size="small" icon="el-icon-download" v-has="383">导出</el-button>
-          <el-button size="small" icon="el-icon-printer">打印</el-button>
+          <!-- <el-button size="small" icon="el-icon-download" v-has="383">导出</el-button> -->
+          <el-button size="small" icon="el-icon-printer" v-has="2031" @click="Printing">打印</el-button>
         </el-button-group>
       </el-col>
     </el-row>
@@ -1048,6 +1048,10 @@ export default {
         this.icon = "";
         this.showSelectClient = true;
       }
+    },
+    Printing() {
+      const data = this.$route.query.data;
+      window.open(`/#/recover/printingRecoverSettlement?data=${data}`, "_blank");
     },
     searchboxa(e, val) {
       this.rowindex = val;
