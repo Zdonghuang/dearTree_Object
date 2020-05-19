@@ -13,8 +13,8 @@
       <el-col :xs="24" :sm="8" align="right">
         <el-button-group v-if="!$router.history.current.query.from">
           <el-button size="small" icon="el-icon-refresh" @click="reload">刷新</el-button>
-          <!-- <el-button size="small" icon="el-icon-download" v-has="383">导出</el-button>
-          <el-button size="small" icon="el-icon-printer">打印</el-button>-->
+          <!-- <el-button size="small" icon="el-icon-download" v-has="383">导出</el-button>-->
+          <el-button size="small" icon="el-icon-printer" @click="Printing">打印</el-button>
         </el-button-group>
       </el-col>
     </el-row>
@@ -114,14 +114,16 @@
           </el-popover>
         </template>
       </el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
         align="center"
         property="gName"
         width="150"
         v-if="tableStatus.gName"
         label="商品名称"
       ></el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
         width="120"
         align="center"
         show-overflow-tooltip
@@ -129,15 +131,24 @@
         v-if="tableStatus.gBrandv"
         label="品牌"
       ></el-table-column>
-      <el-table-column sortable width="120" align="center" show-overflow-tooltip property="gSpec" label="规格"></el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
+        width="120"
+        align="center"
+        show-overflow-tooltip
+        property="gSpec"
+        label="规格"
+      ></el-table-column>
+      <el-table-column
+        sortable
         width="100"
         align="center"
         property="gPzysv"
         show-overflow-tooltip
         label="配置"
       ></el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
         width="80"
         align="center"
         property="gColorv"
@@ -145,14 +156,16 @@
         label="颜色"
       ></el-table-column>
 
-      <el-table-column sortable
+      <el-table-column
+        sortable
         width="100"
         align="center"
         property="rdQuantity"
         label="数量"
         v-if="tableStatus.rdQuantity"
       ></el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
         width="80"
         align="center"
         show-overflow-tooltip
@@ -160,7 +173,8 @@
         v-if="tableStatus.gUnitv"
         label="单位"
       ></el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
         width="150"
         align="center"
         property="iSellingprice"
@@ -170,7 +184,8 @@
       <el-table-column sortable width="150" align="center" property="sumPrice" label="总金额">
         <template v-if="sumTotalPrice">{{ $PublicJS.money(sumTotalPrice, 2) }}</template>
       </el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
         width="100"
         align="center"
         show-overflow-tooltip
@@ -178,7 +193,8 @@
         v-if="tableStatus.gNewoldv"
         label="新旧程度"
       ></el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
         width="120"
         align="center"
         show-overflow-tooltip
@@ -186,7 +202,8 @@
         v-if="tableStatus.gCtime"
         label="最近销售日期"
       ></el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
         min-min-width="150"
         align="center"
         property="gRemark"
@@ -345,7 +362,7 @@ export default {
         rDisassembly: 0,
         time: []
       },
-      loading:'',
+      loading: ""
     };
   },
   created() {
@@ -392,7 +409,7 @@ export default {
           if (items.rStatus != 17) {
             this.hasdis = true;
           }
-          this.getReceiver({ cuid: items.rCuid,size:99 });
+          this.getReceiver({ cuid: items.rCuid, size: 99 });
           let params = {
             rid: items.rId,
             whid: items.rWhid
@@ -419,7 +436,13 @@ export default {
         }
       });
     },
-
+    Printing() {
+      const data = this.$route.query.data;
+      window.open(
+        `/#/warehouse/inbound/leasePrinting?data=${data}`,
+        "_blank"
+      );
+    },
     getReceiver(val) {
       this.contact = [];
       this.$api.Contact.get(val).then(res => {
@@ -447,7 +470,7 @@ export default {
       let values = [];
       columns.forEach((column, index) => {
         if (index === 0) {
-          sums[index] ="合计";
+          sums[index] = "合计";
           return;
         }
         const values = data.map(item => Number(item[column.property]));
@@ -456,20 +479,20 @@ export default {
             column.property === "sumPrice") ||
           column.property === "rdQuantity"
         ) {
-          sums[index] =values.reduce((prev, curr)=> {
+          sums[index] = values.reduce((prev, curr) => {
             const value = Number(curr);
             if (!isNaN(value)) {
-              return parseFloat((prev + curr).toPrecision(12))
+              return parseFloat((prev + curr).toPrecision(12));
             } else {
               return prev;
             }
           }, 0);
           if (column.property === "sumPrice") {
-            this.form.rTotalprice = parseFloat((sums[index]).toPrecision(12));
+            this.form.rTotalprice = parseFloat(sums[index].toPrecision(12));
             // this.TotalPrice = parseFloat((sums[index]).toPrecision(12));
           }
           if (column.property === "rdQuantity") {
-            this.form.TotalGood = parseFloat((sums[index]).toPrecision(12));
+            this.form.TotalGood = parseFloat(sums[index].toPrecision(12));
           } else {
             sums[index] = this.$PublicJS.money(sums[index], 2);
             sums[index] += " 元";

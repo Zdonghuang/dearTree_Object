@@ -6,9 +6,7 @@
         <div v-if="orderBH"></div>
       </el-col>
       <el-col :xs="24" :sm="8" align="center">
-        <h3
-          class="title"
-        >第 二 树 循 环 家 具 {{form.rOidv}} {{orderBH.indexOf('NBDB')>-1?' 内 部 调 拨':' 分 公 司 调 拨'}} 单</h3>
+        <h3 class="title">第 二 树 循 环 家 具 租 赁 入 库 单</h3>
       </el-col>
       <el-col :xs="24" :sm="8" align="right">
         <el-button-group v-if="!$router.history.current.query.from">
@@ -19,11 +17,16 @@
       </el-col>
     </el-row>
     <ul class="ul">
+      <li>客户：{{form.rCuidv}}</li>
+      <li>联系人：{{showName}}</li>
+      <li>电话：{{form.rCmobile}}</li>
       <li>编号：{{orderBH}}</li>
-      <li>出库仓库：{{form.rWhidv}}</li>
-      <li>入库仓库：{{form.rWhidtransferv}}</li>
+      <li>仓库：{{form.rWhidv}}</li>
       <li>经手人：{{form.rHandmanv}}</li>
+      <li>获客人：{{form.rGetguestv}}</li>
       <li>单据日期：{{form.rDate}}</li>
+      <li>联系地址：{{form.rCaddr}}</li>
+      <li>单据备注：{{form.rRemark}}</li>
     </ul>
     <table class="table" border="1" cellspacing="0" width="100%">
       <thead>
@@ -31,6 +34,7 @@
           <th>序号</th>
           <th>货号</th>
           <th>商品名称</th>
+          <td>品牌</td>
           <th>单位</th>
           <th>颜色</th>
           <th>数量</th>
@@ -45,6 +49,7 @@
           <td>{{i+1}}</td>
           <td>{{item.gItemnum}}</td>
           <td>{{item.gName}}</td>
+          <td>{{item.gBrandv}}</td>
           <td>{{item.gUnitv}}</td>
           <td>{{item.gColorv}}</td>
           <td>{{item.rdQuantity}}</td>
@@ -55,22 +60,36 @@
         </tr>
       </tbody>
     </table>
-    <br>
-    <div>制单人：{{form.rCuseridv||form.rHandmanv}}</div>
-    <br>
+    <div>备货部门：{{form.rPreparegoods==1?'仓库组':form.rDisassembly==2?"送货组":'其他'}} &nbsp;&nbsp;送货部门：{{form.rDeliver==1?'仓库组':form.rDisassembly==2?"送货组":'其他'}} &nbsp;&nbsp;拆装部门：{{form.rDisassembly==1?'仓库组':form.rDisassembly==2?"送货组":'其他'}}</div>
+    <br />
+    <div>租赁时间：{{form.startDate}}-{{form.endDate}} &nbsp;&nbsp;租赁月数：{{form.months}}</div>
+    <br />
+    <div>制单人：{{form.rCuseridv}}</div>
+    <br />
     <div>本单数量：{{num}}</div>
-    <br>
-    <div>单据备注：{{form.rRemark}}</div>
+    <br />
+    <div>本单金额：{{form.rTotalprice.toFixed(2)}}</div>
+    <div></div>
   </div>
 </template>
 
 <script>
-import getDate from "../../utils/getDate";
+import settTable from "../../../components/settTable/settTable";
+import selectLogistics from "../../../components/dialog/SelectLogistics";
+import getDate from "../../../utils/getDate";
 export default {
   inject: ["reload"],
+  components: {
+    settTable,
+    selectLogistics
+  },
   data() {
     return {
+      dataType: 0,
+      dingding: {},
+      dingding1: {},
       tableData: [],
+      contact: [],
       rowindex: "",
       icon: "",
       disabled: true,
@@ -92,30 +111,20 @@ export default {
         rGetguest: 0,
         rHandman: 0,
         rCid: "",
-        rCidv: "",
         rCaddr: "",
         rCmobile: "",
         rCtime: "",
         rDate: "",
-        rEstdelivery: this.$PublicJS.nowDate(),
         rLogistics: "",
         rRemark: "",
-        rShipmentnumber: "",
         rCuidv: "",
         rStatus: 1,
-        rPreparegoods: "1",
-        rDisassembly: "1",
-        rFile: []
+        rPreparegoods: 0,
+        rDisassembly: 0,
+        time: []
       },
-      i: 0,
-      fileList: [],
-      formData: {},
-      // 日期范围只能是今天以后
-      pickerOptions: {
-        disabledDate(time) {
-          return time.getTime() < Date.now() - 8.64e7;
-        }
-      },
+      loading: "",
+      showName: "",
       num: 0
     };
   },
@@ -127,6 +136,12 @@ export default {
       } else {
         this.orderBH = vals;
       }
+      this.loading = this.$loading({
+        lock: true,
+        text: "加载中",
+        spinner: "el-icon-loading",
+        background: "rgba(0, 0, 0, 0.7)"
+      });
       this.getOrder();
     }
   },
@@ -154,7 +169,7 @@ export default {
         if (res.data) {
           let items = res.data.records[0];
           this.orderBH = items.rItemnum;
-          if (items.rStatus == 19) {
+          if (items.rStatus != 17) {
             this.hasdis = true;
           }
           let params = {
@@ -163,90 +178,41 @@ export default {
           };
           // 商品回显
           this.$api.Receiptdts.getReceiptDtsGoods(params).then(res => {
+            this.loading.close();
             res.data.map(item => {
               item.iSellingprice = item.rdSellingprice;
               item.gRemark = item.rdRemark;
               item.defNum = item.rdQuantity;
-              this.num += item.rdQuantity;
               if (item.gImage) {
                 item.gImage = item.gImage.split(",");
               }
+              this.num += item.rdQuantity;
               this.tableData.push(item);
             });
             this.form = items;
-            this.getReceiver({ cuid: items.rCuid,size:99 });
-            if (this.form.rFile) {
-              this.form.rFile = JSON.parse(this.form.rFile);
-              this.form.rFile.map(item => {
-                this.fileList.push({
-                  name: "单据附件",
-                  url: `${this.baseUrl}api${item}`
-                });
-              });
-            } else {
-              this.form.rFile = [];
-            }
+            this.getReceiver({ cuid: items.rCuid, size: 99 });
             this.form.rEstdelivery = this.$PublicJS.nowDate();
+            this.form.time = [
+              items.startDate.split("T")[0],
+              items.endDate.split("T")[0]
+            ];
           });
         }
       });
     },
-    // 收货人回显
-    getReceiver(val) {
-    //   this.$api.Contact.get(val).then(res => {
-    //     if (res.code == 200) {
-    //       let Items = res.data.records;
-    //       if (!Items.length) return (this.form.rCid = "");
-    //       let obj = Items.find(item => {
-    //         return item.cCuid == val.cuid;
-    //       });
-    //       this.form.rCid = obj.cId;
-    //       this.form.rCidv = obj.cName;
-    //       this.$forceUpdate();
-    //     }
-    //   });
+    Printing() {
+      const data = this.$route.query.data;
+      window.open(`/#/warehouse/inbound/leasePrinting?data=${data}`, "_blank");
     },
-    updataFUN() {
-      this.$confirm("此操作将更新数据, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          this.formData = new FormData();
-          this.$refs.upload.submit();
-          this.$ajax.post("/system/upload", this.formData).then(res => {
-            if (res.data.code == 200) {
-              if (Object.values(res.data.data).length) {
-                Object.values(res.data.data).map(item => {
-                  this.form.rFile.push(`/file/${item}`);
-                });
-              }
-              this.form.rFile = JSON.stringify(this.form.rFile);
-
-              this.$api.Receipt.update(this.form).then(res => {
-                if (res.code == 200) {
-                  this.$message({
-                    type: "success",
-                    message: "提交成功!"
-                  });
-                  this.$router.push("/warehouse/outbound/saleOutboundList");
-                } else {
-                  this.$message({
-                    type: "error",
-                    message: res.err
-                  });
-                }
-              });
-            }
-          });
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消操作"
-          });
+    getReceiver(val) {
+      this.contact = [];
+      this.$api.Contact.get(val).then(res => {
+        let Items = res.data.records;
+        if (!res.data.records.length) return (this.form.rCid = "");
+        Items.map((item, index) => {
+          if (item.cId == this.form.rCid) this.showName = item.cName;
         });
+      });
     },
     // 合计
     getSummaries(param) {
@@ -255,25 +221,29 @@ export default {
       let values = [];
       columns.forEach((column, index) => {
         if (index === 0) {
-          sums[index] ="合计";
+          sums[index] = "合计";
           return;
         }
         const values = data.map(item => Number(item[column.property]));
         if (
-          !values.every(value => isNaN(value)) &&
+          (!values.every(value => isNaN(value)) &&
+            column.property === "sumPrice") ||
           column.property === "rdQuantity"
         ) {
-          sums[index] =values.reduce((prev, curr)=> {
+          sums[index] = values.reduce((prev, curr) => {
             const value = Number(curr);
             if (!isNaN(value)) {
-              return parseFloat((prev + curr).toPrecision(12))
+              return parseFloat((prev + curr).toPrecision(12));
             } else {
               return prev;
             }
           }, 0);
-
+          if (column.property === "sumPrice") {
+            this.form.rTotalprice = parseFloat(sums[index].toPrecision(12));
+            // this.TotalPrice = parseFloat((sums[index]).toPrecision(12));
+          }
           if (column.property === "rdQuantity") {
-            this.form.TotalGood = parseFloat((sums[index]).toPrecision(12));
+            this.form.TotalGood = parseFloat(sums[index].toPrecision(12));
           } else {
             sums[index] = this.$PublicJS.money(sums[index], 2);
             sums[index] += " 元";
@@ -284,36 +254,86 @@ export default {
       });
       return sums;
     },
-    handleRemove(file, fileList) {
-      this.fileList = fileList;
-      this.form.rFile = this.fileList.map(item => {
-        return item.url.split("api")[1];
-      });
-    },
-    handleChange(file, fileList) {
-      this.fileList = fileList;
-    },
-    handlePreview(file) {
-      window.open(file.url);
-    },
-    uploadImg(file) {
-      if (file.file.name) {
-        this.formData.append(`files${this.i}`, file.file);
-        this.i++;
+    // 提交
+    opendialog(val) {
+      if (!this.form.rPreparegoods) {
+        this.$message({ message: "请选择备货部门", type: "warning" });
+        return false;
+      }
+      if (!this.form.rDeliver) {
+        this.$message({ message: "请选择送货部门", type: "warning" });
+        return false;
+      }
+      if (!this.form.rDisassembly) {
+        this.$message({ message: "请选择拆装部门", type: "warning" });
+        return false;
+      }
+      if (
+        this.form.rPreparegoods &&
+        this.form.rDeliver &&
+        this.form.rDisassembly
+      ) {
+        this.$confirm("此操作将修改单据状态, 是否继续?", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        })
+          .then(() => {
+            this.dialogSubmit();
+          })
+          .catch(() => {
+            this.$message({
+              type: "info",
+              message: "已取消操作"
+            });
+          });
       }
     },
-    showDialog(val) {
-      this[val] = true;
+    // 审核提交
+    dialogSubmit(val) {
+      const loading = this.$loading({
+        lock: true,
+        text: "提交中",
+        spinner: "el-icon-loading",
+        background: "rgba(0, 0, 0, 0.7)"
+      });
+      let tableData = [];
+      this.tableData.forEach(item => {
+        if (item.gName) {
+          item.rdGid = item.gId;
+          item.rdSellingprice = item.iSellingprice;
+          item.rdUnitprice = item.iUnitprice;
+          item.rdIotype = 2;
+          tableData.push(item);
+        }
+      });
+
+      delete this.form.rFile;
+      this.form.rDate = this.$PublicJS.nowDate();
+      let params = {
+        approve: false,
+        approvers: [],
+        receiptDtsList: tableData,
+        receiptInfoVO: this.form
+      };
+      this.$api.Rent.inbound(params).then(res => {
+        loading.close();
+        if (res.code == 200) {
+          this.$message({
+            type: "success",
+            message: "提交成功!"
+          });
+          this.$router.push("/warehouse/inbound/ZLinboundList");
+        } else {
+          this.$message({
+            type: "error",
+            message: res.err
+          });
+        }
+      });
     },
     setimg(u) {
       this.img = u;
-    },
-   // 物流
-    getLogisticsData(val) {
-      if (val) {
-        this.form.rLogistics = val.cuName;
-      }
-      this.showSelectLogistics = false;
     },
     settTable() {
       this.reload();
@@ -323,7 +343,7 @@ export default {
   }
 };
 </script>
-<style lang="scss" scoped>
+<style scoped lang="scss">
 @page {
   size: auto A4 landscape;
   margin: 3mm;

@@ -327,6 +327,13 @@ const warehouseRouter = {
           name: 'ZLinboundDetail',
           meta: { title: '租赁入库单', roles: ['321'] },
           hidden: true
+        },
+        {
+          path: 'leasePrinting',
+          component: () => import('@/views/warehouse/inbound/leasePrinting'),
+          name: 'leasePrinting',
+          meta: { title: '租赁出库单', roles: ['321'] },
+          hidden: true
         }
       ]
     },

@@ -64,6 +64,7 @@ export default {
       "/recover/printingRecoverCon",
       "/recover/printingRecoverSettlement",
       "/warehouse/inventory/inventoryPrinting",
+      "/warehouse/inbound/leasePrinting",
       "/printingFinancePay",
       "/printingJK",
       "/printingBXHX",
@@ -91,6 +92,7 @@ export default {
       "/printingFinancePay",
       "/printingJK",
       "/printingBXHX",
+      "/warehouse/inbound/leasePrinting",
       "/printingFundFlowDetail"
     ];
     if (url.includes(this.$route.path)) {

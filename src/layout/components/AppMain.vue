@@ -25,6 +25,7 @@ export default {
       "/sales/printingReplaceOrder",
       "/warehouse/transfer/printingTransfer",
       "/warehouse/inbound/printingInbound",
+      "/warehouse/inbound/leasePrinting",
       "/XStransfer/printingTransfer",
       "/CGBJprinting",
       "/recover/printingRecoverCon",

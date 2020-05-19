@@ -35,8 +35,6 @@
           <th>单位</th>
           <th>颜色</th>
           <th>数量</th>
-          <th v-if="this.form.rType!=45">单价</th>
-          <th v-if="this.form.rType!=45">金额</th>
           <th>副台方向</th>
           <th>备注</th>
         </tr>
@@ -49,8 +47,6 @@
           <td>{{item.gUnitv}}</td>
           <td>{{item.gColorv}}</td>
           <td>{{item.rdQuantity}}</td>
-          <td v-if="this.form.rType!=45">{{item.rdSellingprice}}</td>
-          <td v-if="this.form.rType!=45">{{(item.rdSellingprice*item.rdQuantity).toFixed(2)}}</td>
           <td>{{item.gPzysv&&item.gPzysv.indexOf('副台')>-1?item.gPzysv:''}}</td>
           <td>{{item.gRemark}}</td>
         </tr>
