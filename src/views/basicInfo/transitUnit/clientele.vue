@@ -244,7 +244,7 @@
                 show-overflow-tooltip
               ></el-table-column>
               <el-table-column sortable align="center" label="分类" show-overflow-tooltip>
-                <template slot-scope="scope">{{scope.row.cuIsperson==0?"单位":"个人"}}</template>
+                <template slot-scope="scope">{{scope.row.cuIsperson==0?"企业":"个人"}}</template>
               </el-table-column>
               <el-table-column
                 sortable

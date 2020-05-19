@@ -577,7 +577,7 @@ export default {
       }
     });
     // 签单人
-    this.$api.User.get({ size: 9999, auth: 1, status: 1 }).then(res => {
+    this.$api.User.get({ size: 9999, auth: 1}).then(res => {
       if (res.code == 200) {
         this.rHandmanOptions = res.data.records.map(item => {
           return {

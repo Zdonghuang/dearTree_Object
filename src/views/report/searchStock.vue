@@ -30,7 +30,7 @@
     </el-row>
     <div id="vm" class="pubu" v-cloak>
       <ul id="show" class="yg yg_l" style="padding:0" v-if="TableData.length">
-        <li v-for="(item,index) in TableData">
+        <li v-for="(item,index) in TableData" :key="index">
           <div class="item_div">
             <img
               :src="`${baseUrl}api${item.goodsImagesUrl[0]}`"
@@ -62,7 +62,7 @@
             <div style="font-size:14px;">畅销度：{{item.goodsHot}}</div>
             <!-- <div style="font-size:14px;">归属公司：{{item.orgName}}</div> -->
             <div style="font-size:14px;">归属仓库：{{item.wareHouseName}}</div>
-            <!-- <div style="font-size:14px;">来源：{{item.goodsFromName}}</div> -->
+            <div style="font-size:14px;">序号：{{Number(index)+1}}</div>
           </div>
         </li>
         <li v-if="!next" style="color:red;font-size:20px;line-height:50px;text-align:center">没有商品啦。。</li>
@@ -74,6 +74,9 @@
           </div>
         </li>
       </ul>
+    </div>
+    <div class="Gotop">
+      <i class="fa fa-arrow-up" @click="gotop"></i>
     </div>
     <el-dialog
       :close-on-click-modal="false"
@@ -125,56 +128,6 @@
               :label="item.label"
               :value="item.value"
             ></el-option>
-          </el-select>
-        </el-col>
-        <el-col :sm="12" :xs="24">
-          <el-select
-            v-model="form.goodsColor"
-            placeholder="颜色"
-            size="small"
-            class="selectSlot4"
-            filterable
-            clearable
-          >
-            <template slot="prefix">
-              <span class="prefixSlot">颜色</span>
-            </template>
-            <el-option
-              v-for="item in YSoptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
-        </el-col>
-        <el-col :sm="12" :xs="24">
-          <el-select
-            v-model="form.purorrecover"
-            placeholder="来源"
-            size="small"
-            class="selectSlot4"
-            clearable
-          >
-            <template slot="prefix">
-              <span class="prefixSlot">来源</span>
-            </template>
-            <el-option label="回收" value="2"></el-option>
-            <el-option label="采购" value="1"></el-option>
-          </el-select>
-        </el-col>
-        <el-col :sm="12" :xs="24">
-          <el-select
-            v-model="form.goodsStatus"
-            placeholder="在售状态"
-            size="small"
-            class="selectSlot4"
-            clearable
-          >
-            <template slot="prefix">
-              <span class="prefixSlot">在售状态</span>
-            </template>
-            <el-option label="停售" value="2"></el-option>
-            <el-option label="在售" value="1"></el-option>
           </el-select>
         </el-col>
         <el-col :sm="12" :xs="24">
@@ -235,7 +188,7 @@
             ></el-option>
           </el-select>
         </el-col>
-        <el-col :sm="12" :xs="24">
+        <!-- <el-col :sm="12" :xs="24">
           <el-select
             v-model="form.goodsGrade"
             placeholder="等级"
@@ -291,7 +244,7 @@
               :value="item.value"
             ></el-option>
           </el-select>
-        </el-col>
+        </el-col>-->
         <el-col :sm="12" :xs="24">
           <el-select
             v-model="form.wareHouseId"
@@ -311,7 +264,7 @@
             ></el-option>
           </el-select>
         </el-col>
-        <el-col :xs="24" :sm="12">
+        <!-- <el-col :xs="24" :sm="12">
           <el-input placeholder="成本开始价" v-model="form.statPrice" size="small"></el-input>
         </el-col>
         <el-col :xs="24" :sm="12">
@@ -322,7 +275,7 @@
         </el-col>
         <el-col :xs="24" :sm="12">
           <el-input placeholder="销售结束价" v-model="form.endSalesPrice" size="small"></el-input>
-        </el-col>
+        </el-col>-->
         <el-col :xs="24" :sm="12">
           <el-input placeholder="规格" v-model="form.goodsSpec" size="small"></el-input>
         </el-col>
@@ -399,7 +352,6 @@ export default {
       }
     });
     this.getGoodsGS();
-    this.getGoodsYS();
     this.getGoodsPP();
     this.getGoodsDJ();
     this.getGoodsCXD();
@@ -429,6 +381,7 @@ export default {
       if (!obj.goodsBrand) delete obj.goodsBrand;
       if (!obj.goodsCate) delete obj.goodsCate;
       if (!obj.goodsClass) delete obj.goodsClass;
+      if (obj.goodsClass) delete obj.goodsCate;
       if (!obj.goodsColor) delete obj.goodsColor;
       if (!obj.goodsFrom) delete obj.goodsFrom;
       if (!obj.goodsGrade) delete obj.goodsGrade;
@@ -454,18 +407,20 @@ export default {
               item.goodsImagesUrl = [];
             }
           });
-          if (res.data.records.length == this.TableData.length)
-            this.next = false;
           this.TableData = res.data.records;
           this.currentPage = res.data.current;
           this.size = res.data.size;
           this.total = res.data.total;
           this.loading.close();
+          if (res.data.records.length == res.data.total) this.next = false;
           if (val == "showBox") {
             this.showBox = false;
           }
         }
       });
+    },
+    gotop() {
+      scrollTo(0, 0);
     },
     // 商品分类主类
     getGoodsSPFL() {
@@ -508,20 +463,6 @@ export default {
       };
       this.$api.Common.get(param).then(res => {
         this.PP1options = res.data.map(item => {
-          return {
-            label: item.cAttrvalue,
-            value: item.cAttrcode
-          };
-        });
-      });
-    },
-    // 商品颜色
-    getGoodsYS() {
-      let parms = {
-        typeCode: "YS"
-      };
-      this.$api.Common.get(parms).then(res => {
-        this.YSoptions = res.data.map(item => {
           return {
             label: item.cAttrvalue,
             value: item.cAttrcode
@@ -724,5 +665,14 @@ li {
   top: -8px;
   color: #fff;
   font-size: 0.6rem;
+}
+.Gotop {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  i {
+    font-size: 34px;
+    color: blue;
+  }
 }
 </style>

@@ -69,7 +69,7 @@
           </el-form-item> -->
           <el-form-item prop="cuIsperson" label="客户类型">
             <el-select v-model="addClientForm.cuIsperson" size="mini" @change="selectchange">
-              <el-option value="0" label="单位"></el-option>
+              <el-option value="0" label="企业"></el-option>
               <el-option value="1" label="个人"></el-option>
             </el-select>
           </el-form-item>
