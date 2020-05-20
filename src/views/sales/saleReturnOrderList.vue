@@ -45,7 +45,7 @@
       <el-col :sm="4" :xs="24">
         <el-select
           v-model="form.rCuidv"
-         filterable
+          filterable
           clearable
           remote
           reserve-keyword
@@ -170,8 +170,7 @@
             :key="index"
             :label="item.label"
             :value="item.value"
-          >
-          </el-option>
+          ></el-option>
         </el-select>
       </el-col>
       <el-col :sm="4" :xs="24">
@@ -228,14 +227,16 @@
           >作废</el-button>
         </template>
       </el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
         width="110"
         align="center"
         show-overflow-tooltip
         property="rDate"
         label="单据日期"
       ></el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
         width="180"
         align="center"
         show-overflow-tooltip
@@ -246,7 +247,8 @@
           <span class="orderlink" @click="toOrderPage(scope.row)">{{ scope.row.rItemnum }}</span>
         </template>
       </el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
         width="180"
         align="center"
         show-overflow-tooltip
@@ -283,7 +285,8 @@
           <el-tag effect="dark" type="danger" size="mini" v-if="scope.row.rStatus==31">作废</el-tag>
         </template>
       </el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
         width="150"
         align="center"
         show-overflow-tooltip
@@ -294,7 +297,8 @@
           <div class="tr">{{ $PublicJS.money(scope.row.rTotalprice, 2) }}</div>
         </template>
       </el-table-column>
-       <el-table-column sortable
+      <el-table-column
+        sortable
         width="120"
         align="center"
         show-overflow-tooltip
@@ -309,42 +313,48 @@
           <div class="tr" v-if="!scope.row.totalPremoney">0.0</div>
         </template>
       </el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
         width="120"
         align="center"
         show-overflow-tooltip
         property="rCuidv"
         label="客户/加盟商"
       ></el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
         width="150"
         align="center"
         show-overflow-tooltip
         property="rWhidv"
         label="仓库"
       ></el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
         width="100"
         align="center"
         show-overflow-tooltip
         property="rGetguestv"
         label="获客人"
       ></el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
         width="100"
         align="center"
         show-overflow-tooltip
         property="rHandmanv"
         label="签单人"
       ></el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
         width="100"
         align="center"
         show-overflow-tooltip
         property="rOidv"
         label="归属公司"
       ></el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
         min-width="150"
         align="center"
         show-overflow-tooltip
@@ -387,9 +397,9 @@ export default {
       rCuidOptions: [],
       rWhidOptions: [],
       rHandmanOptions: [],
-      rStatusOptions:[
-        {label:'收货完成',value:'1'},
-        {label:'待收货',value:'1'}
+      rStatusOptions: [
+        { label: "收货完成", value: "1" },
+        { label: "待收货", value: "1" }
       ],
       form: {
         includezuofei: 0,
@@ -410,7 +420,7 @@ export default {
         rItemnum: "",
         rType: 17 //销售退货单
       },
-      loading: false,
+      loading: false
     };
   },
   created() {
@@ -447,7 +457,7 @@ export default {
       }
     });
     // 签单人
-    this.$api.User.get({ size: 9999, auth: 1, status:1 }).then(res => {
+    this.$api.User.get({ size: 9999, auth: 1, status: 1 }).then(res => {
       if (res.code == 200) {
         this.rHandmanOptions = res.data.records.map(item => {
           return {
@@ -579,7 +589,7 @@ export default {
       let values = [];
       columns.forEach((column, index) => {
         if (index === 0) {
-          sums[index] ="合计";
+          sums[index] = "合计";
           return;
         }
         const values = data.map(item => Number(item[column.property]));
@@ -587,10 +597,10 @@ export default {
           !values.every(value => isNaN(value)) &&
           column.property == "rTotalprice"
         ) {
-          sums[index] =values.reduce((prev, curr)=> {
+          sums[index] = values.reduce((prev, curr) => {
             const value = Number(curr);
             if (!isNaN(value)) {
-              return parseFloat((prev + curr).toPrecision(12))
+              return parseFloat((prev + curr).toPrecision(12));
             } else {
               return prev;
             }
@@ -631,6 +641,12 @@ export default {
     },
     // 获取列表
     getList(val) {
+      const loading = this.$loading({
+        lock: true,
+        text: "查询中",
+        spinner: "el-icon-loading",
+        background: "rgba(0, 0, 0, 0.7)"
+      });
       let params = {};
       if (val && val != "xlsx") {
         params = val;
@@ -676,6 +692,7 @@ export default {
         params.currentPage = 1;
       }
       this.$api.Receipt.get(params).then(res => {
+        loading.close();
         if (res.data) {
           let item = res.data.records;
           this.tableData = item;

@@ -21,7 +21,7 @@ const warehouseRouter = {
           path: 'saleDistributionList',
           component: () => import('@/views/warehouse/distribution/saleDistributionList'),
           name: 'saleDistributionList',
-          meta: { title: '销售备货单列表', roles: ['310'] }
+          meta: { title: '销售备货单列表', roles: ['310'],keepAlive: true }
         },
         {
           path: 'distributionDetail',

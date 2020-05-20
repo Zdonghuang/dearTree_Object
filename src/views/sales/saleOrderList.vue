@@ -577,7 +577,7 @@ export default {
       }
     });
     // 签单人
-    this.$api.User.get({ size: 9999, auth: 1}).then(res => {
+    this.$api.User.get({ size: 9999, auth: 1 }).then(res => {
       if (res.code == 200) {
         this.rHandmanOptions = res.data.records.map(item => {
           return {
@@ -822,6 +822,12 @@ export default {
     },
     // 获取列表
     getList(val) {
+      const loading = this.$loading({
+        lock: true,
+        text: "查询中",
+        spinner: "el-icon-loading",
+        background: "rgba(0, 0, 0, 0.7)"
+      });
       let params = {};
       if (val && val != "xlsx") {
         params = val;
@@ -870,6 +876,7 @@ export default {
         params.currentPage = 1;
       }
       this.$api.Receipt.get(params).then(res => {
+        loading.close();
         if (res.data) {
           let item = res.data.records;
           this.tableData = item;

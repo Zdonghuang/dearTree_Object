@@ -24,15 +24,27 @@
     <el-row :gutter="20">
       <!-- 时间选择器 -->
       <el-col :sm="4" :xs="24">
-        <el-date-picker v-model="form.rStime" type="date" size="small" placeholder="单据起始日期" value-format="yyyyMMdd"></el-date-picker>
+        <el-date-picker
+          v-model="form.rStime"
+          type="date"
+          size="small"
+          placeholder="单据起始日期"
+          value-format="yyyyMMdd"
+        ></el-date-picker>
       </el-col>
       <el-col :sm="4" :xs="24">
-        <el-date-picker v-model="form.rEtime" type="date" size="small" placeholder="单据结束日期" value-format="yyyyMMdd"></el-date-picker>
+        <el-date-picker
+          v-model="form.rEtime"
+          type="date"
+          size="small"
+          placeholder="单据结束日期"
+          value-format="yyyyMMdd"
+        ></el-date-picker>
       </el-col>
       <el-col :sm="4" :xs="24">
         <el-select
           v-model="form.rCuidv"
-         filterable
+          filterable
           clearable
           remote
           reserve-keyword
@@ -157,8 +169,7 @@
             :key="item.value"
             :label="item.label"
             :value="item.value"
-          >
-          </el-option>
+          ></el-option>
         </el-select>
       </el-col>
       <el-col :sm="4" :xs="24">
@@ -198,33 +209,35 @@
       height="600px"
       header-cell-class-name="thbgc"
     >
-       <el-table-column width="55" align="center"  type="index" label="序号"></el-table-column>
-      <el-table-column sortable width="120" align="center"  label="操作">
+      <el-table-column width="55" align="center" type="index" label="序号"></el-table-column>
+      <el-table-column sortable width="120" align="center" label="操作">
         <template slot-scope="scope">
           <el-button
             type="text"
             size="mini"
             :disabled="scope.row.rStatus==1 || scope.row.rStatus==5 || scope.row.rStatus==31 || scope.row.rStatus==19"
             @click="operating(scope.row,'reset')"
-            v-has='3101'
+            v-has="3101"
           >重置</el-button>
           <el-button
             type="text"
             size="mini"
             :disabled="scope.row.rStatus==1 || scope.row.rStatus==5 || scope.row.rStatus==31 || scope.row.rStatus==19"
             @click="operating(scope.row,'cancel')"
-            v-has='3101'
+            v-has="3101"
           >作废</el-button>
         </template>
       </el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
         width="110"
         align="center"
         show-overflow-tooltip
         property="rDate"
         label="单据日期"
       ></el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
         width="180"
         align="center"
         show-overflow-tooltip
@@ -235,7 +248,8 @@
           <span class="orderlink" @click="toOrderPage(scope.row)">{{ scope.row.rItemnum }}</span>
         </template>
       </el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
         width="180"
         align="center"
         show-overflow-tooltip
@@ -258,7 +272,8 @@
           >{{ scope.row.rStatus | orderStatus }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
         width="150"
         align="center"
         show-overflow-tooltip
@@ -269,42 +284,48 @@
           <div class="tr">{{ $PublicJS.money(scope.row.rTotalprice, 2) }}</div>
         </template>
       </el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
         width="120"
         align="center"
         show-overflow-tooltip
         property="rCuidv"
         label="客户/加盟商"
       ></el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
         width="150"
         align="center"
         show-overflow-tooltip
         property="rWhidv"
         label="仓库"
       ></el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
         width="100"
         align="center"
         show-overflow-tooltip
         property="rGetguestv"
         label="获客人"
       ></el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
         width="100"
         align="center"
         show-overflow-tooltip
         property="rHandmanv"
         label="签单人"
       ></el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
         width="100"
         align="center"
         show-overflow-tooltip
         property="rOidv"
         label="归属公司"
       ></el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
         min-width="150"
         align="center"
         show-overflow-tooltip
@@ -347,9 +368,12 @@ export default {
       rCuidOptions: [],
       rWhidOptions: [],
       rHandmanOptions: [],
-      rStatusOptions:[{label:'备货中',value:9},{label:'单据完结',value:19}],
+      rStatusOptions: [
+        { label: "备货中", value: 9 },
+        { label: "单据完结", value: 19 }
+      ],
       form: {
-        includezuofei:0,
+        includezuofei: 0,
         rCuidv: "",
         rCuid: "",
         rHandmanv: "",
@@ -367,15 +391,15 @@ export default {
         rItemnum: "",
         rType: 35 // 销售配货单
       },
-      loading: false,
+      loading: false
     };
   },
   created() {
     this.form.rStime = getDate.getToday().starttime;
     this.form.rEtime = getDate.getToday().endtime;
     if (this.$route.query.status) {
-      this.form.rStime = '';
-      this.form.rEtime = '';
+      this.form.rStime = "";
+      this.form.rEtime = "";
     }
     this.getList();
     // 客户
@@ -392,7 +416,7 @@ export default {
     //   }
     // });
     // 仓库
-    this.$api.Warehouse.get({ auth:1,size: 9999 }).then(res => {
+    this.$api.Warehouse.get({ auth: 1, size: 9999 }).then(res => {
       if (res.code == 200) {
         this.rWhidOptions = res.data.records.map(item => {
           return {
@@ -404,7 +428,7 @@ export default {
       }
     });
     // 签单人
-    this.$api.User.get({ size: 9999, auth: 1, status:1 }).then(res => {
+    this.$api.User.get({ size: 9999, auth: 1, status: 1 }).then(res => {
       if (res.code == 200) {
         this.rHandmanOptions = res.data.records.map(item => {
           return {
@@ -486,7 +510,7 @@ export default {
       let msg = "";
       if (e == "cancel") {
         msg = "作废";
-        params.type=1
+        params.type = 1;
       }
       if (e == "reset") {
         msg = "重置";
@@ -552,18 +576,18 @@ export default {
       let values = [];
       columns.forEach((column, index) => {
         if (index === 0) {
-          sums[index] ="合计";
+          sums[index] = "合计";
           return;
         }
         const values = data.map(item => Number(item[column.property]));
         if (
-          (!values.every(value => isNaN(value)) &&
-            column.property == "rTotalprice") 
+          !values.every(value => isNaN(value)) &&
+          column.property == "rTotalprice"
         ) {
-          sums[index] =values.reduce((prev, curr)=> {
+          sums[index] = values.reduce((prev, curr) => {
             const value = Number(curr);
             if (!isNaN(value)) {
-              return parseFloat((prev + curr).toPrecision(12))
+              return parseFloat((prev + curr).toPrecision(12));
             } else {
               return prev;
             }
@@ -604,6 +628,12 @@ export default {
     },
     // 获取列表
     getList(val) {
+      const loading = this.$loading({
+        lock: true,
+        text: "查询中",
+        spinner: "el-icon-loading",
+        background: "rgba(0, 0, 0, 0.7)"
+      });
       let params = {};
       if (val && val != "xlsx") {
         params = val;
@@ -646,6 +676,7 @@ export default {
         params.size = this.total;
       }
       this.$api.Receipt.get(params).then(res => {
+        loading.close();
         if (res.data) {
           let item = res.data.records;
           this.tableData = item;
