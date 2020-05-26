@@ -263,7 +263,9 @@ export default {
           fsBankname: "",
           fsBankaccount: "",
           fsAmount: "",
-          fsDiv: 2
+          fsDiv: 2,
+          fsSubjectnum: '1006',
+          fsSubjectname:'预付账款'
         }
       ],
       activeName: "wuliu",

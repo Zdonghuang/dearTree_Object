@@ -428,7 +428,7 @@ export default {
       if (!this.form.rItemnum) delete params.rItemnum;
       if (!this.form.gItemnum) delete params.gItemnum;
       if (!this.form.gName) delete params.gName;
-
+      this.form.rStatus = 7;
       params.size = this.pageSize;
       params.currentPage = this.currentPage;
       if (val == "s") {
@@ -451,13 +451,13 @@ export default {
       this.$api.Stat.statdcdrmx(params)
         .then(res => {
           loading.close();
-          this.tableData=[]
+          this.tableData = [];
           if (res.code == 200) {
             res.data.records.map(item => {
-            if (item.rdate) {
-              item.rdate = item.rdate.split("T")[0];
-            }
-          });
+              if (item.rdate) {
+                item.rdate = item.rdate.split("T")[0];
+              }
+            });
             this.tableData = res.data.records;
             this.total = res.data.total;
             this.currentPage = res.data.current;

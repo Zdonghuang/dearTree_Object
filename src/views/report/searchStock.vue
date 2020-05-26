@@ -172,7 +172,7 @@
         <el-col :sm="12" :xs="24" v-if="form.goodsCate">
           <el-select
             v-model="form.goodsClass"
-            placeholder="一级分类"
+            placeholder="二级分类"
             size="small"
             class="selectSlot4"
             clearable
@@ -346,7 +346,7 @@ export default {
         document.documentElement.clientHeight || document.body.clientHeight;
       let scrollHeight =
         document.documentElement.scrollHeight || document.body.scrollHeight;
-      if (scrollTop + clientHeight == scrollHeight) {
+      if (scrollTop + clientHeight > scrollHeight - 100) {
         this.size += 20;
         this.getGoodsStock();
       }
@@ -412,6 +412,7 @@ export default {
           this.size = res.data.size;
           this.total = res.data.total;
           this.loading.close();
+          this.next = true;
           if (res.data.records.length == res.data.total) this.next = false;
           if (val == "showBox") {
             this.showBox = false;
