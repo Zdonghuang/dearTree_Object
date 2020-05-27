@@ -14,7 +14,7 @@
         <el-button-group v-if="!$router.history.current.query.from">
           <el-button size="small" icon="el-icon-refresh" @click="reload">刷新</el-button>
           <!-- <el-button size="small" icon="el-icon-download" v-has="383">导出</el-button>
-          <el-button size="small" icon="el-icon-printer">打印</el-button> -->
+          <el-button size="small" icon="el-icon-printer">打印</el-button>-->
         </el-button-group>
       </el-col>
     </el-row>
@@ -65,7 +65,7 @@
         <el-input placeholder="收货地址" v-model="form.rCaddr" size="small" disabled>
           <template slot="prepend">收货地址</template>
         </el-input>
-      </el-col> -->
+      </el-col>-->
     </el-row>
 
     <el-table
@@ -79,17 +79,17 @@
       sum-text="合计:"
       header-cell-class-name="thbgc"
     >
-      <el-table-column sortable
+      <el-table-column
+        sortable
         show-overflow-tooltip
         type="index"
         width="55"
         align="center"
         property="index"
-        
         label="序号"
       ></el-table-column>
-        <el-table-column sortable width="100" align="center" property="gItemnum" label="货号"></el-table-column>
-        <el-table-column sortable prop="gImage" label="图片" width="120" align="center">
+      <el-table-column sortable width="100" align="center" property="gItemnum" label="货号"></el-table-column>
+      <el-table-column sortable prop="gImage" label="图片" width="120" align="center">
         <template slot-scope="scope" v-if="scope.row.gImage">
           <el-popover
             placement="right"
@@ -102,13 +102,13 @@
               slot="reference"
               :src="`${baseUrl}api${url}`"
               @mouseover="setimg(`${baseUrl}api${url}`)"
-                  v-if="i<3"
+              v-if="i<3"
               class="tableimg"
             />
           </el-popover>
         </template>
       </el-table-column>
-      <el-table-column sortable align="center" property="gName" >
+      <el-table-column sortable align="center" property="gName">
         <template slot="header">
           <span>商品名称</span>
         </template>
@@ -151,56 +151,64 @@
           label="待入库库存"
         ></el-table-column>
       </el-table-column>-->
-      <el-table-column sortable
+      <el-table-column
+        sortable
         width="80"
         align="center"
         show-overflow-tooltip
         property="gColorv"
         label="颜色"
       ></el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
         width="100"
         align="center"
         show-overflow-tooltip
         property="gNewoldv"
         label="新旧程度"
       ></el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
         width="100"
         align="center"
         show-overflow-tooltip
         property="gSupplierv"
         label="供应商"
       ></el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
         width="100"
         align="center"
         show-overflow-tooltip
         property="gBrandv"
         label="品牌"
       ></el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
         width="150"
         align="center"
         show-overflow-tooltip
         property="gSpec"
         label="规格"
       ></el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
         width="100"
         align="center"
         show-overflow-tooltip
         property="gCuseridv"
         label="获客人"
       ></el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
         width="80"
         align="center"
         show-overflow-tooltip
         property="gUnitv"
         label="单位"
       ></el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
         width="120"
         align="center"
         show-overflow-tooltip
@@ -236,7 +244,7 @@
       :Totalamount="TotalGood"
       BtnText="确认出库"
       :hideBtn2="form.rStatus==7"
-       v-has='361'
+      v-has="361"
     ></my-footer>
   </div>
 </template>
@@ -252,7 +260,7 @@ export default {
       rowindex: "",
       icon: "",
       img: "",
-      
+
       showSelectLogistics: false,
       orderBH: null,
       orderID: null,
@@ -280,7 +288,7 @@ export default {
         rCuidv: ""
       },
       TotalGood: 0,
-      loading:'',
+      loading: ""
     };
   },
   created() {
@@ -376,8 +384,20 @@ export default {
         spinner: "el-icon-loading",
         background: "rgba(0, 0, 0, 0.7)"
       });
+
+      let goodsName = "";
+      let flag = 0;
+      this.tableData.forEach(item => {
+        if (item.gName) {
+          if (item.rdQuantity > item.iQuantity) {
+            goodsName += item.gName + ",";
+            flag++;
+          }
+        }
+      });
+      if (flag) return this.$message.error(`${goodsName.slice(0, -1)}库存不足`)
       delete this.form.rFile;
-      this.form.rDate =this.$PublicJS.nowDate()
+      this.form.rDate = this.$PublicJS.nowDate();
       this.$api.Receipt.ckAll(this.form).then(res => {
         loading.close();
         if (res.code == 200) {
@@ -399,7 +419,7 @@ export default {
       let values = [];
       columns.forEach((column, index) => {
         if (index === 0) {
-          sums[index] ="合计";
+          sums[index] = "合计";
           return;
         }
         const values = data.map(item => Number(item[column.property]));
@@ -407,16 +427,16 @@ export default {
           !values.every(value => isNaN(value)) &&
           column.property === "rdQuantity"
         ) {
-          sums[index] =values.reduce((prev, curr)=> {
+          sums[index] = values.reduce((prev, curr) => {
             const value = Number(curr);
             if (!isNaN(value)) {
-              return parseFloat((prev + curr).toPrecision(12))
+              return parseFloat((prev + curr).toPrecision(12));
             } else {
               return prev;
             }
           }, 0);
           if (column.property === "rdQuantity") {
-            this.TotalGood = parseFloat((sums[index]).toPrecision(12));
+            this.TotalGood = parseFloat(sums[index].toPrecision(12));
           }
         } else {
           sums[index] = " ";

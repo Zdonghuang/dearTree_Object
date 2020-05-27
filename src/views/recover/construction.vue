@@ -1194,7 +1194,7 @@ export default {
           let filearr = [];
           if (this.fileList.length) {
             this.fileList.forEach(item => {
-              let objurl = item.url.split("api")[1];
+              let objurl = `/file${item.url.split("file")[1]}`;
               filearr.push(objurl);
             });
           }

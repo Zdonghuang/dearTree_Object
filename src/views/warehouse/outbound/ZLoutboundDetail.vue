@@ -84,7 +84,8 @@
               <i class="fa fa-cog setting" @click="showtable=true"></i>
             </template>
           </el-table-column>
-          <el-table-column sortable
+          <el-table-column
+            sortable
             width="100"
             align="center"
             show-overflow-tooltip
@@ -112,14 +113,16 @@
             </template>
           </el-table-column>
           <el-table-column sortable align="center" property="gName" width="150" label="商品名称"></el-table-column>
-          <el-table-column sortable
+          <el-table-column
+            sortable
             width="100"
             align="center"
             show-overflow-tooltip
             property="gPzysv"
             label="配置"
           ></el-table-column>
-          <el-table-column sortable
+          <el-table-column
+            sortable
             width="150"
             align="center"
             show-overflow-tooltip
@@ -127,7 +130,8 @@
             label="规格"
           ></el-table-column>
           <el-table-column sortable width="100" align="center" property="rdQuantity" label="数量"></el-table-column>
-          <el-table-column sortable
+          <el-table-column
+            sortable
             width="100"
             align="center"
             show-overflow-tooltip
@@ -135,7 +139,8 @@
             v-if="tableStatus.gUnitv"
             label="单位"
           ></el-table-column>
-          <el-table-column sortable
+          <el-table-column
+            sortable
             width="100"
             align="center"
             show-overflow-tooltip
@@ -143,7 +148,8 @@
             v-if="tableStatus.gColorv"
             label="颜色"
           ></el-table-column>
-          <el-table-column sortable
+          <el-table-column
+            sortable
             width="100"
             align="center"
             show-overflow-tooltip
@@ -152,7 +158,8 @@
             label="新旧程度"
           ></el-table-column>
 
-          <el-table-column sortable
+          <el-table-column
+            sortable
             width="100"
             align="center"
             show-overflow-tooltip
@@ -161,7 +168,8 @@
             label="品牌"
           ></el-table-column>
 
-          <el-table-column sortable
+          <el-table-column
+            sortable
             width="120"
             align="center"
             show-overflow-tooltip
@@ -174,7 +182,8 @@
               <span>{{ scope.row.gCtime.split('T')[0] }}</span>
             </template>
           </el-table-column>
-          <el-table-column sortable
+          <el-table-column
+            sortable
             min-min-width="150"
             align="center"
             property="gRemark"
@@ -644,7 +653,7 @@ export default {
       formData: {},
       TotalPrice1: 0,
       TotalPrice2: 0,
-      loading:'',
+      loading: "",
       // 日期范围只能是今天以后
       pickerOptions: {
         disabledDate(time) {
@@ -734,7 +743,7 @@ export default {
             });
 
             this.form = items;
-            this.getReceiver({ cuid: items.rCuid,size:99 });
+            this.getReceiver({ cuid: items.rCuid, size: 99 });
             if (this.form.rFile) {
               this.form.rFile = JSON.parse(this.form.rFile);
               this.form.rFile.map(item => {
@@ -822,7 +831,7 @@ export default {
       let values = [];
       columns.forEach((column, index) => {
         if (index === 0) {
-          sums[index] ="合计";
+          sums[index] = "合计";
           return;
         }
         const values = data.map(item => Number(item[column.property]));
@@ -830,17 +839,17 @@ export default {
           !values.every(value => isNaN(value)) &&
           column.property === "rdQuantity"
         ) {
-          sums[index] =values.reduce((prev, curr)=> {
+          sums[index] = values.reduce((prev, curr) => {
             const value = Number(curr);
             if (!isNaN(value)) {
-              return parseFloat((prev + curr).toPrecision(12))
+              return parseFloat((prev + curr).toPrecision(12));
             } else {
               return prev;
             }
           }, 0);
 
           if (column.property === "rdQuantity") {
-            this.form.TotalGood = parseFloat((sums[index]).toPrecision(12));
+            this.form.TotalGood = parseFloat(sums[index].toPrecision(12));
           } else {
             sums[index] = this.$PublicJS.money(sums[index], 2);
             sums[index] += " 元";
@@ -857,7 +866,7 @@ export default {
       let values = [];
       columns.forEach((column, index) => {
         if (index === 0) {
-          sums[index] ="合计";
+          sums[index] = "合计";
           return;
         }
         const values = data.map(item => Number(item[column.property]));
@@ -866,16 +875,16 @@ export default {
             column.property == "money") ||
           column.property == "rdQuantity"
         ) {
-          sums[index] =values.reduce((prev, curr)=> {
+          sums[index] = values.reduce((prev, curr) => {
             const value = Number(curr);
             if (!isNaN(value)) {
-              return parseFloat((prev + curr).toPrecision(12))
+              return parseFloat((prev + curr).toPrecision(12));
             } else {
               return prev;
             }
           }, 0);
           if (column.property === "money") {
-            this.TotalPrice2 = parseFloat((sums[index]).toPrecision(12));
+            this.TotalPrice2 = parseFloat(sums[index].toPrecision(12));
           }
           if (column.property !== "rdQuantity") {
             sums[index] = this.$PublicJS.money(sums[index], 2);
@@ -961,8 +970,14 @@ export default {
           this.form.rFile = JSON.stringify(this.form.rFile);
           if (!this.form.rFile.length) delete this.form.rFile;
           let tableData = [];
+          let goodsName = "";
+          let flag = 0;
           this.tableData.forEach(item => {
             if (item.gName) {
+              if (item.rdQuantity > item.iQuantity) {
+                goodsName += item.gName + ",";
+                flag++;
+              }
               item.rdGid = item.gId;
               item.rdSellingprice = item.iSellingprice;
               item.rdUnitprice = item.iUnitprice;
@@ -970,6 +985,8 @@ export default {
               tableData.push(item);
             }
           });
+          if (flag)
+            return this.$message.error(`${goodsName.slice(0, -1)}库存不足`);
           let params = {
             approve: false,
             approvers: [],
@@ -1017,7 +1034,7 @@ export default {
         }
       }
     },
-   // 物流
+    // 物流
     getLogisticsData(val) {
       if (val) {
         this.form.rLogistics = val.cuName;

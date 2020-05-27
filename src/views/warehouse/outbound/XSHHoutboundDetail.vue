@@ -14,7 +14,7 @@
         <el-button-group v-if="!$router.history.current.query.from">
           <el-button size="small" icon="el-icon-refresh" @click="reload">刷新</el-button>
           <!-- <el-button size="small" icon="el-icon-download" v-has="383">导出</el-button>
-          <el-button size="small" icon="el-icon-printer">打印</el-button> -->
+          <el-button size="small" icon="el-icon-printer">打印</el-button>-->
         </el-button-group>
       </el-col>
     </el-row>
@@ -95,7 +95,7 @@
       sum-text="合计:"
       header-cell-class-name="thbgc"
     >
-      <el-table-column type="index" width="55" align="center" property="index" >
+      <el-table-column type="index" width="55" align="center" property="index">
         <template slot="header">
           <i class="fa fa-cog setting" @click="showtable=true"></i>
         </template>
@@ -120,14 +120,16 @@
           </el-popover>
         </template>
       </el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
         align="center"
         property="gName"
         width="150"
         v-if="tableStatus.gName"
         label="商品名称"
       ></el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
         width="120"
         align="center"
         show-overflow-tooltip
@@ -135,9 +137,24 @@
         v-if="tableStatus.gBrandv"
         label="品牌"
       ></el-table-column>
-      <el-table-column sortable width="120" align="center" show-overflow-tooltip property="gSpec" label="规格"></el-table-column>
-      <el-table-column sortable width="100" align="center" property="gPzysv" show-overflow-tooltip label="配置"></el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
+        width="120"
+        align="center"
+        show-overflow-tooltip
+        property="gSpec"
+        label="规格"
+      ></el-table-column>
+      <el-table-column
+        sortable
+        width="100"
+        align="center"
+        property="gPzysv"
+        show-overflow-tooltip
+        label="配置"
+      ></el-table-column>
+      <el-table-column
+        sortable
         width="80"
         align="center"
         property="gColorv"
@@ -145,14 +162,16 @@
         label="颜色"
       ></el-table-column>
 
-      <el-table-column sortable
+      <el-table-column
+        sortable
         width="100"
         align="center"
         property="rdQuantity"
         label="数量"
         v-if="tableStatus.rdQuantity"
       ></el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
         width="80"
         align="center"
         show-overflow-tooltip
@@ -160,18 +179,19 @@
         v-if="tableStatus.gUnitv"
         label="单位"
       ></el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
         width="150"
         align="center"
         property="iSellingprice"
         label="销售价"
         v-if="tableStatus.iSellingprice"
-      >
-      </el-table-column>
+      ></el-table-column>
       <el-table-column sortable width="150" align="center" property="sumPrice" label="总金额">
         <template v-if="sumTotalPrice">{{ $PublicJS.money(sumTotalPrice, 2) }}</template>
       </el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
         width="100"
         align="center"
         show-overflow-tooltip
@@ -179,7 +199,8 @@
         v-if="tableStatus.gNewoldv"
         label="新旧程度"
       ></el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
         width="120"
         align="center"
         show-overflow-tooltip
@@ -187,7 +208,8 @@
         v-if="tableStatus.gCtime"
         label="最近销售日期"
       ></el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
         min-min-width="150"
         align="center"
         property="gRemark"
@@ -265,14 +287,12 @@
         </el-input>
       </el-col>
     </el-row>
-    <div class="content" v-has='361'>
+    <div class="content" v-has="361">
       <div class="footer">
         <el-row>
           <el-col :xs="24" :sm="4">
             <div class="left">
-              <div>
-                
-              </div>
+              <div></div>
             </div>
           </el-col>
           <el-col :xs="24" :sm="14" align="right">
@@ -286,7 +306,7 @@
           </el-col>
           <el-col :xs="24" :sm="6" align="right">
             <div class="toolright">
-              <div class="jizhang"  @click="opendialog" v-if="!hasdis">
+              <div class="jizhang" @click="opendialog" v-if="!hasdis">
                 <p style="padding:0 30px">出库</p>
               </div>
             </div>
@@ -295,10 +315,22 @@
       </div>
     </div>
 
-    <el-dialog title="设置表格" :close-on-click-modal="false"  v-dialogDrag :visible.sync="showtable" width="30%">
+    <el-dialog
+      title="设置表格"
+      :close-on-click-modal="false"
+      v-dialogDrag
+      :visible.sync="showtable"
+      width="30%"
+    >
       <settTable @settTable="settTable"></settTable>
     </el-dialog>
-    <el-dialog title="物流公司选择" :close-on-click-modal="false"  v-dialogDrag :visible.sync="showSelectLogistics" width="60%">
+    <el-dialog
+      title="物流公司选择"
+      :close-on-click-modal="false"
+      v-dialogDrag
+      :visible.sync="showSelectLogistics"
+      width="60%"
+    >
       <selectLogistics @emitLogisticsData="getLogisticsData"></selectLogistics>
     </el-dialog>
   </div>
@@ -321,17 +353,17 @@ export default {
       dingding1: {},
       tableData: [],
       contact: [],
-      img:'',
+      img: "",
       rowindex: "",
       icon: "",
       disabled: true,
-      hasdis:false,
-      
+      hasdis: false,
+
       showtable: false,
       showSelectLogistics: false,
       orderBH: "",
       orderID: "",
-      
+
       userName: this.$storage.userName,
       tableStatus: JSON.parse(sessionStorage.getItem("tableStatus")),
       // 单据信息
@@ -358,7 +390,7 @@ export default {
         rPreparegoods: 0,
         rDisassembly: 0
       },
-      loading:'',
+      loading: "",
       // 日期范围只能是今天以后
       pickerOptions: {
         disabledDate(time) {
@@ -389,7 +421,9 @@ export default {
     sumTotalPrice: function() {
       this.tableData.map(item => {
         if (item.rdQuantity) {
-          return (  item.sumPrice = (item.rdQuantity * item.iSellingprice).toFixed(2));
+          return (item.sumPrice = (
+            item.rdQuantity * item.iSellingprice
+          ).toFixed(2));
         }
       });
     }
@@ -409,7 +443,7 @@ export default {
           if (items.rStatus != 7) {
             this.hasdis = true;
           }
-          this.getReceiver({ cuid: items.rCuid,size:99 });
+          this.getReceiver({ cuid: items.rCuid, size: 99 });
           let params = {
             rid: items.rId,
             whid: items.rWhid
@@ -421,10 +455,10 @@ export default {
               item.iSellingprice = item.rdSellingprice;
               item.gRemark = item.rdRemark;
               item.defNum = item.rdQuantity;
-            if (item.gImage) {
-                if(item.gImage){
-                item.gImage = item.gImage.split(",");
-              }
+              if (item.gImage) {
+                if (item.gImage) {
+                  item.gImage = item.gImage.split(",");
+                }
               }
               this.tableData.push(item);
             });
@@ -461,28 +495,28 @@ export default {
       let values = [];
       columns.forEach((column, index) => {
         if (index === 0) {
-          sums[index] ="合计";
+          sums[index] = "合计";
           return;
         }
         const values = data.map(item => Number(item[column.property]));
         if (
           (!values.every(value => isNaN(value)) &&
             column.property === "sumPrice") ||
-          column.property === "rdQuantity" 
+          column.property === "rdQuantity"
         ) {
-          sums[index] =values.reduce((prev, curr)=> {
+          sums[index] = values.reduce((prev, curr) => {
             const value = Number(curr);
             if (!isNaN(value)) {
-              return parseFloat((prev + curr).toPrecision(12))
+              return parseFloat((prev + curr).toPrecision(12));
             } else {
               return prev;
             }
           }, 0);
           if (column.property === "sumPrice") {
-            this.form.rTotalprice = parseFloat((sums[index]).toPrecision(12));
+            this.form.rTotalprice = parseFloat(sums[index].toPrecision(12));
           }
           if (column.property === "rdQuantity") {
-            this.form.TotalGood = parseFloat((sums[index]).toPrecision(12));
+            this.form.TotalGood = parseFloat(sums[index].toPrecision(12));
           } else {
             sums[index] = this.$PublicJS.money(sums[index], 2);
             sums[index] += " 元";
@@ -493,12 +527,12 @@ export default {
       });
       return sums;
     },
-    setimg(u){
-      this.img=u
+    setimg(u) {
+      this.img = u;
     },
     // 提交
     opendialog(val) {
-     if (!this.form.rPreparegoods) {
+      if (!this.form.rPreparegoods) {
         this.$message({ message: "请选择备货部门", type: "warning" });
         return false;
       }
@@ -511,7 +545,11 @@ export default {
         return false;
       }
 
-      if (this.form.rPreparegoods && this.form.rDisassembly && this.form.rDeliver) {
+      if (
+        this.form.rPreparegoods &&
+        this.form.rDisassembly &&
+        this.form.rDeliver
+      ) {
         this.$confirm("此操作将直接出库, 是否继续?", "提示", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
@@ -537,8 +575,14 @@ export default {
         background: "rgba(0, 0, 0, 0.7)"
       });
       let tableData = [];
+      let goodsName = "";
+      let flag = 0;
       this.tableData.forEach(item => {
         if (item.gName) {
+          if (item.rdQuantity > item.iQuantity) {
+            goodsName += item.gName + ",";
+            flag++;
+          }
           item.rdGid = item.gId;
           item.rdSellingprice = item.iSellingprice;
           item.rdUnitprice = item.iUnitprice;
@@ -546,9 +590,9 @@ export default {
           tableData.push(item);
         }
       });
+      if (flag) return this.$message.error(`${goodsName.slice(0, -1)}库存不足`);
       delete this.form.rFile;
-      
-      this.form.rDate =this.$PublicJS.nowDate()
+      this.form.rDate = this.$PublicJS.nowDate();
       this.$api.Exchange.outbound(this.form).then(res => {
         loading.close();
         if (res.code == 200) {
@@ -568,7 +612,7 @@ export default {
     showDialog(val) {
       this[val] = true;
     },
-   // 物流
+    // 物流
     getLogisticsData(val) {
       if (val) {
         this.form.rLogistics = val.cuName;

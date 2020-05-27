@@ -87,14 +87,16 @@
           </el-popover>
         </template>
       </el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
         align="center"
         property="gName"
         width="150"
         v-if="tableStatus.gName"
         label="商品名称"
       ></el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
         width="120"
         align="center"
         show-overflow-tooltip
@@ -102,15 +104,24 @@
         v-if="tableStatus.gBrandv"
         label="品牌"
       ></el-table-column>
-      <el-table-column sortable width="120" align="center" show-overflow-tooltip property="gSpec" label="规格"></el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
+        width="120"
+        align="center"
+        show-overflow-tooltip
+        property="gSpec"
+        label="规格"
+      ></el-table-column>
+      <el-table-column
+        sortable
         width="100"
         align="center"
         property="gPzysv"
         show-overflow-tooltip
         label="配置"
       ></el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
         width="80"
         align="center"
         property="gColorv"
@@ -118,14 +129,16 @@
         label="颜色"
       ></el-table-column>
 
-      <el-table-column sortable
+      <el-table-column
+        sortable
         width="100"
         align="center"
         property="rdQuantity"
         label="数量"
         v-if="tableStatus.rdQuantity"
       ></el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
         width="80"
         align="center"
         show-overflow-tooltip
@@ -137,7 +150,8 @@
       <el-table-column sortable width="150" align="center" property="sumPrice" label="总金额">
         <template v-if="sumTotalPrice">{{ $PublicJS.money(sumTotalPrice, 2) }}</template>
       </el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
         width="100"
         align="center"
         show-overflow-tooltip
@@ -145,7 +159,8 @@
         v-if="tableStatus.gNewoldv"
         label="新旧程度"
       ></el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
         width="120"
         align="center"
         show-overflow-tooltip
@@ -153,7 +168,8 @@
         v-if="tableStatus.gCtime"
         label="最近销售日期"
       ></el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
         min-min-width="150"
         align="center"
         property="gRemark"
@@ -247,8 +263,8 @@ export default {
         rRemark: "",
         TotalGood: 0
       },
-      
-      loading:'',
+
+      loading: ""
     };
   },
   created() {
@@ -329,7 +345,7 @@ export default {
       let values = [];
       columns.forEach((column, index) => {
         if (index === 0) {
-          sums[index] ="合计";
+          sums[index] = "合计";
           return;
         }
         const values = data.map(item => Number(item[column.property]));
@@ -338,17 +354,17 @@ export default {
             column.property === "rdQuantity") ||
           column.property === "sumPrice"
         ) {
-          sums[index] =values.reduce((prev, curr)=> {
+          sums[index] = values.reduce((prev, curr) => {
             const value = Number(curr);
             if (!isNaN(value)) {
-              return parseFloat((prev + curr).toPrecision(12))
+              return parseFloat((prev + curr).toPrecision(12));
             } else {
               return prev;
             }
           }, 0);
 
           if (column.property === "rdQuantity") {
-            this.form.TotalGood = parseFloat((sums[index]).toPrecision(12));
+            this.form.TotalGood = parseFloat(sums[index].toPrecision(12));
           } else {
             sums[index] += "元";
           }
@@ -371,6 +387,18 @@ export default {
       })
         .then(() => {
           // 出库
+          let goodsName = "";
+          let flag = 0;
+          this.tableData.forEach(item => {
+            if (item.gName) {
+              if (item.rdQuantity > item.iQuantity) {
+                goodsName += item.gName + ",";
+                flag++;
+              }
+            }
+          });
+          if (flag)
+            return this.$message.error(`${goodsName.slice(0, -1)}库存不足`);
           delete this.form.rFile;
           this.form.rDate = this.form.rDate.replace(new RegExp("-", "g"), "");
           this.$api.Receipt.ckAll(this.form).then(res => {

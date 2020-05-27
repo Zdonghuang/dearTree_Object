@@ -390,6 +390,17 @@ export default {
         spinner: "el-icon-loading",
         background: "rgba(0, 0, 0, 0.7)"
       });
+      let goodsName = "";
+      let flag = 0;
+      this.tableData.forEach(item => {
+        if (item.gName) {
+          if (item.rdQuantity > item.iQuantity) {
+            goodsName += item.gName + ",";
+            flag++;
+          }
+        }
+      });
+      if (flag) return this.$message.error(`${goodsName.slice(0, -1)}库存不足`)
       delete this.form.rFile;
       this.form.rDate =this.$PublicJS.nowDate()
       this.$api.Receipt.ckAll(this.form).then(res => {

@@ -501,7 +501,7 @@ export default {
             let filearr = [];
             if (this.fileList.length) {
               this.fileList.forEach(item => {
-                let objurl = item.url.split("api")[1];
+                let objurl = `/file${item.url.split("file")[1]}`;
                 filearr.push(objurl);
               });
             }
@@ -578,7 +578,7 @@ export default {
     },
     getdata() {
       this.tableData = [];
-      const params = { pid: this.pid,size:999,auth:0,includehongchong:1 };
+      const params = { pid: this.pid, size: 999, auth: 0, includehongchong: 1 };
       if (this.$route.query.from) {
         params.from = this.$route.query.from;
         params.auth = 3;
@@ -670,7 +670,7 @@ export default {
             let filearr = [];
             if (this.fileList.length) {
               this.fileList.forEach(item => {
-                let objurl = item.url.split("api")[1];
+                let objurl = `/file${item.url.split("file")[1]}`;
                 filearr.push(objurl);
               });
             }
