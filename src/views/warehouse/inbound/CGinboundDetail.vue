@@ -289,7 +289,7 @@ export default {
         rCuidv: ""
       },
       TotalPrice: 0,
-      loading:'',
+      loading: "",
       number: 0,
       nowdata: "",
       p: 0,
@@ -451,6 +451,7 @@ export default {
         item.rdConstructcostweight = 9;
         params.receiptDtsList.push(item);
       });
+      return console.log(params);
       this.$api.Receipt.allRK(params).then(res => {
         loading.close();
         if (res.code == 200) {
@@ -517,17 +518,17 @@ export default {
           sums[index] = values.reduce((prev, curr) => {
             const value = Number(curr);
             if (!isNaN(value)) {
-              return parseFloat((prev + curr).toPrecision(12))
+              return parseFloat((prev + curr).toPrecision(12));
             } else {
               return prev;
             }
           }, 0);
           if (column.property === "money") {
-            this.TotalPrice = sums[index]
+            this.TotalPrice = sums[index];
             sums[index] += " 元";
           }
           if (column.property === "rdQuantity") {
-            this.number = sums[index]
+            this.number = sums[index];
           }
         } else {
           sums[index] = " ";

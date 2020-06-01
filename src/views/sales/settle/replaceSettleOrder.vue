@@ -736,7 +736,7 @@ export default {
     },
     // 等于0的时候直接结算
     btnJS() {
-      this.$confirm("次操作将结算单据，是否继续", "提示", {
+      this.$confirm("此操作将结算单据，是否继续", "提示", {
         confirmButtonText: "确定结算",
         cancelButtonText: "取消",
         type: "warning"

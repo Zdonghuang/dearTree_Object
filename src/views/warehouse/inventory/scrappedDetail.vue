@@ -639,6 +639,7 @@ export default {
           receiptInfoVO: this.form //单据信息
         };
         if (val1 && val1.length) params.cc = val1;
+        params.receiptInfoVO.rStatus = 1;
         if (val == "CG") {
           params.receiptInfoVO.rStatus = 30;
         }

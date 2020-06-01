@@ -447,6 +447,7 @@ export default {
       if (!this.form.rStatus) delete params.rStatus;
       if (this.form.rStatus) params.rStatus = this.form.rStatus;
       params["rName"] = this.form.rName;
+      if (this.form.rItemnum) params["rItemnum"] = this.form.rItemnum;
       params["currentPage"] = this.currentPage;
       params["size"] = this.pageSize;
       params["rStime"] = this.form.rStime.replace(new RegExp("-", "g"), "");
