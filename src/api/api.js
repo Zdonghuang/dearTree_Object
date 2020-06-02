@@ -746,6 +746,10 @@ const apis = {
     // 修改仓库
     update(params) {
       return request.post('/warehouse/update', params)
+    },
+    // 实时获取出库数量  是否小于可用数量
+    getGoodsStockAvailable(params) {
+      return request.post('/manageStock/getGoodsStockAvailable', params)
     }
   },
   // 退货

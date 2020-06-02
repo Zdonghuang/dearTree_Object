@@ -14,7 +14,7 @@
         <el-button-group v-if="!$router.history.current.query.from">
           <el-button size="small" icon="el-icon-refresh" @click="Refresh">刷新</el-button>
           <!-- <el-button size="small" icon="el-icon-download" v-has="383">导出</el-button>
-          <el-button size="small" icon="el-icon-printer">打印</el-button> -->
+          <el-button size="small" icon="el-icon-printer">打印</el-button>-->
         </el-button-group>
       </el-col>
     </el-row>
@@ -37,7 +37,7 @@
             @click="showDialog('showSelectWarehouse')"
           ></i>
         </el-input>
-      </el-col> -->
+      </el-col>-->
       <el-col :xs="24" :sm="4">
         <el-select
           v-model="form.rWhidv"
@@ -110,7 +110,7 @@
             @click="showDialog('showSelectUser')"
           ></i>
         </el-input>
-      </el-col> -->
+      </el-col>-->
 
       <el-col :xs="24" :sm="4">
         <el-input placeholder="单据日期" v-model="form.rDate" size="small" disabled>
@@ -134,16 +134,16 @@
         sum-text="合计:"
         header-cell-class-name="thbgc"
       >
-        <el-table-column type="index" width="55" align="center" property="index" >
+        <el-table-column type="index" width="55" align="center" property="index">
           <template slot="header">
             <i class="fa fa-cog setting" @click="showtable=true"></i>
           </template>
         </el-table-column>
-        <el-table-column sortable
+        <el-table-column
+          sortable
           property="tools"
           label="操作"
           align="center"
-          
           width="80"
           v-if="!disabled"
         >
@@ -172,7 +172,8 @@
             </el-popover>
           </template>
         </el-table-column>
-        <el-table-column sortable
+        <el-table-column
+          sortable
           align="center"
           property="gName"
           width="150"
@@ -192,7 +193,8 @@
             <i class="fa fa-search searchname" @click="searchbox($event,scope.$index,'out')"></i>
           </template>
         </el-table-column>
-        <el-table-column sortable
+        <el-table-column
+          sortable
           width="120"
           align="center"
           show-overflow-tooltip
@@ -200,22 +202,32 @@
           v-if="tableStatus.gBrandv"
           label="品牌"
         ></el-table-column>
-        <el-table-column sortable
+        <el-table-column
+          sortable
           width="120"
           align="center"
           show-overflow-tooltip
           property="gSpec"
           label="规格"
         ></el-table-column>
-        <el-table-column sortable width="100" align="center" property="gPzysv" show-overflow-tooltip label="配置"></el-table-column>
-        <el-table-column sortable
+        <el-table-column
+          sortable
+          width="100"
+          align="center"
+          property="gPzysv"
+          show-overflow-tooltip
+          label="配置"
+        ></el-table-column>
+        <el-table-column
+          sortable
           width="80"
           align="center"
           property="gColorv"
           v-if="tableStatus.gColorv"
           label="颜色"
         ></el-table-column>
-        <el-table-column sortable
+        <el-table-column
+          sortable
           width="100"
           align="center"
           property="rdQuantity"
@@ -232,15 +244,23 @@
             />
           </template>
         </el-table-column>
-        <el-table-column sortable
+        <el-table-column
+          sortable
           width="80"
           align="center"
           property="gUnitv"
           v-if="tableStatus.gUnitv"
           label="单位"
         ></el-table-column>
-        <el-table-column sortable width="100" align="center" property="iQuantitycanout" label="可用库存"></el-table-column>
-        <el-table-column sortable
+        <el-table-column
+          sortable
+          width="100"
+          align="center"
+          property="iQuantitycanout"
+          label="可用库存"
+        ></el-table-column>
+        <el-table-column
+          sortable
           width="150"
           align="center"
           property="iUnitprice"
@@ -250,14 +270,16 @@
         <el-table-column sortable width="150" align="center" property="sumPrice" label="总金额">
           <template v-if="sumTotalPrice">{{ $PublicJS.money(sumTotalPrice, 2) }}</template>
         </el-table-column>
-        <el-table-column sortable
+        <el-table-column
+          sortable
           width="100"
           align="center"
           property="gNewoldv"
           v-if="tableStatus.gNewoldv"
           label="新旧程度"
         ></el-table-column>
-        <el-table-column sortable
+        <el-table-column
+          sortable
           width="120"
           align="center"
           property="gCtime"
@@ -269,7 +291,8 @@
             <span>{{ scope.row.gCtime.split('T')[0] }}</span>
           </template>
         </el-table-column>
-        <el-table-column sortable
+        <el-table-column
+          sortable
           width="150"
           align="center"
           property="gRemark"
@@ -297,7 +320,7 @@
         sum-text="合计:"
         header-cell-class-name="thbgc"
       >
-        <el-table-column type="index" width="55" align="center" property="index" >
+        <el-table-column type="index" width="55" align="center" property="index">
           <template slot="header">
             <i class="fa fa-cog setting" @click="showtable=true"></i>
           </template>
@@ -335,7 +358,8 @@
             </el-popover>
           </template>
         </el-table-column>
-        <el-table-column sortable
+        <el-table-column
+          sortable
           align="center"
           property="gName"
           width="150"
@@ -355,7 +379,8 @@
             <i class="fa fa-search searchname" @click="searchbox($event,scope.$index,'in')"></i>
           </template>
         </el-table-column>
-        <el-table-column sortable
+        <el-table-column
+          sortable
           width="120"
           align="center"
           show-overflow-tooltip
@@ -363,22 +388,32 @@
           v-if="tableStatus.gBrandv"
           label="品牌"
         ></el-table-column>
-        <el-table-column sortable
+        <el-table-column
+          sortable
           width="120"
           align="center"
           show-overflow-tooltip
           property="gSpec"
           label="规格"
         ></el-table-column>
-        <el-table-column sortable width="100" align="center" property="gPzysv" show-overflow-tooltip label="配置"></el-table-column>
-        <el-table-column sortable
+        <el-table-column
+          sortable
+          width="100"
+          align="center"
+          property="gPzysv"
+          show-overflow-tooltip
+          label="配置"
+        ></el-table-column>
+        <el-table-column
+          sortable
           width="80"
           align="center"
           property="gColorv"
           v-if="tableStatus.gColorv"
           label="颜色"
         ></el-table-column>
-        <el-table-column sortable
+        <el-table-column
+          sortable
           width="100"
           align="center"
           property="rdQuantity"
@@ -394,15 +429,23 @@
             />
           </template>
         </el-table-column>
-        <el-table-column sortable
+        <el-table-column
+          sortable
           width="80"
           align="center"
           property="gUnitv"
           v-if="tableStatus.gUnitv"
           label="单位"
         ></el-table-column>
-        <el-table-column sortable width="100" align="center" property="iQuantitycanout" label="可用库存"></el-table-column>
-        <el-table-column sortable
+        <el-table-column
+          sortable
+          width="100"
+          align="center"
+          property="iQuantitycanout"
+          label="可用库存"
+        ></el-table-column>
+        <el-table-column
+          sortable
           width="150"
           align="center"
           property="iUnitprice"
@@ -417,14 +460,16 @@
         <el-table-column sortable width="150" align="center" property="sumPrice" label="总金额">
           <template v-if="INsumTotalPrice">{{ $PublicJS.money(INsumTotalPrice, 2) }}</template>
         </el-table-column>
-        <el-table-column sortable
+        <el-table-column
+          sortable
           width="100"
           align="center"
           property="gNewoldv"
           v-if="tableStatus.gNewoldv"
           label="新旧程度"
         ></el-table-column>
-        <el-table-column sortable
+        <el-table-column
+          sortable
           width="120"
           align="center"
           property="gCtime"
@@ -436,7 +481,8 @@
             <span>{{ scope.row.gCtime.split('T')[0] }}</span>
           </template>
         </el-table-column>
-        <el-table-column sortable
+        <el-table-column
+          sortable
           width="150"
           align="center"
           property="gRemark"
@@ -456,14 +502,12 @@
         </el-input>
       </el-col>
     </el-row>
-    <div class="content"  v-has='368'>
+    <div class="content" v-has="368">
       <div class="footer">
         <el-row>
           <el-col :xs="24" :sm="4">
             <div class="left">
-              <div>
-                
-              </div>
+              <div></div>
             </div>
           </el-col>
           <el-col :xs="24" :sm="14" align="right">
@@ -490,33 +534,63 @@
         <span>单据完结</span>
       </div>
     </div>
-    <el-dialog title="出库商品选择" :close-on-click-modal="false"  v-dialogDrag :visible.sync="showSelectGoodsOUT" width="60%">
+    <el-dialog
+      title="出库商品选择"
+      :close-on-click-modal="false"
+      v-dialogDrag
+      :visible.sync="showSelectGoodsOUT"
+      width="60%"
+    >
       <selectGoods
         @emitGoodsData="getGoodsDataOUT"
         :rWhidv="form.rWhidv"
         :rWhid="form.rWhid"
         :idList="idList"
-        :have='0'
-        :havecanout='1'
+        :have="0"
+        :havecanout="1"
       ></selectGoods>
     </el-dialog>
-    <el-dialog title="入库商品选择" :close-on-click-modal="false"  v-dialogDrag :visible.sync="showSelectGoodsIN" width="60%">
+    <el-dialog
+      title="入库商品选择"
+      :close-on-click-modal="false"
+      v-dialogDrag
+      :visible.sync="showSelectGoodsIN"
+      width="60%"
+    >
       <selectGoods
         @emitGoodsData="getGoodsDataIN"
         :rWhidv="form.rWhidv"
         :rWhid="form.rWhid"
         :idList="idList"
-        :have='1'
-        :havecanout='0'
+        :have="1"
+        :havecanout="0"
       ></selectGoods>
     </el-dialog>
-    <el-dialog title="仓库选择" :close-on-click-modal="false"  v-dialogDrag :visible.sync="showSelectWarehouse" width="60%">
+    <el-dialog
+      title="仓库选择"
+      :close-on-click-modal="false"
+      v-dialogDrag
+      :visible.sync="showSelectWarehouse"
+      width="60%"
+    >
       <selectWarehouse @emitWarehouseData="getWarehouseData"></selectWarehouse>
     </el-dialog>
-    <el-dialog title="经手人选择" :close-on-click-modal="false"  v-dialogDrag :visible.sync="showSelectUser" width="60%">
+    <el-dialog
+      title="经手人选择"
+      :close-on-click-modal="false"
+      v-dialogDrag
+      :visible.sync="showSelectUser"
+      width="60%"
+    >
       <selectUser @emitUserData="getUserData"></selectUser>
     </el-dialog>
-    <el-dialog title="选择审核人" :close-on-click-modal="false"  v-dialogDrag :visible.sync="showexamine" width="60%">
+    <el-dialog
+      title="选择审核人"
+      :close-on-click-modal="false"
+      v-dialogDrag
+      :visible.sync="showexamine"
+      width="60%"
+    >
       <examine
         :rtype="49"
         @close="dialogSubmit"
@@ -524,11 +598,24 @@
         :ID="dingding"
         :ID1="dingding1"
       ></examine>
-      <el-dialog title="选择审核人" :close-on-click-modal="false"  v-dialogDrag :visible.sync="showSelectUser" width="60%" append-to-body>
+      <el-dialog
+        title="选择审核人"
+        :close-on-click-modal="false"
+        v-dialogDrag
+        :visible.sync="showSelectUser"
+        width="60%"
+        append-to-body
+      >
         <selectUser @emitUserData="getUserData"></selectUser>
       </el-dialog>
     </el-dialog>
-    <el-dialog title="设置表格" :close-on-click-modal="false"  v-dialogDrag :visible.sync="showtable" width="30%">
+    <el-dialog
+      title="设置表格"
+      :close-on-click-modal="false"
+      v-dialogDrag
+      :visible.sync="showtable"
+      width="30%"
+    >
       <settTable @settTable="settTable"></settTable>
     </el-dialog>
   </div>
@@ -581,12 +668,8 @@ export default {
         rTotalprice: 0,
         rHandmanv: this.$storage.userName,
         rHandman: this.$storage.userId,
-        rWhidv: this.$storage.warehouse
-          ? this.$storage.warehouse.whName
-          : "",
-        rWhid: this.$storage.warehouse
-          ? this.$storage.warehouse.whId
-          : "",
+        rWhidv: this.$storage.warehouse ? this.$storage.warehouse.whName : "",
+        rWhid: this.$storage.warehouse ? this.$storage.warehouse.whId : "",
         rCtime: "",
         rDate: "",
         rRemark: "",
@@ -596,12 +679,12 @@ export default {
       OUTrTotalprice: 0,
       INrTotalprice: 0,
       Totalprice: 0,
-      loading:'',
+      loading: "",
       img: ""
     };
   },
   created() {
-     // 仓库
+    // 仓库
     this.$api.Warehouse.get({ auth: 1, size: 9999 }).then(res => {
       if (res.code == 200) {
         this.rWhidOptions = res.data.records.map(item => {
@@ -614,7 +697,7 @@ export default {
       }
     });
     // 经手人
-    this.$api.User.get({ size: 9999, auth: 1, status:1 }).then(res => {
+    this.$api.User.get({ size: 9999, auth: 1, status: 1 }).then(res => {
       if (res.code == 200) {
         this.rHandmanOptions = res.data.records.map(item => {
           return {
@@ -682,15 +765,15 @@ export default {
       });
     }
   },
-  watch:{
-    OUTrTotalprice:{
-      handler:function(news,old){
+  watch: {
+    OUTrTotalprice: {
+      handler: function(news, old) {
         this.INtableData.map(item => {
-          return item.iUnitprice = this.OUTrTotalprice/item.rdQuantity
-      });
-      this.INrTotalprice=this.OUTrTotalprice
+          return (item.iUnitprice = this.OUTrTotalprice / item.rdQuantity);
+        });
+        this.INrTotalprice = this.OUTrTotalprice;
       }
-    },
+    }
   },
   methods: {
     // 单据回显
@@ -784,8 +867,21 @@ export default {
         background: "rgba(0, 0, 0, 0.7)"
       });
       let tableData = [];
+      let num = 0;
+      let goodsName = "";
       this.tableData.forEach(item => {
         if (item.gName) {
+          if (!num) {
+            let obj = {
+              wareHouseId: this.form.rWhid,
+              goodsId: item.gId,
+              goodsCount: item.rdQuantity
+            };
+            this.$api.Warehouse.getGoodsStockAvailable(obj).then(res => {
+              if (res.data.resultStr.status == "N") num = 1;
+              goodsName = res.data.resultStr.name;
+            });
+          }
           item.rdGid = item.gId;
           item.rdSellingprice = item.iSellingprice;
           item.rdUnitprice = item.iUnitprice;
@@ -793,6 +889,7 @@ export default {
           tableData.push(item);
         }
       });
+      if (num) return this.$message.error(`${goodsName}可用库存不足`);
       let INtableData = [];
       this.INtableData.forEach(item => {
         if (item.gName) {
@@ -808,7 +905,7 @@ export default {
       this.form.rTotalprice = this.OUTrTotalprice;
       delete this.form.rId;
       delete this.form.rFile;
-      this.form.rDate =this.$PublicJS.nowDate()
+      this.form.rDate = this.$PublicJS.nowDate();
       delete this.form.rStatus;
       delete this.form.rstatusv;
 
@@ -838,10 +935,10 @@ export default {
         if (!val.rdQuantity) {
           this.$message("请输入数量");
           val.rdQuantity = 1;
-        } else if ( Number(val.rdQuantity) < 1) {
+        } else if (Number(val.rdQuantity) < 1) {
           val.rdQuantity = 1;
           this.$message("数量不得小于1");
-        } else if (Number(val.rdQuantity)  > Number(val.iQuantitycanout)) {
+        } else if (Number(val.rdQuantity) > Number(val.iQuantitycanout)) {
           val.rdQuantity = val.iQuantitycanout;
           this.$message("数量不得大于可用库存");
         }
@@ -858,25 +955,25 @@ export default {
       let values = [];
       columns.forEach((column, index) => {
         if (index === 0) {
-          sums[index] ="合计";
+          sums[index] = "合计";
           return;
         }
         const values = data.map(item => Number(item[column.property]));
         if (
           (!values.every(value => isNaN(value)) &&
             column.property === "sumPrice") ||
-          column.property === "rdQuantity" 
+          column.property === "rdQuantity"
         ) {
-          sums[index] =values.reduce((prev, curr)=> {
+          sums[index] = values.reduce((prev, curr) => {
             const value = Number(curr);
             if (!isNaN(value)) {
-              return parseFloat((prev + curr).toPrecision(12))
+              return parseFloat((prev + curr).toPrecision(12));
             } else {
               return prev;
             }
           }, 0);
           if (column.property === "sumPrice") {
-            this.OUTrTotalprice = parseFloat((sums[index]).toPrecision(12));
+            this.OUTrTotalprice = parseFloat(sums[index].toPrecision(12));
           }
           if (column.property === "rdQuantity") {
           } else {
@@ -895,25 +992,25 @@ export default {
       let values = [];
       columns.forEach((column, index) => {
         if (index === 0) {
-          sums[index] ="合计";
+          sums[index] = "合计";
           return;
         }
         const values = data.map(item => Number(item[column.property]));
         if (
           (!values.every(value => isNaN(value)) &&
             column.property === "sumPrice") ||
-          column.property === "rdQuantity" 
+          column.property === "rdQuantity"
         ) {
-          sums[index] =values.reduce((prev, curr)=> {
+          sums[index] = values.reduce((prev, curr) => {
             const value = Number(curr);
             if (!isNaN(value)) {
-              return parseFloat((prev + curr).toPrecision(12))
+              return parseFloat((prev + curr).toPrecision(12));
             } else {
               return prev;
             }
           }, 0);
           if (column.property === "sumPrice") {
-            this.INrTotalprice = parseFloat((sums[index]).toPrecision(12));
+            this.INrTotalprice = parseFloat(sums[index].toPrecision(12));
           }
           if (column.property === "rdQuantity") {
           } else {
@@ -989,8 +1086,8 @@ export default {
     // 删除当前选中这行
     deldate(index, val) {
       if (this.tableData.length > 1) {
-          this.tableData.splice(index, 1);
-        }
+        this.tableData.splice(index, 1);
+      }
     },
     // 图标显示隐藏
     hiddenicon(e) {

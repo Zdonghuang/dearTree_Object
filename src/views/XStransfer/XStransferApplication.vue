@@ -88,7 +88,8 @@
       height="300px"
       header-cell-class-name="thbgc"
     >
-      <el-table-column sortable
+      <el-table-column
+        sortable
         show-overflow-tooltip
         type="index"
         width="55"
@@ -96,7 +97,8 @@
         property="index"
         label="序号"
       ></el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
         show-overflow-tooltip
         property="tools"
         label="操作"
@@ -143,15 +145,24 @@
           <i class="fa fa-search searchname" @click="searchbox($event,scope.$index)"></i>
         </template>
       </el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
         width="120"
         align="center"
         show-overflow-tooltip
         property="gBrandv"
         label="品牌"
       ></el-table-column>
-      <el-table-column sortable width="120" align="center" show-overflow-tooltip property="gSpec" label="规格"></el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
+        width="120"
+        align="center"
+        show-overflow-tooltip
+        property="gSpec"
+        label="规格"
+      ></el-table-column>
+      <el-table-column
+        sortable
         width="100"
         align="center"
         property="gPzysv"
@@ -178,7 +189,7 @@
           slot-scope="scope"
           v-if="scope.row.rdQuantity"
         >{{ (scope.row.iUnitprice * scope.row.rdQuantity).toFixed(2)}}</template>
-      </el-table-column> -->
+      </el-table-column>-->
       <el-table-column sortable width="150" align="center" property="iSellingprice" label="调拨价">
         <template slot-scope="scope" v-if="scope.row.gName">
           <input
@@ -241,10 +252,7 @@
       :visible.sync="showSelectOUTWarehouse"
       width="60%"
     >
-      <selectWarehouse
-        @emitWarehouseData="getOUTWarehouseData"
-        :oid="$storage.companyId"
-      ></selectWarehouse>
+      <selectWarehouse @emitWarehouseData="getOUTWarehouseData" :oid="$storage.companyId"></selectWarehouse>
     </el-dialog>
     <el-dialog
       title="入库仓库选择"
@@ -355,7 +363,7 @@ export default {
         rOidv: this.$storage.companyName
       },
       TotalGood: 0,
-      loading:'',
+      loading: ""
     };
   },
   created() {
@@ -490,8 +498,21 @@ export default {
       });
 
       let tableData = [];
+      let num = 0;
+      let goodsName = "";
       this.tableData.map(item => {
         if (item.gName) {
+          if (!num) {
+            let obj = {
+              wareHouseId: this.form.rWhid,
+              goodsId: item.gId,
+              goodsCount: item.rdQuantity
+            };
+            this.$api.Warehouse.getGoodsStockAvailable(obj).then(res => {
+              if (res.data.resultStr.status == "N") num = 1;
+              goodsName = res.data.resultStr.name;
+            });
+          }
           item.rdGid = item.gId;
           item.gCtime = item.gCtime.split("T")[0].replace(/\-/g, "");
           item.rdSellingprice = item.iSellingprice;
@@ -499,6 +520,7 @@ export default {
           tableData.push(item);
         }
       });
+      if (num) return this.$message.error(`${goodsName}可用库存不足`);
       let params = {
         approve: true, //是否发起审批
         approvers: val, //钉钉审批人ID
@@ -542,7 +564,7 @@ export default {
       let values = [];
       columns.forEach((column, index) => {
         if (index === 0) {
-          sums[index] ="合计";
+          sums[index] = "合计";
           return;
         }
         const values = data.map(item => Number(item[column.property]));
@@ -551,19 +573,19 @@ export default {
             column.property === "sumPrice") ||
           column.property === "rdQuantity"
         ) {
-          sums[index] =values.reduce((prev, curr)=> {
+          sums[index] = values.reduce((prev, curr) => {
             const value = Number(curr);
             if (!isNaN(value)) {
-              return parseFloat((prev + curr).toPrecision(12))
+              return parseFloat((prev + curr).toPrecision(12));
             } else {
               return prev;
             }
           }, 0);
           if (column.property === "sumPrice") {
-            this.form.rTotalprice = parseFloat((sums[index]).toPrecision(12));
+            this.form.rTotalprice = parseFloat(sums[index].toPrecision(12));
           }
           if (column.property === "rdQuantity") {
-            this.TotalGood = parseFloat((sums[index]).toPrecision(12));
+            this.TotalGood = parseFloat(sums[index].toPrecision(12));
           } else {
             sums[index] = this.$PublicJS.money(sums[index], 2);
             sums[index] += " 元";
@@ -692,7 +714,7 @@ export default {
       this.dataType = val;
       this.showDD = true;
     },
-   // 物流
+    // 物流
     getLogisticsData(val) {
       if (val) {
         this.form.rLogistics = val.cuName;

@@ -938,7 +938,7 @@ export default {
         }
       });
       // 签单人
-      this.$api.User.get({ size: 9999, auth: 1, status:1 }).then(res => {
+      this.$api.User.get({ size: 9999, auth: 1, status: 1 }).then(res => {
         if (res.code == 200) {
           this.rHandmanOptions = res.data.records.map(item => {
             return {
@@ -1092,7 +1092,7 @@ export default {
               this.Envform = res.data;
             }
           });
-          this.getReceiver({ cuid: items.rCuid,size:99 });
+          this.getReceiver({ cuid: items.rCuid, size: 99 });
           this.form.time = [
             items.startDate.split("T")[0],
             items.endDate.split("T")[0]
@@ -1269,8 +1269,21 @@ export default {
           background: "rgba(0, 0, 0, 0.7)"
         });
         let tableData = [];
+        let num = 0;
+        let goodsName = "";
         this.tableData.forEach(item => {
           if (item.gName) {
+            if (!num) {
+              let obj = {
+                wareHouseId: this.form.rWhid,
+                goodsId: item.gId,
+                goodsCount: item.rdQuantity
+              };
+              this.$api.Warehouse.getGoodsStockAvailable(obj).then(res => {
+                if (res.data.resultStr.status == "N") num = 1;
+                goodsName = res.data.resultStr.name;
+              });
+            }
             item.rdGid = item.gId;
             item.rdSellingprice = item.gRentprice;
             item.rdUnitprice = item.iUnitprice;
@@ -1279,6 +1292,7 @@ export default {
             tableData.push(item);
           }
         });
+        if (num) return this.$message.error(`${goodsName}可用库存不足`);
         let tableData3 = [];
         this.tableData3.forEach(item => {
           if (item.rdQuantity) {
@@ -1306,9 +1320,13 @@ export default {
           receiptDtsList: tableData.concat(tableData3), //商品+服务
           receiptInfoVO: this.form //单据信息
         };
-        
+
         if (val1 && val1.length) params.cc = val1;
-        params.receiptInfoVO.rTotalprice = parseFloat( (this.form.months * this.TotalPrice1 + this.TotalPrice2).toPrecision(12));
+        params.receiptInfoVO.rTotalprice = parseFloat(
+          (this.form.months * this.TotalPrice1 + this.TotalPrice2).toPrecision(
+            12
+          )
+        );
 
         if (this.form.rIsconstruct) {
           this.Envform.rcRid = this.form.rId;
@@ -1402,17 +1420,17 @@ export default {
           sums[index] = values.reduce((prev, curr) => {
             const value = Number(curr);
             if (!isNaN(value)) {
-              return parseFloat((prev + curr).toPrecision(12))
+              return parseFloat((prev + curr).toPrecision(12));
             } else {
               return prev;
             }
           }, 0);
           if (column.property === "sumPrice") {
             // this.form.rTotalprice = parseFloat((sums[index]).toPrecision(12));
-            this.TotalPrice1 = sums[index]
+            this.TotalPrice1 = sums[index];
           }
           if (column.property === "rdQuantity") {
-            this.form.TotalGood = sums[index]
+            this.form.TotalGood = sums[index];
           } else {
             sums[index] = this.$PublicJS.money(sums[index], 2);
             sums[index] += " 元";
@@ -1441,13 +1459,13 @@ export default {
           sums[index] = values.reduce((prev, curr) => {
             const value = Number(curr);
             if (!isNaN(value)) {
-              return parseFloat((prev + curr).toPrecision(12))
+              return parseFloat((prev + curr).toPrecision(12));
             } else {
               return prev;
             }
           }, 0);
           if (column.property === "money") {
-            this.TotalPrice2 = sums[index]
+            this.TotalPrice2 = sums[index];
           }
           if (column.property !== "rdQuantity") {
             sums[index] = this.$PublicJS.money(sums[index], 2);
@@ -1528,7 +1546,7 @@ export default {
       this.form[m + "v"] = obj.label; //获取label
       this.form[m] = obj.value; //获取value
       if (m == "rCuid") {
-        this.$api.Contact.get({ cuid: this.form.rCuid,size:99 }).then(res => {
+        this.$api.Contact.get({ cuid: this.form.rCuid, size: 99 }).then(res => {
           if (res.code == 200) {
             this.rCidOptions = res.data.records.map(item => {
               return {

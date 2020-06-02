@@ -862,7 +862,7 @@ export default {
         if (keepAlive == "salesKeepAlive") {
           this.reload();
           sessionStorage.removeItem("salesKeepAlive");
-        } 
+        }
       }
     }
   },
@@ -1014,8 +1014,8 @@ export default {
     },
     // 单据回显
     getOrder() {
-       this.tableData=[]
-       this.tableData3=[]
+      this.tableData = [];
+      this.tableData3 = [];
       let rId = { rId: this.orderID };
       if (!this.orderID) {
         rId = { rItemnum: this.orderBH };
@@ -1162,7 +1162,10 @@ export default {
         }
       });
       if (!arr.length) {
-        this.$message({ message: "请选择商品,如果没有商品，请添加虚拟商品。", type: "warning" });
+        this.$message({
+          message: "请选择商品,如果没有商品，请添加虚拟商品。",
+          type: "warning"
+        });
         return false;
       }
       // let arr3 = [];
@@ -1221,8 +1224,21 @@ export default {
           background: "rgba(0, 0, 0, 0.7)"
         });
         let tableData = [];
+        let num = 0;
+        let goodsName = "";
         this.tableData.forEach(item => {
           if (item.gName) {
+            if (!num) {
+              let obj = {
+                wareHouseId: this.form.rWhid,
+                goodsId: item.gId,
+                goodsCount: item.rdQuantity
+              };
+              this.$api.Warehouse.getGoodsStockAvailable(obj).then(res => {
+                if (res.data.resultStr.status == "N") num = 1;
+                goodsName = res.data.resultStr.name;
+              });
+            }
             item.rdGid = item.gId;
             item.rdSellingprice = item.iSellingprice;
             item.rdUnitprice = item.iUnitprice;
@@ -1231,6 +1247,7 @@ export default {
             tableData.push(item);
           }
         });
+        if(num)return this.$message.error(`${goodsName}可用库存不足`);
         let tableData3 = [];
         this.tableData3.forEach(item => {
           if (item.rdQuantity) {
@@ -1269,7 +1286,7 @@ export default {
         params.receiptInfoVO.rTotalprice = parseFloat(
           (this.TotalPrice1 + this.TotalPrice2).toPrecision(12)
         );
-        
+
         this.$api.Sale[apis](params).then(res => {
           loading.close();
           if (res.code === 200) {
