@@ -451,7 +451,6 @@ export default {
         item.rdConstructcostweight = 9;
         params.receiptDtsList.push(item);
       });
-      return console.log(params);
       this.$api.Receipt.allRK(params).then(res => {
         loading.close();
         if (res.code == 200) {
