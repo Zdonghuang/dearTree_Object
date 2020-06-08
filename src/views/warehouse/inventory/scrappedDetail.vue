@@ -673,12 +673,6 @@ export default {
         } else if (Number(val.rdQuantity) > Number(val.iQuantity)) {
           val.rdQuantity = val.iQuantity;
           this.$message("数量不得大于可用库存");
-        } else if (
-          Number(val.iQuantity) - Number(val.rdQuantity) <=
-          Number(item.iQuantitywillout)
-        ) {
-          return this.$message.error("报废剩余数量小于待出库数量");
-          val.rdQuantity = Number(val.iQuantity) - Number(val.iQuantitywillout);
         }
       } else {
         val.rdQuantity = 1;
@@ -802,6 +796,7 @@ export default {
       if (Array.isArray(val)) {
         val.map((item, i) => {
           item.rdQuantity = 1;
+          item.iQuantity = item.iQuantity - item.iQuantitywillout;
           const data = JSON.parse(JSON.stringify(item));
           if (i != 0) {
             if (
@@ -818,6 +813,7 @@ export default {
         });
       } else if (val) {
         val.rdQuantity = 1;
+        val.iQuantity = val.iQuantity - val.iQuantitywillout;
         const data = JSON.parse(JSON.stringify(val));
         this.tableData.splice(this.rowindex, 1, data);
       }

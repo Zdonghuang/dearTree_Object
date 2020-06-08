@@ -362,12 +362,6 @@ export default {
             res.data.map(item => {
               item.iSellingprice = item.rdSellingprice;
               item.gRemark = item.rdRemark;
-              if (!item.rdQuantity) item.rdQuantity = item.rdQuantitysurplus;
-              if (
-                items.rItemnumparent.indexOf("CGRKD") > -1 &&
-                item.rdQuantitysurplus > 0
-              )
-                item.rdQuantity = item.rdQuantitysurplus;
               item.gConstructcostweight = item.rdConstructcostweight;
               if (item.gImage) {
                 item.gImage = item.gImage.split(",");
