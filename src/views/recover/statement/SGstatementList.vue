@@ -238,8 +238,16 @@
         property="rHandmanv"
         label="经手人"
       ></el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
         width="120"
+        align="center"
+        show-overflow-tooltip
+        property="rCuid"
+        label="回收供应商ID"
+      ></el-table-column>
+      <el-table-column sortable
+        width="200"
         align="center"
         show-overflow-tooltip
         property="rCuidv"

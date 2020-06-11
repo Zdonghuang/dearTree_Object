@@ -225,6 +225,13 @@
                 sortable
                 align="center"
                 show-overflow-tooltip
+                prop="customerId"
+                label="客户ID"
+              ></el-table-column>
+              <el-table-column
+                sortable
+                align="center"
+                show-overflow-tooltip
                 prop="customerName"
                 label="客户名称"
               ></el-table-column>

@@ -185,6 +185,7 @@
               <el-table-column sortable align="center" show-overflow-tooltip property="gpurorrecoverv" label="商品来源"></el-table-column>
               <el-table-column sortable align="center" show-overflow-tooltip property="gclassv" label="商品分类"></el-table-column>
               <el-table-column sortable align="center" show-overflow-tooltip property="rtypev" label="单据类型"></el-table-column>
+              <el-table-column sortable align="center" show-overflow-tooltip property="rcuid" label="所属供应商ID"></el-table-column>
               <el-table-column sortable align="center" show-overflow-tooltip property="rcuidv" label="所属供应商"></el-table-column>
               <el-table-column sortable align="center" show-overflow-tooltip property="rwhidv" label="仓库"></el-table-column>
               <el-table-column sortable align="center" show-overflow-tooltip property="gunitv" label="单位" width="70"></el-table-column>

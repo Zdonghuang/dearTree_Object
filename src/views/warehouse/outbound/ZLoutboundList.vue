@@ -258,8 +258,15 @@
         width="120"
         align="center"
         show-overflow-tooltip
+        property="rCuid"
+        label="客户ID"
+      ></el-table-column>
+      <el-table-column sortable
+        width="120"
+        align="center"
+        show-overflow-tooltip
         property="rCuidv"
-        label="客户/加盟商"
+        label="客户名称"
       ></el-table-column>
       <el-table-column sortable
         width="150"

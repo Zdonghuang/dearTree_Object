@@ -44,7 +44,7 @@
       <el-col :sm="4" :xs="24">
         <el-select
           v-model="form.rCuidv"
-         filterable
+          filterable
           clearable
           remote
           reserve-keyword
@@ -169,8 +169,7 @@
             :key="item.value"
             :label="item.label"
             :value="item.value"
-          >
-          </el-option>
+          ></el-option>
         </el-select>
       </el-col>
       <el-col :sm="4" :xs="24">
@@ -205,7 +204,7 @@
       header-cell-class-name="thbgc"
     >
       <el-table-column width="55" align="center" type="index" label="序号"></el-table-column>
-      <el-table-column  width="80" align="center" label="操作">
+      <el-table-column width="80" align="center" label="操作">
         <template slot-scope="scope">
           <el-button
             type="text"
@@ -216,21 +215,19 @@
           >结算</el-button>
         </template>
       </el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
         width="110"
         align="center"
         show-overflow-tooltip
-
-
         property="rDate"
         label="单据日期"
       ></el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
         width="150"
         align="center"
         show-overflow-tooltip
-
-
         property="rItemnum"
         label="单据编号"
       >
@@ -238,12 +235,11 @@
           <span class="orderlink" @click="toOrderPage(scope.row)">{{ scope.row.rItemnum }}</span>
         </template>
       </el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
         width="150"
         align="center"
         show-overflow-tooltip
-
-
         property="rItemnum"
         label="来源订单"
       >
@@ -263,12 +259,11 @@
           >{{ scope.row.rStatus | orderStatus }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
         width="100"
         align="center"
         show-overflow-tooltip
-
-
         property="rBillingstatus"
         label="结算状态"
       >
@@ -291,11 +286,11 @@
           <el-tag effect="dark" size="mini" v-if="scope.row.rItemnumparent.indexOf('ZLCK')!=-1">租赁单</el-tag>
         </template>
       </el-table-column>
-      <el-table-column sortable
+      <el-table-column
+        sortable
         width="150"
         align="center"
         show-overflow-tooltip
-        
         property="rTotalprice"
         label="租金"
       >
@@ -304,12 +299,11 @@
         </template>
       </el-table-column>
       <el-table-column sortable align="center" property="months" label="租赁月份"></el-table-column>
-       <el-table-column sortable
+      <el-table-column
+        sortable
         width="120"
         align="center"
         show-overflow-tooltip
-
-
         property="totalPremoney"
         label="预收款余额"
       >
@@ -321,9 +315,36 @@
           <div class="tr" v-if="!scope.row.totalPremoney">0.0</div>
         </template>
       </el-table-column>
-      <el-table-column sortable align="center" show-overflow-tooltip property="rGetguestv" label="获客人"></el-table-column>
-      <el-table-column sortable align="center" show-overflow-tooltip property="rHandmanv" label="经手人"></el-table-column>
-      <el-table-column sortable align="center" show-overflow-tooltip property="rCuidv" label="客户/加盟商"></el-table-column>
+      <el-table-column
+        sortable
+        align="center"
+        show-overflow-tooltip
+        property="rGetguestv"
+        label="获客人"
+      ></el-table-column>
+      <el-table-column
+        sortable
+        align="center"
+        show-overflow-tooltip
+        property="rHandmanv"
+        label="经手人"
+      ></el-table-column>
+      <el-table-column
+        sortable
+        width="120"
+        align="center"
+        show-overflow-tooltip
+        property="rCuid"
+        label="客户ID"
+      ></el-table-column>
+      <el-table-column
+        sortable
+        width="120"
+        align="center"
+        show-overflow-tooltip
+        property="rCuidv"
+        label="客户名称"
+      ></el-table-column>
       <el-table-column sortable align="center" show-overflow-tooltip property="rWhidv" label="仓库"></el-table-column>
       <el-table-column sortable align="center" show-overflow-tooltip property="rRemark" label="备注">
         <template slot-scope="scope">
@@ -363,9 +384,9 @@ export default {
       rCuidOptions: [],
       rWhidOptions: [],
       rHandmanOptions: [],
-      rStatusOptions:[
-        {label:'已结算',value:'16'},
-        {label:'待结算',value:'20'},
+      rStatusOptions: [
+        { label: "已结算", value: "16" },
+        { label: "待结算", value: "20" }
       ],
       form: {
         rCuidv: "",
@@ -423,7 +444,7 @@ export default {
       }
     });
     // 签单人
-    this.$api.User.get({ size: 9999, auth: 1, status:1 }).then(res => {
+    this.$api.User.get({ size: 9999, auth: 1, status: 1 }).then(res => {
       if (res.code == 200) {
         this.rHandmanOptions = res.data.records.map(item => {
           return {
@@ -565,7 +586,7 @@ export default {
       let values = [];
       columns.forEach((column, index) => {
         if (index === 0) {
-          sums[index] ="合计";
+          sums[index] = "合计";
           return;
         }
         const values = data.map(item => Number(item[column.property]));
@@ -573,10 +594,10 @@ export default {
           !values.every(value => isNaN(value)) &&
           column.property == "rTotalprice"
         ) {
-          sums[index] =values.reduce((prev, curr)=> {
+          sums[index] = values.reduce((prev, curr) => {
             const value = Number(curr);
             if (!isNaN(value)) {
-              return parseFloat((prev + curr).toPrecision(12))
+              return parseFloat((prev + curr).toPrecision(12));
             } else {
               return prev;
             }
@@ -622,7 +643,7 @@ export default {
       if (this.form.rItemnumparent) {
         params.rItemnumparent = this.form.rItemnumparent;
       }
-      
+
       if (this.form.rCuid) {
         params.rCuid = this.form.rCuid;
       }
