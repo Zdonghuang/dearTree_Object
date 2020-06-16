@@ -220,7 +220,7 @@
           >{{ scope.row.rApprovalstatus | ApprovalStatus }}</el-tag>
         </template>
       </el-table-column>
-      <!-- <el-table-column sortable
+      <el-table-column sortable
         width="150"
         align="center"
         show-overflow-tooltip
@@ -230,7 +230,7 @@
         <template slot-scope="scope">
           <div class="tr">{{ scope.row.rTotalprice }}</div>
         </template>
-      </el-table-column> -->
+      </el-table-column>
       <el-table-column sortable
         width="100"
         align="center"
