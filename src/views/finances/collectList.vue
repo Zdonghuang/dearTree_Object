@@ -149,7 +149,7 @@
       header-cell-class-name="thbgc"
     >
       <el-table-column width="55" align="center" type="index" label="序号"></el-table-column>
-      <el-table-column sortable align="center" property="PD_CTIME" label="单据日期" ></el-table-column>
+      <el-table-column sortable align="center" property="PD_CTIME" label="单据日期"></el-table-column>
       <el-table-column sortable align="center" property="PD_PID" label="单据编号">
         <template slot-scope="scope">
           <span class="undeline" @click="todetail(scope.row)">{{scope.row.PD_PID}}</span>
@@ -245,7 +245,7 @@ export default {
   created() {
     this.getPremoneyList();
     // 经手人
-    this.$api.User.get({ size: 9999, auth: 1, status:1 }).then(res => {
+    this.$api.User.get({ size: 9999, auth: 1, status: 1 }).then(res => {
       if (res.code == 200) {
         this.rHandmanOptions = res.data.records.map(item => {
           return {
@@ -269,14 +269,14 @@ export default {
         };
       });
     });
-    this.$api.Common.get({ typeCode: "YHZH" }).then(res => {
+    this.$api.Common.get({ typeCode: "YHZH", cStatus: 1 }).then(res => {
       this.bankAccountList = res.data.map(item => {
         return {
           label: item.cAttrvalue,
           value: item.cAttrcode
         };
       });
-    }); 
+    });
   },
   methods: {
     tofinanceAdd() {
@@ -289,7 +289,7 @@ export default {
       let values = [];
       columns.forEach((column, index) => {
         if (index === 0) {
-          sums[index] ="合计";
+          sums[index] = "合计";
           return;
         }
         const values = data.map(item => Number(item[column.property]));
@@ -297,10 +297,10 @@ export default {
           !values.every(value => isNaN(value)) &&
           column.property == "PD_AMOUNTTOTAL"
         ) {
-          sums[index] =values.reduce((prev, curr)=> {
+          sums[index] = values.reduce((prev, curr) => {
             const value = Number(curr);
             if (!isNaN(value)) {
-              return parseFloat((prev + curr).toPrecision(12))
+              return parseFloat((prev + curr).toPrecision(12));
             } else {
               return prev;
             }
@@ -349,7 +349,7 @@ export default {
       if (!params.cuserid) delete params.cuserid;
       if (!params.bankaccount) delete params.bankaccount;
       if (!params.status) delete params.status;
-      if(!params.includehongchong) delete params.includehongchong
+      if (!params.includehongchong) delete params.includehongchong;
       params.currentPage = this.currentPage;
       params.size = this.pageSize;
       if (params.rdates) {

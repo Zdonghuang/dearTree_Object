@@ -622,7 +622,7 @@ export default {
       { value: 58, label: "盘点报废结算单" },
       { value: 77, label: "租赁续费单" },
     ];
-    this.$api.Common.get({ typeCode: "YHZH" }).then(res => {
+    this.$api.Common.get({ typeCode: "YHZH", cStatus: 1 }).then(res => {
       this.bankAccountList = res.data.map(item => {
         return {
           label: item.cAttrvalue,

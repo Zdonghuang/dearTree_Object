@@ -488,7 +488,7 @@ export default {
       { value: 61, label: "销售调拨出库结算单" },
       { value: 74, label: "租赁结算单" }
     ];
-    this.$api.Common.get({ typeCode: "YHZH" }).then(res => {
+    this.$api.Common.get({ typeCode: "YHZH", cStatus: 1 }).then(res => {
       this.bankAccountList = res.data.map(item => {
         return {
           label: item.cAttrvalue,

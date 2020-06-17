@@ -134,7 +134,7 @@ export default {
     this.form.sDate = getDate.getToday().starttime;
     this.form.eDate = getDate.getToday().endtime;
     // 账户
-    this.$api.Common.get({ typeCode: "YHZH" }).then(res => {
+    this.$api.Common.get({ typeCode: "YHZH", cStatus: 1 }).then(res => {
       this.rAccountidOptions = res.data.map(item => {
         return {
           label: item.cAttrvalue,

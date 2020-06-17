@@ -592,6 +592,8 @@ export default {
           pdfilestr: JSON.stringify(this.form.pdfilestr),
           TPremoneydtsList: []
         };
+        if (val == 1 && !this.form.banknamegh)
+          return this.$message.error("请选择账户");
         if (val != 1 && val != "false") {
           if (val1 && val1.length) {
             param.cc = val1;
