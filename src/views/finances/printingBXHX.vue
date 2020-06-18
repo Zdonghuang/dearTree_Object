@@ -197,7 +197,6 @@ export default {
         };
       });
     });
-    
   },
   methods: {
     // 账户选择
@@ -315,7 +314,7 @@ export default {
       const params = { pid: this.pid };
       if (this.$route.query.from) {
         params.from = this.$route.query.from;
-params.auth=3
+        params.auth = 3;
       } else {
         delete params.from;
       }
@@ -337,6 +336,7 @@ params.auth=3
               this.form.PD_APPROVALSTATUS = item.PD_APPROVALSTATUS;
               this.form.PD_STATUS = item.PD_STATUS;
               this.form.PD_DIV = item.PD_DIV;
+              this.getUserBank(this.form.handman);
               if (item.PD_APPROVALSTATUS == 1 || item.PD_APPROVALSTATUS == 2) {
                 this.disable = true;
               }
@@ -415,7 +415,7 @@ params.auth=3
       let values = [];
       columns.forEach((column, index) => {
         if (index === 0) {
-          sums[index] ="合计";
+          sums[index] = "合计";
           return;
         }
         const values = data.map(item => Number(item[column.property]));
@@ -423,17 +423,17 @@ params.auth=3
           !values.every(value => isNaN(value)) &&
           column.property == "pdAmount"
         ) {
-          sums[index] =values.reduce((prev, curr)=> {
+          sums[index] = values.reduce((prev, curr) => {
             const value = Number(curr);
             if (!isNaN(value)) {
-              return parseFloat((prev + curr).toPrecision(12))
+              return parseFloat((prev + curr).toPrecision(12));
             } else {
               return prev;
             }
           }, 0);
           sums[index] = this.$PublicJS.money(sums[index], 2);
           sums[index] += " 元";
-          this.Totalprice = parseFloat((sums[index]).toPrecision(12));
+          this.Totalprice = parseFloat(sums[index].toPrecision(12));
         } else {
           sums[index] = " ";
         }
@@ -482,7 +482,7 @@ table,
 div {
   color: rgb(80, 80, 80);
   font-weight: 100;
-  font-family: '宋体' !important;
+  font-family: "宋体" !important;
 }
 div {
   font-weight: 500;

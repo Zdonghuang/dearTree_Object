@@ -172,15 +172,14 @@ export default {
       if (val) return this.submit(1);
       this.showDD = true;
     },
-    getUserBank() {
-      if (!this.form.bankaccount || !this.form.bankname) {
-        this.$api.User.get({ uid: this.$storage.userId }).then(res => {
-          if (res.code == 200) {
-            this.form.bankaccount = res.data.records[0].uBankaccount;
-            this.form.bankname = res.data.records[0].uBankname;
-          }
-        });
-      }
+    getUserBank(val) {
+      let obj = { uid: val ? val : this.$storage.userId };
+      this.$api.User.get({ uid: this.$storage.userId }).then(res => {
+        if (res.code == 200) {
+          this.form.bankaccount = res.data.records[0].uBankaccount;
+          this.form.bankname = res.data.records[0].uBankname;
+        }
+      });
     },
     // 账户选择
     getBankAccountData1(val) {
@@ -305,6 +304,7 @@ export default {
             this.form.TPremoneydtsList[0].pdId = item.PD_ID;
             this.form.TPremoneydtsList[0].pdSubjectname = item.PD_SUBJECTNAME;
             this.form.TPremoneydtsList[0].pdSubjectnum = item.PD_SUBJECTNUM;
+            this.getUserBank(this.form.handman);
             if (item.PD_FILESTR) {
               this.form.pdfilestr = Array.isArray(JSON.parse(item.PD_FILESTR))
                 ? JSON.parse(item.PD_FILESTR)
