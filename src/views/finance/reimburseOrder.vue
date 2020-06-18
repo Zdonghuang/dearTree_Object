@@ -426,13 +426,15 @@ export default {
       this.showSelectBankAccount1 = false;
     },
     getUserBank(val) {
-      let obj = { uid: val ? val : this.$storage.userId };
-      this.$api.User.get(obj).then(res => {
-        if (res.code == 200) {
-          this.form.bankaccount = res.data.records[0].uBankaccount;
-          this.form.bankname = res.data.records[0].uBankname;
-        }
-      });
+      if (!this.form.bankaccount || !this.form.bankname) {
+        let obj = { uid: val ? val : this.$storage.userId };
+        this.$api.User.get(obj).then(res => {
+          if (res.code == 200) {
+            this.form.bankaccount = res.data.records[0].uBankaccount;
+            this.form.bankname = res.data.records[0].uBankname;
+          }
+        });
+      }
     },
     // 提交
     opendialog(val) {

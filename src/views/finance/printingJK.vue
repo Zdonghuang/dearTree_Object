@@ -1,12 +1,12 @@
 <template>
   <div>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
     <h4 style="text-align:center">借款单</h4>
     <ul class="ul">
       <li>
@@ -172,12 +172,14 @@ export default {
       this.showDD = true;
     },
     getUserBank() {
-      this.$api.User.get({ uid: this.$storage.userId }).then(res => {
-        if (res.code == 200) {
-          this.form.bankaccount = res.data.records[0].uBankaccount;
-          this.form.bankname = res.data.records[0].uBankname;
-        }
-      });
+      if (!this.form.bankaccount || !this.form.bankname) {
+        this.$api.User.get({ uid: this.$storage.userId }).then(res => {
+          if (res.code == 200) {
+            this.form.bankaccount = res.data.records[0].uBankaccount;
+            this.form.bankname = res.data.records[0].uBankname;
+          }
+        });
+      }
     },
     // 账户选择
     getBankAccountData1(val) {
@@ -276,7 +278,7 @@ export default {
       const params = { pid: this.pid };
       if (this.$route.query.from) {
         params.from = this.$route.query.from;
-params.auth=3
+        params.auth = 3;
       } else {
         delete params.from;
       }
@@ -304,8 +306,8 @@ params.auth=3
             this.form.TPremoneydtsList[0].pdSubjectnum = item.PD_SUBJECTNUM;
             if (item.PD_FILESTR) {
               this.form.pdfilestr = Array.isArray(JSON.parse(item.PD_FILESTR))
-                    ? JSON.parse(item.PD_FILESTR)
-                    : JSON.parse(JSON.parse(item.PD_FILESTR));
+                ? JSON.parse(item.PD_FILESTR)
+                : JSON.parse(JSON.parse(item.PD_FILESTR));
               this.fileList = this.form.pdfilestr;
             }
             this.Totalprice = item.PD_AMOUNT;
@@ -376,7 +378,7 @@ table,
 div {
   color: rgb(80, 80, 80);
   font-weight: 100;
-  font-family: '宋体' !important;
+  font-family: "宋体" !important;
 }
 div {
   font-weight: 500;

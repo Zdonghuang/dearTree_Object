@@ -153,11 +153,7 @@
       <el-row :gutter="24">
         <el-col :xs="24" :sm="8"></el-col>
         <el-col :xs="24" :sm="8">
-          <el-input
-            placeholder="备注"
-            v-model="form.remark"
-            size="small"
-          >
+          <el-input placeholder="备注" v-model="form.remark" size="small">
             <template slot="prepend">备注</template>
           </el-input>
         </el-col>
@@ -346,13 +342,15 @@ export default {
       window.open(url, "_blank");
     },
     getUserBank(val) {
-      let obj = { uid: val ? val : this.$storage.userId };
-      this.$api.User.get(obj).then(res => {
-        if (res.code == 200) {
-          this.form.bankaccount = res.data.records[0].uBankaccount;
-          this.form.bankname = res.data.records[0].uBankname;
-        }
-      });
+      if (!this.form.bankaccount || !this.form.bankname) {
+        let obj = { uid: val ? val : this.$storage.userId };
+        this.$api.User.get(obj).then(res => {
+          if (res.code == 200) {
+            this.form.bankaccount = res.data.records[0].uBankaccount;
+            this.form.bankname = res.data.records[0].uBankname;
+          }
+        });
+      }
     },
     Printing() {
       const data = this.$route.query.data;
@@ -392,8 +390,8 @@ export default {
         this.$refs.upload.submit();
         this.$ajax.post("/system/upload", this.formData).then(res => {
           if (res.data.code === 200) {
-            if(!param.pdfilestr){
-              param.pdfilestr=[]
+            if (!param.pdfilestr) {
+              param.pdfilestr = [];
             }
             if (Object.values(res.data.data).length) {
               Object.values(res.data.data).map(item => {
@@ -458,7 +456,7 @@ export default {
       const params = { pid: this.pid };
       if (this.$route.query.from) {
         params.from = this.$route.query.from;
-params.auth=3
+        params.auth = 3;
       } else {
         delete params.from;
       }
@@ -485,8 +483,8 @@ params.auth=3
             this.getUserBank(item.PD_HANDMAN);
             if (item.PD_FILESTR) {
               this.form.pdfilestr = Array.isArray(JSON.parse(item.PD_FILESTR))
-                    ? JSON.parse(item.PD_FILESTR)
-                    : JSON.parse(JSON.parse(item.PD_FILESTR));
+                ? JSON.parse(item.PD_FILESTR)
+                : JSON.parse(JSON.parse(item.PD_FILESTR));
               this.fileList = this.form.pdfilestr;
             }
             this.Totalprice = item.PD_AMOUNT;
