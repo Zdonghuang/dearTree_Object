@@ -207,8 +207,9 @@ export default {
       }
       this.showSelectBankAccount1 = false;
     },
-    getUserBank() {
-      this.$api.User.get({ uid: this.$storage.userId }).then(res => {
+    getUserBank(val) {
+      let obj = { uid: val ? val : this.$storage.userId };
+      this.$api.User.get(obj).then(res => {
         if (res.code == 200) {
           this.form.bankaccount = res.data.records[0].uBankaccount;
           this.form.bankname = res.data.records[0].uBankname;

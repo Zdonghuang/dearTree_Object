@@ -343,15 +343,13 @@ export default {
       window.open(url, "_blank");
     },
     getUserBank(val) {
-      if (!this.form.bankaccount || !this.form.bankname) {
-        let obj = { uid: val ? val : this.$storage.userId };
-        this.$api.User.get(obj).then(res => {
-          if (res.code == 200) {
-            this.form.bankaccount = res.data.records[0].uBankaccount;
-            this.form.bankname = res.data.records[0].uBankname;
-          }
-        });
-      }
+      let obj = { uid: val ? val : this.$storage.userId };
+      this.$api.User.get(obj).then(res => {
+        if (res.code == 200) {
+          this.form.bankaccount = res.data.records[0].uBankaccount;
+          this.form.bankname = res.data.records[0].uBankname;
+        }
+      });
     },
     Printing() {
       const data = this.$route.query.data;

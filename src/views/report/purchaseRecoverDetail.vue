@@ -341,7 +341,7 @@ export default {
         this.$api.Customer.query({
           size: 9999,
           auth: 2,
-          div:64,
+          div:12,
           name: query
         }).then(res => {
           if (res.code == 200) {
