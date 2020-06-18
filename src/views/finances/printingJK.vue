@@ -145,6 +145,8 @@ export default {
       this.pid = window.atob(this.$route.query.data);
       this.pid = this.pid.replace(/f/, "");
       this.getdata();
+    } else {
+      this.getUserBank();
     }
     if (this.cuid) {
       this.$api.Customer.get({ id: this.cuid }).then(res => {
@@ -152,7 +154,6 @@ export default {
         this.form.rCuid = this.cuid;
       });
     }
-    this.getUserBank();
   },
   methods: {
     // 提交

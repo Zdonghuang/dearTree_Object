@@ -381,6 +381,8 @@ export default {
     if (this.$route.query.data) {
       this.pid = window.atob(this.$route.query.data);
       this.getdata();
+    } else {
+      this.getUserBank();
     }
     if (this.cuid) {
       this.$api.Customer.get({ id: this.cuid }).then(res => {
@@ -408,7 +410,6 @@ export default {
         };
       });
     });
-    this.getUserBank();
   },
   methods: {
     // 账户选择

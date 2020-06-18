@@ -172,10 +172,11 @@ export default {
     };
   },
   created() {
-    this.getUserBank();
     if (this.$route.query.data) {
       this.pid = window.atob(this.$route.query.data);
       this.getdata();
+    } else {
+      this.getUserBank();
     }
     if (this.cuid) {
       this.$api.Customer.get({ id: this.cuid }).then(res => {
@@ -235,7 +236,7 @@ export default {
       this.tableData.map(item => {
         if (item.pdSubjectname && item.pdAmount) {
           item.pdAmount = Number(item.pdAmount);
-          if (this.pid) item.pdPid = this.pid
+          if (this.pid) item.pdPid = this.pid;
           this.arr.push(item);
         }
       });
@@ -432,14 +433,14 @@ export default {
           sums[index] = values.reduce((prev, curr) => {
             const value = Number(curr);
             if (!isNaN(value)) {
-              return parseFloat((prev + curr).toPrecision(12))
+              return parseFloat((prev + curr).toPrecision(12));
             } else {
               return prev;
             }
           }, 0);
           sums[index] = this.$PublicJS.money(sums[index], 2);
           sums[index] += " 元";
-          this.Totalprice = sums[index]
+          this.Totalprice = sums[index];
         } else {
           sums[index] = " ";
         }
