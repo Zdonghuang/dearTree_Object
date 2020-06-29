@@ -186,14 +186,14 @@
           <el-button
             type="text"
             size="mini"
-            :disabled="check[scope.$index]==0||scope.row.rStatus==31"
+            :disabled="scope.row.rStatus==19||check[scope.$index]==0||scope.row.rStatus==31"
             @click="reset(2,scope.row)"
             v-has="362"
           >重置</el-button>
           <el-button
             type="text"
             size="mini"
-            :disabled="check[scope.$index]==0||scope.row.rStatus==31"
+            :disabled="scope.row.rStatus==19||check[scope.$index]==0||scope.row.rStatus==31"
             @click="reset(1,scope.row)"
             v-has="362"
           >作废</el-button>
