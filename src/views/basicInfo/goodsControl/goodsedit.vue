@@ -200,8 +200,8 @@
         <el-col :xs="24" :sm="6">
           <el-form-item label="商品来源" prop="gPurorrecover">
             <el-radio-group v-model="addGoodsForm.gPurorrecover">
-              <el-radio label="1">采购商品</el-radio>
               <el-radio label="2">回收商品</el-radio>
+              <el-radio label="1">采购商品</el-radio>
             </el-radio-group>
           </el-form-item>
         </el-col>
@@ -287,7 +287,7 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :xs="24" :sm="24">
-          <el-form-item label="使用时长" class="gNewold">
+          <el-form-item label="使用时长">
             <el-radio-group v-model="addGoodsForm.gNewold">
               <el-radio
                 v-for="(item,i) in NXoptions"
@@ -455,7 +455,7 @@ export default {
         gPurorrecover: "",
         gNeedinstall: "0",
         gStatus: "",
-        gNewold: "41",
+        gNewold: "",
         gColor: "1"
       },
       addGoodsForms: {
@@ -472,15 +472,15 @@ export default {
       load: false,
       title: "",
       rules: {
-        // gName: [{ required: true, message: "请输入商品名称", trigger: "blur" }],
+        // gName: [{ required: true, message: "", trigger: "blur" }],
         // gOid: [{ required: true, message: "请选择所属公司", trigger: "change" }],
         // gClasss: [{ required: true, message: "请选择商品品类", trigger: "change" }],
         // gClass: [{ required: true, message: "请选择商品品类子类", trigger: "change" }],
         // gBrandp: [{ required: true, message: "请选择商品分类", trigger: "change" }],
         // gBrand: [{ required: true, message: "请选择商品品牌", trigger: "change" }],
         gPurorrecover: [
-          { required: true, message: "请选择商来源", trigger: "change" }
-        ]
+          { required: true, message: "请选择商品来源", trigger: "change" },
+        ],
         // gSupplier: [
         //   { required: true, message: "请选择供应商", trigger: "blur" }
         // ]
@@ -798,7 +798,6 @@ export default {
           if (!this.addGoodsForm.gNeedinstall)
             this.addGoodsForm.gNeedinstall = "0";
           if (!this.addGoodsForm.gColor) this.addGoodsForm.gColor = "1";
-          if (!this.addGoodsForm.gNewold) this.addGoodsForm.gNewold = "41";
           this.addGoodsForm.gSupplierId = this.addGoodsForm.gSupplier;
           this.addGoodsForm.gSupplier = this.addGoodsForm.gSupplierv;
           this.addGoodsForm.gColor += "";
@@ -969,7 +968,7 @@ export default {
       // if (!this.addGoodsForm.gColor)
       //   return this.$message.error("");
       // if (!this.addGoodsForm.gNewold)
-      //   return this.$message.error("");
+      //   return this.$message.error("请选择使用时长");
       // if (!this.addGoodsForm.kuan) return this.$message.error("请选择商品宽度");
       // if (!this.addGoodsForm.gao) return this.$message.error("请选择商品高度");
       // if (!this.addGoodsForm.gOid) return this.$message.error("请选择归属公司");
