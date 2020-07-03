@@ -8,7 +8,7 @@
     <el-form :model="addGoodsForm" :rules="rules" ref="ruleForm" label-width="90px">
       <el-row :gutter="20">
         <el-col :xs="24" :sm="5">
-          <el-form-item label="商品名称">
+          <el-form-item label="商品名称" prop="gName">
             <el-input placeholder="请输入商品名称" v-model="addGoodsForm.gName" size="mini"></el-input>
           </el-form-item>
         </el-col>
@@ -31,7 +31,7 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="5">
-          <el-form-item label="商品主类">
+          <el-form-item label="商品主类" prop="gClasss">
             <el-select
               :disabled="this.gId===''?false:true"
               v-model="addGoodsForm.gClasss"
@@ -49,7 +49,7 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="5">
-          <el-form-item label="商品子类">
+          <el-form-item label="商品子类" prop="gClass">
             <el-select
               v-model="addGoodsForm.gClass"
               placeholder="请选择品类"
@@ -68,7 +68,7 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :xs="24" :sm="5">
-          <el-form-item label="品牌分类">
+          <el-form-item label="品牌分类" prop="gBrandp">
             <el-select v-model="addGoodsForm.gBrandp" @change="getPP1" size="mini">
               <el-option
                 v-for="(item,i) in PPoptions"
@@ -80,7 +80,7 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="5">
-          <el-form-item label="品牌名称">
+          <el-form-item label="品牌名称" prop="gBrand">
             <el-select
               v-model="addGoodsForm.gBrand"
               filterable
@@ -98,7 +98,7 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="5" v-if="this.PP2options.length>0">
-          <el-form-item label="品牌系列">
+          <el-form-item label="品牌系列" prop="gBrandseries">
             <el-select
               v-model="addGoodsForm.gBrandseries"
               placeholder="请选择品牌系列"
@@ -456,7 +456,11 @@ export default {
         gNeedinstall: "0",
         gStatus: "",
         gNewold: "",
-        gColor: "1"
+        gBrandseries: "",
+        gColor: "1",
+        gClass: "",
+        gBrand: "",
+        DJ: ""
       },
       addGoodsForms: {
         PZYS: [],
@@ -472,18 +476,13 @@ export default {
       load: false,
       title: "",
       rules: {
-        // gName: [{ required: true, message: "", trigger: "blur" }],
-        // gOid: [{ required: true, message: "请选择所属公司", trigger: "change" }],
-        // gClasss: [{ required: true, message: "请选择商品品类", trigger: "change" }],
-        // gClass: [{ required: true, message: "请选择商品品类子类", trigger: "change" }],
-        // gBrandp: [{ required: true, message: "请选择商品分类", trigger: "change" }],
-        // gBrand: [{ required: true, message: "请选择商品品牌", trigger: "change" }],
-        gPurorrecover: [
-          { required: true, message: "请选择商品来源", trigger: "change" },
-        ],
-        // gSupplier: [
-        //   { required: true, message: "请选择供应商", trigger: "blur" }
-        // ]
+        gName: [{ required: true, message: " ", trigger: "blur" }],
+        gClasss: [{ required: true, message: " ", trigger: "change" }],
+        gClass: [{ required: true, message: " ", trigger: "change" }],
+        gBrandp: [{ required: true, message: " ", trigger: "change" }],
+        gBrand: [{ required: true, message: " ", trigger: "change" }],
+        gBrandseries: [{ required: true, message: " ", trigger: "change" }],
+        gPurorrecover: [{ required: true, message: " ", trigger: "change" }]
       }
     };
   },
@@ -954,30 +953,6 @@ export default {
     },
     //确定提交
     submitForm(formName) {
-      if (!this.addGoodsForm.gName) return this.$message.error("请输入名称");
-      //if (!this.addGoodsForm.gItemnum) return this.$message.error("请选择编码");
-      if (!this.addGoodsForm.gClasss)
-        return this.$message.error("请选择商品品类");
-      if (!this.addGoodsForm.gClass)
-        return this.$message.error("请选择商品品类子类");
-      if (!this.addGoodsForm.gBrandp)
-        return this.$message.error("请选择商品分类");
-      if (!this.addGoodsForm.gBrand)
-        return this.$message.error("请选择商品品牌");
-      if (!this.addGoodsForms.DJ) return this.$message.error("请选择商品等级");
-      // if (!this.addGoodsForm.gColor)
-      //   return this.$message.error("");
-      // if (!this.addGoodsForm.gNewold)
-      //   return this.$message.error("请选择使用时长");
-      // if (!this.addGoodsForm.kuan) return this.$message.error("请选择商品宽度");
-      // if (!this.addGoodsForm.gao) return this.$message.error("请选择商品高度");
-      // if (!this.addGoodsForm.gOid) return this.$message.error("请选择归属公司");
-      if (!this.addGoodsForm.gPurorrecover)
-        return this.$message.error("请选择商品来源");
-      // if (!this.addGoodsForm.gStatus)
-      //   return this.$message.error("请选择在售状态");
-      // if (!this.addGoodsForm.gUnit)
-      //   return this.$message.error("请选择计量单位");
       this.$refs[formName].validate(valid => {
         if (valid) {
           this.formData = new FormData();
@@ -1186,6 +1161,8 @@ export default {
               });
             }
           });
+        } else {
+          this.$message.error("*为必填或必填项");
         }
       });
     }
