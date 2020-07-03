@@ -8,7 +8,7 @@
     <el-form :model="addGoodsForm" :rules="rules" ref="ruleForm" label-width="90px">
       <el-row :gutter="20">
         <el-col :xs="24" :sm="5">
-          <el-form-item label="商品名称" prop="gName">
+          <el-form-item label="商品名称">
             <el-input placeholder="请输入商品名称" v-model="addGoodsForm.gName" size="mini"></el-input>
           </el-form-item>
         </el-col>
@@ -31,7 +31,7 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="5">
-          <el-form-item label="商品主类" prop="gClasss">
+          <el-form-item label="商品主类">
             <el-select
               :disabled="this.gId===''?false:true"
               v-model="addGoodsForm.gClasss"
@@ -49,7 +49,7 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="5">
-          <el-form-item label="商品子类" prop="gClass">
+          <el-form-item label="商品子类">
             <el-select
               v-model="addGoodsForm.gClass"
               placeholder="请选择品类"
@@ -80,7 +80,7 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="5">
-          <el-form-item label="品牌名称" prop="gBrand">
+          <el-form-item label="品牌名称">
             <el-select
               v-model="addGoodsForm.gBrand"
               filterable
@@ -98,7 +98,7 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="5" v-if="this.PP2options.length>0">
-          <el-form-item label="品牌系列" prop="gBrandseries">
+          <el-form-item label="品牌系列">
             <el-select
               v-model="addGoodsForm.gBrandseries"
               placeholder="请选择品牌系列"
@@ -115,7 +115,7 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="5">
-          <el-form-item label="供货商" prop="gSupplier">
+          <el-form-item label="供货商">
             <el-input placeholder="请选择供货商" v-model="addGoodsForm.gSupplier" size="mini" readonly>
               <i
                 slot="suffix"
@@ -128,22 +128,22 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :xs="24" :sm="5">
-          <el-form-item label="商品货号" prop="gItemnum" v-if="gId">
+          <el-form-item label="商品货号" v-if="gId">
             <el-input placeholder="系统生成唯一货号" v-model="addGoodsForm.gItemnum" size="mini" readonly></el-input>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="5">
-          <el-form-item label="销售价" prop="gSellingprice">
+          <el-form-item label="销售价">
             <el-input placeholder="请输入销售价" v-model="addGoodsForm.gSellingprice" size="mini"></el-input>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="5">
-          <el-form-item label="销售最低价" prop="gReserveprice">
+          <el-form-item label="销售最低价">
             <el-input placeholder="请输入销售最低价" v-model="addGoodsForm.gReserveprice" size="mini"></el-input>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="5">
-          <el-form-item label="租赁价" prop="gRentprice">
+          <el-form-item label="租赁价">
             <el-input placeholder="请输入租赁价" v-model="addGoodsForm.gRentprice" size="mini"></el-input>
           </el-form-item>
         </el-col>
@@ -184,7 +184,7 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :xs="24" :sm="24">
-          <el-form-item label="商品等级" prop="DJ">
+          <el-form-item label="商品等级">
             <el-radio-group v-model="addGoodsForms.DJ">
               <el-radio
                 v-for="(item,i) in DJoptions"
@@ -198,7 +198,7 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :xs="24" :sm="6">
-          <el-form-item label="商品来源">
+          <el-form-item label="商品来源" prop="gPurorrecover">
             <el-radio-group v-model="addGoodsForm.gPurorrecover">
               <el-radio label="1">采购商品</el-radio>
               <el-radio label="2">回收商品</el-radio>
@@ -329,7 +329,7 @@
       </el-row>-->
       <el-row :gutter="20">
         <el-col :xs="24" :sm="12">
-          <el-form-item label="备注" prop="gRemark">
+          <el-form-item label="备注">
             <el-input placeholder="请输入备注" v-model="addGoodsForm.gRemark" size="mini"></el-input>
           </el-form-item>
         </el-col>
@@ -353,7 +353,7 @@
       </el-row>
       <el-row>
         <el-col :xs="24" :sm="7">
-          <el-form-item prop="logoImg">
+          <el-form-item>
             <el-upload
               class="upload-demo"
               ref="upload"
@@ -452,7 +452,7 @@ export default {
         kuan: "",
         gao: "",
         gItemnum: "",
-        gPurorrecover: "1",
+        gPurorrecover: "",
         gNeedinstall: "0",
         gStatus: "",
         gNewold: "41",
@@ -478,6 +478,9 @@ export default {
         // gClass: [{ required: true, message: "请选择商品品类子类", trigger: "change" }],
         // gBrandp: [{ required: true, message: "请选择商品分类", trigger: "change" }],
         // gBrand: [{ required: true, message: "请选择商品品牌", trigger: "change" }],
+        gPurorrecover: [
+          { required: true, message: "请选择商来源", trigger: "change" }
+        ]
         // gSupplier: [
         //   { required: true, message: "请选择供应商", trigger: "blur" }
         // ]
@@ -970,8 +973,8 @@ export default {
       // if (!this.addGoodsForm.kuan) return this.$message.error("请选择商品宽度");
       // if (!this.addGoodsForm.gao) return this.$message.error("请选择商品高度");
       // if (!this.addGoodsForm.gOid) return this.$message.error("请选择归属公司");
-      // if (!this.addGoodsForm.gPurorrecover)
-      //   return this.$message.error("请选择商品来源");
+      if (!this.addGoodsForm.gPurorrecover)
+        return this.$message.error("请选择商品来源");
       // if (!this.addGoodsForm.gStatus)
       //   return this.$message.error("请选择在售状态");
       // if (!this.addGoodsForm.gUnit)
