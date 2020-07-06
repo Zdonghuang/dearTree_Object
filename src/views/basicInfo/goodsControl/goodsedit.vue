@@ -98,7 +98,7 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="5" v-if="this.PP2options.length>0">
-          <el-form-item label="品牌系列" prop="gBrandseries">
+          <el-form-item label="品牌系列">
             <el-select
               v-model="addGoodsForm.gBrandseries"
               placeholder="请选择品牌系列"
@@ -455,7 +455,7 @@ export default {
         gPurorrecover: "",
         gNeedinstall: "0",
         gStatus: "",
-        gNewold: "",
+        gNewold: "41",
         gBrandseries: "",
         gColor: "1",
         gClass: "",
@@ -481,7 +481,6 @@ export default {
         gClass: [{ required: true, message: " ", trigger: "change" }],
         gBrandp: [{ required: true, message: " ", trigger: "change" }],
         gBrand: [{ required: true, message: " ", trigger: "change" }],
-        gBrandseries: [{ required: true, message: " ", trigger: "change" }],
         gPurorrecover: [{ required: true, message: " ", trigger: "change" }]
       }
     };
@@ -797,6 +796,7 @@ export default {
           if (!this.addGoodsForm.gNeedinstall)
             this.addGoodsForm.gNeedinstall = "0";
           if (!this.addGoodsForm.gColor) this.addGoodsForm.gColor = "1";
+          if (!this.addGoodsForm.gNewold) this.addGoodsForm.gNewold = "41";
           this.addGoodsForm.gSupplierId = this.addGoodsForm.gSupplier;
           this.addGoodsForm.gSupplier = this.addGoodsForm.gSupplierv;
           this.addGoodsForm.gColor += "";
