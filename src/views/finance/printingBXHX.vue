@@ -112,7 +112,7 @@ export default {
   components: {
     selectClient,
     selectUser,
-    selectBankAccount
+    selectBankAccount,
   },
   data() {
     return {
@@ -152,10 +152,10 @@ export default {
             pdAmount: 0, // 金额
             pdRemark: "", // 借款备注
             pdSubjectnum: "", // 科目编号
-            pdSubjectname: "" //科目名称
-          }
+            pdSubjectname: "", //科目名称
+          },
         ],
-        approvers: [] // 审核人
+        approvers: [], // 审核人
       },
       prive: 0,
       bankAccountList: [],
@@ -163,12 +163,12 @@ export default {
       pickerOptions: {
         disabledDate(time) {
           return time.getTime() < Date.now() - 8.64e7;
-        }
+        },
       },
       cuid: this.$route.query.ID,
       arr: [],
       GSoptions: [],
-      pid: 0
+      pid: 0,
     };
   },
   created() {
@@ -179,28 +179,28 @@ export default {
       this.getUserBank();
     }
     if (this.cuid) {
-      this.$api.Customer.get({ id: this.cuid }).then(res => {
+      this.$api.Customer.get({ id: this.cuid }).then((res) => {
         this.form.rCuidv = res.data.records[0].cuDivvalue;
         this.form.rCuid = this.cuid;
       });
     }
     let parms = {
       typeCode: "ZZJG",
-      value1: 1
+      value1: 1,
     };
-    this.$api.Common.get(parms).then(res => {
-      this.GSoptions = res.data.map(item => {
+    this.$api.Common.get(parms).then((res) => {
+      this.GSoptions = res.data.map((item) => {
         return {
           label: item.cAttrvalue,
-          value: item.cAttrcode
+          value: item.cAttrcode,
         };
       });
     });
-    this.$api.Common.get({ typeCode: "YHZH", cStatus: 1 }).then(res => {
-      this.bankAccountList = res.data.map(item => {
+    this.$api.Common.get({ typeCode: "YHZH", cStatus: 1 }).then((res) => {
+      this.bankAccountList = res.data.map((item) => {
         return {
           label: item.cAttrvalue,
-          value: item.cAttrcode
+          value: item.cAttrcode,
         };
       });
     });
@@ -216,7 +216,7 @@ export default {
     },
     getUserBank(val) {
       let obj = { uid: val ? val : this.$storage.userId };
-      this.$api.User.get(obj).then(res => {
+      this.$api.User.get(obj).then((res) => {
         if (res.code == 200) {
           this.form.bankaccount = res.data.records[0].uBankaccount;
           this.form.bankname = res.data.records[0].uBankname;
@@ -233,7 +233,7 @@ export default {
       if (!this.form.handman) return this.$message.error("请选择报销人");
       if (!this.form.paymentdate) return this.$message.error("请选择日期");
       this.arr = [];
-      this.tableData.map(item => {
+      this.tableData.map((item) => {
         if (item.pdSubjectname && item.pdAmount) {
           item.pdAmount = Number(item.pdAmount);
           if (this.pid) item.pdPid = this.pid;
@@ -261,23 +261,23 @@ export default {
           lock: true,
           text: "提交中",
           spinner: "el-icon-loading",
-          background: "rgba(0, 0, 0, 0.7)"
+          background: "rgba(0, 0, 0, 0.7)",
         });
         param.TPremoneydtsList = this.arr;
         if (this.pid) param.pdPid = this.pid;
         delete param.PD_APPROVALSTATUS;
         if (val == "false") {
-          param.TPremoneydtsList.map(item => {
+          param.TPremoneydtsList.map((item) => {
             item.pdStatus = 1;
             item.pdApprovalstatus = 2;
           });
           param.isApproval = 0;
-          this.$api.Premoney.save(param).then(res => {
+          this.$api.Premoney.save(param).then((res) => {
             loading.close();
             if (res.code === 200) {
               this.$message({
                 message: "修改成功",
-                type: "success"
+                type: "success",
               });
               this.$router.push("/reimburseList");
             } else {
@@ -288,12 +288,12 @@ export default {
         }
         if (val != 1) {
           param.approvers = val;
-          this.$api.Premoney.save(param).then(res => {
+          this.$api.Premoney.save(param).then((res) => {
             loading.close();
             if (res.code === 200) {
               this.$message({
                 message: "提交成功",
-                type: "success"
+                type: "success",
               });
               this.$router.push("/reimburseList");
             } else {
@@ -301,12 +301,12 @@ export default {
             }
           });
         } else {
-          this.$api.Premoney.financialAccounting(param).then(res => {
+          this.$api.Premoney.financialAccounting(param).then((res) => {
             loading.close();
             if (res.code === 200) {
               this.$message({
                 message: "提交成功",
-                type: "success"
+                type: "success",
               });
               this.$router.push("/reimburseList");
             } else {
@@ -326,7 +326,8 @@ export default {
       } else {
         delete params.from;
       }
-      this.$api.Premoney.getPremoneyAndDtsItemList(params).then(res => {
+      params.size = 100;
+      this.$api.Premoney.getPremoneyAndDtsItemList(params).then((res) => {
         if (res.records) {
           let item = res.records;
           item.map((item, i) => {
@@ -425,9 +426,9 @@ export default {
           sums[index] = "合计";
           return;
         }
-        const values = data.map(item => Number(item[column.property]));
+        const values = data.map((item) => Number(item[column.property]));
         if (
-          !values.every(value => isNaN(value)) &&
+          !values.every((value) => isNaN(value)) &&
           column.property == "pdAmount"
         ) {
           sums[index] = values.reduce((prev, curr) => {
@@ -474,8 +475,8 @@ export default {
     },
     handlePreview(file) {
       console.log(file);
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped lang="scss">

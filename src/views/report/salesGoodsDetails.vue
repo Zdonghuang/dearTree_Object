@@ -406,6 +406,20 @@
                 show-overflow-tooltip
                 sortable
                 align="center"
+                prop="logisticsCompany"
+                label="物流公司"
+              ></el-table-column>
+              <el-table-column
+                show-overflow-tooltip
+                sortable
+                align="center"
+                prop="logisticsNum"
+                label="物流单号"
+              ></el-table-column>
+              <el-table-column
+                show-overflow-tooltip
+                sortable
+                align="center"
                 prop="goodsClassA"
                 label="一级分类"
               ></el-table-column>
