@@ -526,7 +526,7 @@
             </template>
           </el-table-column>
           <el-table-column sortable prop="banknames" label="开户行及账号" align="center"></el-table-column>
-          <el-table-column sortable prop="banknums" label="地址及电话" align="center"></el-table-column>
+          <el-table-column sortable prop="rCmobile" label="地址及电话" align="center"></el-table-column>
           <!-- <el-table-column sortable prop="rCmobile" label="手机号" align="center"></el-table-column> -->
         </el-table>
       </div>
@@ -820,7 +820,6 @@ export default {
               item.fsSubjectname = obj.fsSubjectname;
               item.fsSubjectnum = obj.fsSubjectnum;
               item.banknames = obj.banknames;
-              item.banknums = obj.banknums;
               item.rCmobile = obj.rCmobile;
               item.partnerId = obj.partnerId;
             });
@@ -963,9 +962,8 @@ export default {
       if (val) {
         this.ConstructionData[this.rowindex].partner = val.cuName;
         this.ConstructionData[this.rowindex].partnerId = val.cuId;
-        // this.ConstructionData[this.rowindex].rCmobile = val.mobilestr;
+        this.ConstructionData[this.rowindex].rCmobile = val.cuBankcardnum;
         this.ConstructionData[this.rowindex].banknames = val.cuBankname;
-        this.ConstructionData[this.rowindex].banknums = val.cuBankcardnum;
       }
       this.showSelectClient = false;
     },
@@ -1122,7 +1120,6 @@ export default {
         if (item.reTypecode && item.reTolprice) {
           let obj = this.deepCopy({
             banknames: item.banknames,
-            banknums: item.banknums,
             rCmobile: item.rCmobile,
             partner: item.partner,
             partnerId: item.partnerId

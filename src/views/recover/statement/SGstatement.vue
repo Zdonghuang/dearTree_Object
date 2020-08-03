@@ -544,9 +544,8 @@
               ></i>
             </template>
           </el-table-column>
-          <el-table-column sortable prop="banknames" label="银行卡名称" align="center"></el-table-column>
-          <el-table-column sortable prop="banknums" label="银行卡号" align="center"></el-table-column>
-          <el-table-column sortable prop="rCmobile" label="手机号" align="center"></el-table-column>
+          <el-table-column sortable prop="banknames" label="开户行及账号" align="center"></el-table-column>
+          <el-table-column sortable prop="rCmobile" label="电话" align="center"></el-table-column>
           <el-table-column sortable property="partner" align="center">
             <template slot="header">
               <i class="el-icon-question bluecolor"></i>
@@ -675,7 +674,7 @@ export default {
     examine,
     selectUser,
     selectClient,
-    selectBankAccount
+    selectBankAccount,
   },
   data() {
     return {
@@ -709,7 +708,7 @@ export default {
         rTotalprice: 0,
         rBillingstatus: "0",
         rLogistics: "",
-        rShipmentnumber: ""
+        rShipmentnumber: "",
         // rCuserid: this.$storage.userName
       },
       showbank: true,
@@ -742,7 +741,7 @@ export default {
       pickerOptions: {
         disabledDate(time) {
           return time.getTime() < Date.now() - 8.64e7;
-        }
+        },
       },
       YHZH: "",
       // 施工环境
@@ -767,22 +766,22 @@ export default {
         rcDkxg: "",
         rcCmt: 0,
         rcByjl: "",
-        rcCip: ""
+        rcCip: "",
       },
       SGFY: 0,
       SPFL: [],
       load: false,
-      loading: {}
+      loading: {},
     };
   },
   computed: {
-    reTolprice: function() {
-      this.ConstructionData.map(item => {
+    reTolprice: function () {
+      this.ConstructionData.map((item) => {
         if (item.reUnitprice && item.reQuantity) {
           return (item.reTolprice = item.reUnitprice * item.reQuantity);
         }
       });
-    }
+    },
   },
   created() {
     this.nowdata = this.$PublicJS.nowDate();
@@ -798,7 +797,7 @@ export default {
       lock: true,
       text: "加载中",
       spinner: "el-icon-loading",
-      background: "rgba(0, 0, 0, 0.7)"
+      background: "rgba(0, 0, 0, 0.7)",
     });
   },
   methods: {
@@ -819,36 +818,35 @@ export default {
       this.img = url;
     },
     getSGHJ() {
-      this.$api.Common.get({ typeCode: "SGHJ" }).then(res => {
+      this.$api.Common.get({ typeCode: "SGHJ" }).then((res) => {
         this.ConstructionData = this.deepCopy(
           new Array(5).fill({ reTypecode: "" })
         );
         this.Conoptions = [
           {
             label: "请选择",
-            value: ""
-          }
+            value: "",
+          },
         ];
-        res.data.map(item => {
+        res.data.map((item) => {
           if (item.cStatus == 1) {
             this.Conoptions.push({
               label: item.cAttrvalue,
-              value: item.cAttrcode
+              value: item.cAttrcode,
             });
           }
         });
       });
     },
     getrecoverOrder() {
-      this.$api.Receipt.get({ rId: this.rId }).then(res => {
+      this.$api.Receipt.get({ rId: this.rId }).then((res) => {
         this.BH = res.data.records[0].rItemnum;
-        this.$api.Receiptexpense.get({ rid: this.rId }).then(res => {
+        this.$api.Receiptexpense.get({ rid: this.rId }).then((res) => {
           if (res.data.records.length) {
-            res.data.records.map(item => {
+            res.data.records.map((item) => {
               const obj = JSON.parse(item.partner);
               item.partner = obj.partner;
               item.banknames = obj.banknames;
-              item.banknums = obj.banknums;
               item.banknamef = obj.fsBankname;
               item.banknumf = obj.fsBankaccount;
               item.subjectname = obj.subjectname;
@@ -873,8 +871,8 @@ export default {
         this.form = res.data.records[0];
         this.$api.Receiptdts.getReceiptDtsGoods({
           rid: this.rId,
-          whid: this.form.rWhid
-        }).then(res => {
+          whid: this.form.rWhid,
+        }).then((res) => {
           this.tableData = [];
           this.tableData2 = [];
           res.data.map((item, index) => {
@@ -895,8 +893,8 @@ export default {
           this.tableData2 = this.deepCopy(this.tableData2);
         });
         this.$api.Receiptdts.getReceiptDtsGoods({
-          rid: this.rId
-        }).then(res => {
+          rid: this.rId,
+        }).then((res) => {
           this.loading.close();
           this.load = true;
           this.tableData3 = [];
@@ -914,12 +912,12 @@ export default {
           this.tableData3 = this.deepCopy(this.tableData3);
         });
         this.getrCid({ cuid: this.form.rCuid });
-        this.$api.Receipt.gettconstruct({ rid: this.rId }).then(res => {
+        this.$api.Receipt.gettconstruct({ rid: this.rId }).then((res) => {
           if (res.data) {
             this.Envform = res.data;
           }
         });
-        this.$api.Receiptexpense.get({ rid: this.rId }).then(res => {
+        this.$api.Receiptexpense.get({ rid: this.rId }).then((res) => {
           if (res.data.length) {
             this.ConstructionData = res.data.records;
           }
@@ -932,7 +930,7 @@ export default {
     selectChange() {
       // 强制更新
       this.$forceUpdate();
-      let obj = this.contact.find(item => {
+      let obj = this.contact.find((item) => {
         return item.value == this.form.rCid;
       });
       this.form.rCmobile = obj.rCmobile;
@@ -960,7 +958,7 @@ export default {
     },
     getrCid(val) {
       this.contact = [];
-      this.$api.Contact.get(val).then(res => {
+      this.$api.Contact.get(val).then((res) => {
         let Items = res.data.records;
         if (!res.data.records.length) return (this.form.rCid = "");
         Items.map((item, index) => {
@@ -973,7 +971,7 @@ export default {
             value: item.cId,
             label: item.cName,
             rCmobile: item.cMobile,
-            rCaddr: item.cAddr
+            rCaddr: item.cAddr,
           });
         });
       });
@@ -995,12 +993,12 @@ export default {
     getService() {
       this.SPFL = [];
       this.$api.Common.get({ attrCodeParent: "09", typeCode: "SPFL" }).then(
-        res => {
+        (res) => {
           if (res.code == 200) {
-            res.data.map(item => {
+            res.data.map((item) => {
               this.SPFL.push({
                 cAttrvalue: item.cAttrvalue,
-                gId: item.cAttrcode
+                gId: item.cAttrcode,
               });
             });
           }
@@ -1016,9 +1014,9 @@ export default {
           sums[index] = "合计";
           return;
         }
-        const values = data.map(item => Number(item[column.property]));
+        const values = data.map((item) => Number(item[column.property]));
         if (
-          !values.every(value => isNaN(value)) &&
+          !values.every((value) => isNaN(value)) &&
           column.property == "reTolprice"
         ) {
           sums[index] = values.reduce((prev, curr) => {
@@ -1051,7 +1049,10 @@ export default {
     },
     Printing() {
       const data = this.$route.query.data;
-      window.open(`/#/recover/printingRecoverSettlement?data=${data}`, "_blank");
+      window.open(
+        `/#/recover/printingRecoverSettlement?data=${data}`,
+        "_blank"
+      );
     },
     searchboxa(e, val) {
       this.rowindex = val;
@@ -1089,7 +1090,7 @@ export default {
     openDD(val) {
       let n = false;
       let m = false;
-      this.ConstructionData.map(item => {
+      this.ConstructionData.map((item) => {
         if (item && item.reTypecode) {
           if (!item.banknamef) {
             n = true;
@@ -1104,7 +1105,7 @@ export default {
       this.$confirm("确认完成施工结算?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning"
+        type: "warning",
       })
         .then(() => {
           this.close("false");
@@ -1129,7 +1130,7 @@ export default {
           fsBankname: item.banknamef,
           fsBankaccount: item.banknumf,
           fsSubjectname: item.subjectname,
-          fsSubjectnum: item.subjectnum
+          fsSubjectnum: item.subjectnum,
         });
         let obj = this.deepCopy({
           fsBankname: item.banknamef,
@@ -1138,7 +1139,7 @@ export default {
           fsSubjectnum: item.subjectnum,
           rCmobile: item.rCmobile,
           partner: item.partner,
-          partnerId: item.partnerId
+          partnerId: item.partnerId,
         });
         item.partner = JSON.stringify(obj);
         ConstructionData.push(item);
@@ -1153,14 +1154,14 @@ export default {
         receiptInfoVO: this.form,
         receiptExpenseList: ConstructionData,
         tReceiptconstruct: this.Envform,
-        receiptFinancial: fsData
+        receiptFinancial: fsData,
       };
       if (val1 && val1.length) params.cc = val1;
       let loading = this.$loading({
         lock: true,
         text: "提交中",
         spinner: "el-icon-loading",
-        background: "rgba(0, 0, 0, 0.7)"
+        background: "rgba(0, 0, 0, 0.7)",
       });
       this.tableData.forEach((item, index) => {
         let obj = {};
@@ -1198,19 +1199,19 @@ export default {
         }
       });
       this.showDD = false;
-      this.$api.Receipt.saveall(params).then(res => {
+      this.$api.Receipt.saveall(params).then((res) => {
         loading.close();
         if (res.code == 200) {
           this.$message({
             message: "提交成功",
-            type: "success"
+            type: "success",
           });
           this.$router.push("/recover/statement/SGstatementList");
         } else {
           this.$message.error(res.err);
         }
       });
-    }
-  }
+    },
+  },
 };
 </script>
