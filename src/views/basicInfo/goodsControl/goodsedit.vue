@@ -953,8 +953,10 @@ export default {
     },
     //确定提交
     submitForm(formName) {
-      if (!this.addGoodsForm.gClasss) this.$message.error("请选择商品主类");
-      if (!this.addGoodsForm.gClass) this.$message.error("请选择商品子类");
+      if (!this.addGoodsForm.gClasss)
+        return this.$message.error("请选择商品主类");
+      if (!this.addGoodsForm.gClass)
+        return this.$message.error("请选择商品子类");
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.formData = new FormData();
