@@ -250,10 +250,6 @@ export default {
         this.tableData.push({});
       });
     },
-    Printing() {
-      const data = this.$route.query.data;
-      window.open(`/#/printingFundFlowDetail`, "_blank");
-    },
     exportTable() {
       let box = this.$xlsx.utils.table_to_book(
         document.querySelector("#table-data")

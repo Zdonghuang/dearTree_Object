@@ -31,7 +31,7 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="5">
-          <el-form-item label="商品主类" prop="gClasss">
+          <el-form-item label="商品主类">
             <el-select
               :disabled="this.gId===''?false:true"
               v-model="addGoodsForm.gClasss"
@@ -49,7 +49,7 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="5">
-          <el-form-item label="商品子类" prop="gClass">
+          <el-form-item label="商品子类">
             <el-select
               v-model="addGoodsForm.gClass"
               placeholder="请选择品类"
@@ -407,10 +407,10 @@ import selectGoodsSupplier from "@/components/dialog/SelectGoodsSupplier";
 import { savedts } from "@/api/user";
 export default {
   props: {
-    parent: 0
+    parent: 0,
   },
   components: {
-    selectGoodsSupplier
+    selectGoodsSupplier,
   },
   data() {
     return {
@@ -460,7 +460,7 @@ export default {
         gColor: "1",
         gClass: "",
         gBrand: "",
-        DJ: ""
+        DJ: "",
       },
       addGoodsForms: {
         PZYS: [],
@@ -470,7 +470,7 @@ export default {
         CZND: "",
         CXD: "",
         PZYS: "",
-        DJ: ""
+        DJ: "",
       },
       loading: {},
       load: false,
@@ -481,16 +481,16 @@ export default {
         gClass: [{ required: true, message: " ", trigger: "change" }],
         gBrandp: [{ required: true, message: " ", trigger: "change" }],
         gBrand: [{ required: true, message: " ", trigger: "change" }],
-        gPurorrecover: [{ required: true, message: " ", trigger: "change" }]
-      }
+        gPurorrecover: [{ required: true, message: " ", trigger: "change" }],
+      },
     };
   },
   watch: {
     parent: {
-      handler: function(newv, oldv) {
+      handler: function (newv, oldv) {
         this.$props.parent = newv;
-      }
-    }
+      },
+    },
   },
   created() {
     if (this.$props.parent) {
@@ -514,7 +514,7 @@ export default {
         lock: true,
         text: "加载中",
         spinner: "el-icon-loading",
-        background: "rgba(0, 0, 0, 0.7)"
+        background: "rgba(0, 0, 0, 0.7)",
       });
       this.gitGoodsList();
     } else {
@@ -534,13 +534,13 @@ export default {
     getGoodsSPFL() {
       let parms = {
         typeCode: "SPFL",
-        attrCodeParent: 0
+        attrCodeParent: 0,
       };
-      this.$api.Common.get(parms).then(res => {
-        this.SPFLoptions = res.data.map(item => {
+      this.$api.Common.get(parms).then((res) => {
+        this.SPFLoptions = res.data.map((item) => {
           return {
             label: item.cAttrcode + item.cAttrvalue,
-            value: item.cAttrcode
+            value: item.cAttrcode,
           };
         });
       });
@@ -548,7 +548,7 @@ export default {
     getSPFL() {
       let parms = {
         typeCode: "SPFL",
-        attrCodeParent: this.addGoodsForm.gClasss
+        attrCodeParent: this.addGoodsForm.gClasss,
       };
       this.addGoodsForm.gClass = "";
       if (this.gclass) {
@@ -556,12 +556,12 @@ export default {
         this.gclass = "";
       }
       this.getGoodsPZYS();
-      this.$api.Common.get(parms).then(res => {
+      this.$api.Common.get(parms).then((res) => {
         this.addGoodsForm.gUnit = res.data[0].cValue2;
-        this.SPFL1options = res.data.map(item => {
+        this.SPFL1options = res.data.map((item) => {
           return {
             label: item.cAttrvalue,
-            value: item.cAttrcode
+            value: item.cAttrcode,
           };
         });
       });
@@ -573,14 +573,14 @@ export default {
     getGoodsPZYS() {
       let parms = {
         typeCode: "PZYS",
-        attrCodeParent: this.addGoodsForm.gClasss
+        attrCodeParent: this.addGoodsForm.gClasss,
       };
       this.addGoodsForms.PZYS = [];
-      this.$api.Common.get(parms).then(res => {
-        this.PZYSoptions = res.data.map(item => {
+      this.$api.Common.get(parms).then((res) => {
+        this.PZYSoptions = res.data.map((item) => {
           return {
             label: item.cAttrvalue,
-            value: item.cAttrcode + "," + item.cAttrvalue
+            value: item.cAttrcode + "," + item.cAttrvalue,
           };
         });
       });
@@ -589,13 +589,13 @@ export default {
     getGoodsPP() {
       let parms = {
         typeCode: "PP",
-        attrCodeParent: 0
+        attrCodeParent: 0,
       };
-      this.$api.Common.get(parms).then(res => {
-        this.PPoptions = res.data.map(item => {
+      this.$api.Common.get(parms).then((res) => {
+        this.PPoptions = res.data.map((item) => {
           return {
             label: item.cAttrvalue,
-            value: item.cAttrcode
+            value: item.cAttrcode,
           };
         });
       });
@@ -604,7 +604,7 @@ export default {
     getPP1() {
       let parms = {
         typeCode: "PP",
-        attrCodeParent: this.addGoodsForm.gBrandp
+        attrCodeParent: this.addGoodsForm.gBrandp,
       };
       this.addGoodsForm.gBrand = "";
       this.addGoodsForm.gBrandseries = "";
@@ -613,11 +613,11 @@ export default {
         this.getpp1 = "";
         this.getPP2();
       }
-      this.$api.Common.get(parms).then(res => {
-        this.PP1options = res.data.map(item => {
+      this.$api.Common.get(parms).then((res) => {
+        this.PP1options = res.data.map((item) => {
           return {
             label: item.cAttrvalue,
-            value: item.cAttrcode
+            value: item.cAttrcode,
           };
         });
       });
@@ -626,18 +626,18 @@ export default {
     getPP2() {
       let parms = {
         typeCode: "PP",
-        attrCodeParent: this.addGoodsForm.gBrand
+        attrCodeParent: this.addGoodsForm.gBrand,
       };
       this.addGoodsForm.gBrandseries = "";
       if (this.getpp2) {
         this.addGoodsForm.gBrandseries = `${this.getpp2}`;
         this.getpp2 = "";
       }
-      this.$api.Common.get(parms).then(res => {
-        this.PP2options = res.data.map(item => {
+      this.$api.Common.get(parms).then((res) => {
+        this.PP2options = res.data.map((item) => {
           return {
             label: item.cAttrvalue,
-            value: item.cAttrcode
+            value: item.cAttrcode,
           };
         });
       });
@@ -646,13 +646,13 @@ export default {
     //颜色
     getGoodsYS() {
       let parms = {
-        typeCode: "YS"
+        typeCode: "YS",
       };
-      this.$api.Common.get(parms).then(res => {
-        this.YSoptions = res.data.map(item => {
+      this.$api.Common.get(parms).then((res) => {
+        this.YSoptions = res.data.map((item) => {
           return {
             label: item.cAttrvalue,
-            value: item.cAttrcode
+            value: item.cAttrcode,
           };
         });
       });
@@ -660,13 +660,13 @@ export default {
     //畅销度
     getGoodsCXD() {
       let parms = {
-        typeCode: "CXD"
+        typeCode: "CXD",
       };
-      this.$api.Common.get(parms).then(res => {
-        this.CXDoptions = res.data.map(item => {
+      this.$api.Common.get(parms).then((res) => {
+        this.CXDoptions = res.data.map((item) => {
           return {
             label: item.cAttrvalue,
-            value: item.cAttrcode + "," + item.cAttrvalue
+            value: item.cAttrcode + "," + item.cAttrvalue,
           };
         });
       });
@@ -674,13 +674,13 @@ export default {
     //等级
     getGoodsDJ() {
       let parms = {
-        typeCode: "DJ"
+        typeCode: "DJ",
       };
-      this.$api.Common.get(parms).then(res => {
-        this.DJoptions = res.data.map(item => {
+      this.$api.Common.get(parms).then((res) => {
+        this.DJoptions = res.data.map((item) => {
           return {
             label: item.cAttrvalue,
-            value: item.cAttrcode + "," + item.cAttrvalue
+            value: item.cAttrcode + "," + item.cAttrvalue,
           };
         });
       });
@@ -688,13 +688,13 @@ export default {
     //拆装难度
     getGoodsCZND() {
       let parms = {
-        typeCode: "CZND"
+        typeCode: "CZND",
       };
-      this.$api.Common.get(parms).then(res => {
-        this.CZNDoptions = res.data.map(item => {
+      this.$api.Common.get(parms).then((res) => {
+        this.CZNDoptions = res.data.map((item) => {
           return {
             label: item.cAttrvalue,
-            value: item.cAttrcode + "," + item.cAttrvalue
+            value: item.cAttrcode + "," + item.cAttrvalue,
           };
         });
       });
@@ -702,13 +702,13 @@ export default {
     //材质
     getGoodsCZ() {
       let parms = {
-        typeCode: "CZ"
+        typeCode: "CZ",
       };
-      this.$api.Common.get(parms).then(res => {
-        this.CZoptions = res.data.map(item => {
+      this.$api.Common.get(parms).then((res) => {
+        this.CZoptions = res.data.map((item) => {
           return {
             label: item.cAttrvalue,
-            value: item.cAttrcode + "," + item.cAttrvalue
+            value: item.cAttrcode + "," + item.cAttrvalue,
           };
         });
       });
@@ -716,13 +716,13 @@ export default {
     //年限
     getGoodsNX() {
       let parms = {
-        typeCode: "NX"
+        typeCode: "NX",
       };
-      this.$api.Common.get(parms).then(res => {
-        this.NXoptions = res.data.map(item => {
+      this.$api.Common.get(parms).then((res) => {
+        this.NXoptions = res.data.map((item) => {
           return {
             label: item.cAttrvalue,
-            value: item.cAttrcode
+            value: item.cAttrcode,
           };
         });
       });
@@ -730,13 +730,13 @@ export default {
     //成色
     getGoodsCS() {
       let parms = {
-        typeCode: "CS"
+        typeCode: "CS",
       };
-      this.$api.Common.get(parms).then(res => {
-        this.CSoptions = res.data.map(item => {
+      this.$api.Common.get(parms).then((res) => {
+        this.CSoptions = res.data.map((item) => {
           return {
             label: item.cAttrvalue,
-            value: item.cAttrcode + "," + item.cAttrvalue
+            value: item.cAttrcode + "," + item.cAttrvalue,
           };
         });
       });
@@ -744,13 +744,13 @@ export default {
     //在售状态
     getGoodsZSZT() {
       let parms = {
-        typeCode: "ZSZT"
+        typeCode: "ZSZT",
       };
-      this.$api.Common.get(parms).then(res => {
-        this.ZSZToptions = res.data.map(item => {
+      this.$api.Common.get(parms).then((res) => {
+        this.ZSZToptions = res.data.map((item) => {
           return {
             label: item.cAttrvalue,
-            value: item.cAttrcode
+            value: item.cAttrcode,
           };
         });
       });
@@ -759,13 +759,13 @@ export default {
     getGoodsGS() {
       let parms = {
         typeCode: "ZZJG",
-        value1: 1
+        value1: 1,
       };
-      this.$api.Common.get(parms).then(res => {
-        this.GSoptions = res.data.map(item => {
+      this.$api.Common.get(parms).then((res) => {
+        this.GSoptions = res.data.map((item) => {
           return {
             label: item.cAttrvalue,
-            value: item.cAttrcode
+            value: item.cAttrcode,
           };
         });
       });
@@ -785,9 +785,9 @@ export default {
     gitGoodsList() {
       let param = {
         gid: this.gId,
-        distinctwhid: 1
+        distinctwhid: 1,
       };
-      this.$api.Goods.get(param).then(res => {
+      this.$api.Goods.get(param).then((res) => {
         if (res.data) {
           res.data.records[0].gUnitprice = res.data.records[0].iUnitprice;
           this.addGoodsForm = res.data.records[0];
@@ -835,9 +835,9 @@ export default {
     getgClassName(val) {
       let parms = {
         typeCode: "SPFL",
-        attrCode: val
+        attrCode: val,
       };
-      this.$api.Common.get(parms).then(res => {
+      this.$api.Common.get(parms).then((res) => {
         if (res.data.length) {
           this.addGoodsForm.gClasss = res.data[0].cAttrcodeparent;
         }
@@ -849,9 +849,9 @@ export default {
     getgBrandName(val) {
       let parms = {
         typeCode: "PP",
-        attrCode: val
+        attrCode: val,
       };
-      this.$api.Common.get(parms).then(res => {
+      this.$api.Common.get(parms).then((res) => {
         if (res.data.length) {
           this.addGoodsForm.gBrandp = res.data[0].cAttrcodeparent;
         }
@@ -861,9 +861,9 @@ export default {
     //商品详细
     gitGoodsListdts() {
       let param = {
-        gid: this.gId
+        gid: this.gId,
       };
-      this.$api.Goodsdts.get(param).then(res => {
+      this.$api.Goodsdts.get(param).then((res) => {
         if (res.data) {
           this.addGoodsForms.PZYS = [];
           res.data.forEach((item, index) => {
@@ -896,7 +896,7 @@ export default {
               );
               this.fileList.push({
                 name: "商品照片",
-                url: `${this.baseUrl}api${item.gdCvalue}`
+                url: `${this.baseUrl}api${item.gdCvalue}`,
               });
             }
           });
@@ -909,7 +909,7 @@ export default {
       this.$confirm("此操作将删除此图片, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning"
+        type: "warning",
       })
         .then(() => {
           this.addGoodsForms.TP.splice(val, 1);
@@ -917,15 +917,15 @@ export default {
         .catch(() => {
           this.$message({
             type: "info",
-            message: "已取消操作"
+            message: "已取消操作",
           });
         });
     },
     handleExceed(files, fileList) {
       this.$message.warning(
-        `当前限制选择 5 个文件，本次选择了 ${
-          files.length
-        } 个文件，共选择了 ${files.length + fileList.length} 个文件`
+        `当前限制选择 5 个文件，本次选择了 ${files.length} 个文件，共选择了 ${
+          files.length + fileList.length
+        } 个文件`
       );
     },
     handlePreview(file) {
@@ -953,26 +953,28 @@ export default {
     },
     //确定提交
     submitForm(formName) {
-      this.$refs[formName].validate(valid => {
+      if (!this.addGoodsForm.gClasss) this.$message.error("请选择商品主类");
+      if (!this.addGoodsForm.gClass) this.$message.error("请选择商品子类");
+      this.$refs[formName].validate((valid) => {
         if (valid) {
           this.formData = new FormData();
           this.$refs.upload.submit();
           if (this.addGoodsForms.PZYS.length) {
-            this.addGoodsForms.PZYS.map(item => {
+            this.addGoodsForms.PZYS.map((item) => {
               this.code.push({
                 gdCtypecode: "PZYS",
                 gdCattrcode: item.split(",")[0],
-                gdCvalue: item.split(",")[1]
+                gdCvalue: item.split(",")[1],
               });
             });
           }
           if (this.addGoodsForms.TP.length) {
-            this.addGoodsForms.TP.map(item => {
+            this.addGoodsForms.TP.map((item) => {
               if (!this.removerImg.includes(item)) {
                 this.code.push({
                   gdCtypecode: "TP",
                   gdCattrcode: item.split(",")[0],
-                  gdCvalue: item.split(",")[1]
+                  gdCvalue: item.split(",")[1],
                 });
               }
             });
@@ -981,7 +983,7 @@ export default {
             lock: true,
             text: "保存中",
             spinner: "el-icon-loading",
-            background: "rgba(0, 0, 0, 0.7)"
+            background: "rgba(0, 0, 0, 0.7)",
           });
           const arr = [];
           if (this.addGoodsForms.CXD) {
@@ -1002,11 +1004,11 @@ export default {
           if (this.addGoodsForms.PZ) {
             arr.push("PZ");
           }
-          arr.map(item => {
+          arr.map((item) => {
             this.code.push({
               gdCtypecode: item,
               gdCattrcode: this.addGoodsForms[item].split(",")[0],
-              gdCvalue: this.addGoodsForms[item].split(",")[1]
+              gdCvalue: this.addGoodsForms[item].split(",")[1],
             });
           });
           if (!this.addGoodsForm.chang) {
@@ -1043,7 +1045,7 @@ export default {
             gUnit: this.addGoodsForm.gUnit,
             gUnitprice: this.addGoodsForm.gUnitprice,
             gNeedinstall: this.addGoodsForm.gNeedinstall,
-            tGoodsdtsList: this.code
+            tGoodsdtsList: this.code,
           };
           if (!formData.formData) delete formData.formData;
           if (this.gId) {
@@ -1056,93 +1058,95 @@ export default {
           //获取公司简称
           let parms = {
             typeCode: "ZZJG",
-            attrCode: this.addGoodsForm.gOid
+            attrCode: this.addGoodsForm.gOid,
           };
-          this.$api.Common.get(parms).then(res => {
+          this.$api.Common.get(parms).then((res) => {
             this.addGoodsForm.cValue3 = res.data[0].cValue3;
             let param = {
               gclass: this.addGoodsForm.gClasss,
-              oidv: this.addGoodsForm.cValue3
+              oidv: this.addGoodsForm.cValue3,
             };
             if (this.$route.query.copy || !formData.gId) {
-              this.$api.Goods.code(param).then(res => {
+              this.$api.Goods.code(param).then((res) => {
                 if (res) {
                   this.addGoodsForm.gItemnum = res;
                   formData.gItemnum = res;
-                  this.$ajax.post("/system/upload", this.formData).then(res => {
-                    if (res.data.code === 200) {
-                      if (Object.values(res.data.data).length) {
-                        Object.values(res.data.data).map(item => {
-                          files.push({
-                            gdCtypecode: "TP",
-                            gdCattrcode: 154,
-                            gdCvalue: `/file/${item}`
+                  this.$ajax
+                    .post("/system/upload", this.formData)
+                    .then((res) => {
+                      if (res.data.code === 200) {
+                        if (Object.values(res.data.data).length) {
+                          Object.values(res.data.data).map((item) => {
+                            files.push({
+                              gdCtypecode: "TP",
+                              gdCattrcode: 154,
+                              gdCvalue: `/file/${item}`,
+                            });
                           });
-                        });
+                        }
                       }
-                    }
-                    files.map(item => {
-                      formData.tGoodsdtsList.push(item);
+                      files.map((item) => {
+                        formData.tGoodsdtsList.push(item);
+                      });
+                      this.$api.Goods.savedts(formData).then((res) => {
+                        loading.close();
+                        if (res.code === 200) {
+                          if (this.$props.parent)
+                            return this.$emit("closeAddGoods");
+                          this.$message({
+                            message: "商品数据保存成功",
+                            type: "success",
+                          });
+                          this.$router.push({
+                            path: `goods?oid=${
+                              this.$route.query.oid ? this.$route.query.oid : ""
+                            }`,
+                          });
+                        } else {
+                          this.i = 0;
+                          this.num = 0;
+                          files.map((item, i) => {
+                            if (formData.tGoodsdtsList.indexOf(item) > -1) {
+                              formData.tGoodsdtsList.splice(
+                                formData.tGoodsdtsList.indexOf(item),
+                                1
+                              );
+                            }
+                          });
+                          this.$message.error("失败");
+                        }
+                      });
                     });
-                    this.$api.Goods.savedts(formData).then(res => {
-                      loading.close();
-                      if (res.code === 200) {
-                        if (this.$props.parent)
-                          return this.$emit("closeAddGoods");
-                        this.$message({
-                          message: "商品数据保存成功",
-                          type: "success"
-                        });
-                        this.$router.push({
-                          path: `goods?oid=${
-                            this.$route.query.oid ? this.$route.query.oid : ""
-                          }`
-                        });
-                      } else {
-                        this.i = 0;
-                        this.num = 0;
-                        files.map((item, i) => {
-                          if (formData.tGoodsdtsList.indexOf(item) > -1) {
-                            formData.tGoodsdtsList.splice(
-                              formData.tGoodsdtsList.indexOf(item),
-                              1
-                            );
-                          }
-                        });
-                        this.$message.error("失败");
-                      }
-                    });
-                  });
                 }
               });
             } else {
-              this.$ajax.post("/system/upload", this.formData).then(res => {
+              this.$ajax.post("/system/upload", this.formData).then((res) => {
                 if (res.data.code === 200) {
                   if (Object.values(res.data.data).length) {
-                    Object.values(res.data.data).map(item => {
+                    Object.values(res.data.data).map((item) => {
                       files.push({
                         gdCtypecode: "TP",
                         gdCattrcode: 154,
-                        gdCvalue: `/file/${item}`
+                        gdCvalue: `/file/${item}`,
                       });
                     });
                   }
                 }
-                files.map(item => {
+                files.map((item) => {
                   formData.tGoodsdtsList.push(item);
                 });
-                this.$api.Goods.savedts(formData).then(res => {
+                this.$api.Goods.savedts(formData).then((res) => {
                   loading.close();
                   if (res.code === 200) {
                     if (this.$props.parent) return this.$emit("closeAddGoods");
                     this.$message({
                       message: "商品数据保存成功",
-                      type: "success"
+                      type: "success",
                     });
                     this.$router.push({
                       path: `goods?oid=${
                         this.$route.query.oid ? this.$route.query.oid : ""
-                      }`
+                      }`,
                     });
                   } else {
                     this.i = 0;
@@ -1165,8 +1169,8 @@ export default {
           this.$message.error("*为必填或必填项");
         }
       });
-    }
-  }
+    },
+  },
 };
 </script>
 

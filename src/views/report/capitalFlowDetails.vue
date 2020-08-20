@@ -6,7 +6,6 @@
         <el-button-group v-if="!$router.history.current.query.from">
           <el-button size="mini" icon="el-icon-refresh" @click="Refresh">刷新</el-button>
           <el-button size="mini" icon="el-icon-download" @click="getList('xlsx')">导出</el-button>
-          <el-button size="mini" icon="el-icon-download" @click="getList('xlsx')">导出</el-button>
           <el-button size="mini" icon="el-icon-printer" @click="Printing">打印</el-button>
         </el-button-group>
       </el-col>
@@ -443,7 +442,7 @@ export default {
       if (val == "xlsx") {
         d.size = this.total;
         d.currentPage = 1;
-      }d
+      }
       sessionStorage.setItem("getDataA", JSON.stringify(d));
       this.$api.ReportCapital.capitalFlowDetails(d).then(res => {
         this.tableData = res.data.records;

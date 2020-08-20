@@ -99,6 +99,7 @@
       :summary-method="getSummaries"
       sum-text="合计:"
       header-cell-class-name="thbgc"
+      v-if="showtable1"
     >
       <el-table-column type="index" width="55" align="center" property="index">
         <template slot="header">
@@ -153,7 +154,15 @@
         align="center"
         property="gName"
         width="150"
-        v-if="tableStatus.gName"
+        label="商品名称"
+        v-if="showdata"
+      ></el-table-column>
+      <el-table-column
+        sortable
+        align="center"
+        property="gName"
+        width="150"
+        v-if="tableStatus.gName&&!showdata"
       >
         <template slot="header">
           <span>商品名称</span>
@@ -186,7 +195,22 @@
           slot-scope="scope"
         >{{scope.row.rdIotype==2?'回收商品':scope.row.rdIotype==3?'清理商品':''}}</template>
       </el-table-column>
-      <el-table-column sortable width="100" align="center" property="iSellingprice" label="回收单价">
+      <el-table-column
+        sortable
+        align="center"
+        property="iSellingprice"
+        width="150"
+        label="回收单价"
+        v-if="showdata"
+      ></el-table-column>
+      <el-table-column
+        v-if="!showdata"
+        sortable
+        width="100"
+        align="center"
+        property="iSellingprice"
+        label="回收单价"
+      >
         <template slot-scope="scope">
           <input
             type="text"
@@ -200,11 +224,19 @@
       </el-table-column>
       <el-table-column
         sortable
+        align="center"
+        property="rdQuantity"
+        width="150"
+        label="入库数量"
+        v-if="showdata"
+      ></el-table-column>
+      <el-table-column
+        sortable
         width="100"
         align="center"
         property="rdQuantity"
         label="入库数量"
-        v-if="tableStatus.gName"
+        v-if="tableStatus.gName&&!showdata"
       >
         <template slot-scope="scope" v-if="scope.row.gName">
           <input
@@ -395,7 +427,7 @@ export default {
   inject: ["reload"],
   components: {
     settTable,
-    selectGoods
+    selectGoods,
   },
   data() {
     return {
@@ -407,8 +439,8 @@ export default {
       rowindex: "",
       icon: "",
       disabled: true,
-
       showtable: false,
+      showtable1: true,
       showSelectBankAccount: false,
       orderBH: null,
       orderID: null,
@@ -417,6 +449,7 @@ export default {
       idList: [],
       totalprice: 0,
       showselectGoods: false,
+      showdata: false,
       userName: this.$storage.userName,
       tableStatus: JSON.parse(sessionStorage.getItem("tableStatus")),
       // 单据信息
@@ -440,7 +473,7 @@ export default {
         rRemark: "",
         rShipmentnumber: "",
         rCuidv: "",
-        rStatus: 1
+        rStatus: 1,
       },
       nowdata: "",
       TotalGood: 0,
@@ -448,17 +481,17 @@ export default {
       load: false,
       loading: {},
       o: false,
-      m: 0
+      m: 0,
     };
   },
   computed: {
-    money: function() {
-      this.tableData.map(item => {
+    money: function () {
+      this.tableData.map((item) => {
         if (item.rdQuantity && item.iSellingprice) {
           return (item.money = item.rdQuantity * item.iSellingprice);
         }
       });
-    }
+    },
   },
   created() {
     let date = new Date();
@@ -482,7 +515,7 @@ export default {
         lock: true,
         text: "加载中",
         spinner: "el-icon-loading",
-        background: "rgba(0, 0, 0, 0.7)"
+        background: "rgba(0, 0, 0, 0.7)",
       });
       this.getOrder();
     }
@@ -493,13 +526,13 @@ export default {
     to.meta.keepAlive = true;
     if (!keepAlive) {
       sessionStorage.setItem("keepAlive", to.query.data);
-      next(vm => {
+      next((vm) => {
         vm.reload();
       });
     }
     if (keepAlive != to.query.data) {
       sessionStorage.setItem("keepAlive", to.query.data);
-      next(vm => {
+      next((vm) => {
         vm.reload();
       });
     }
@@ -514,11 +547,11 @@ export default {
         rId = { rItemnum: this.orderBH };
       }
       // 单据信息回显
-      this.$api.Receipt.get(rId).then(res => {
+      this.$api.Receipt.get(rId).then((res) => {
         if (res.data) {
           let items = res.data.records[0];
           if (items.rIsconstructexpenseconfirm) {
-            this.$api.Receiptdts.getCmoney({ rid: items.rId }).then(res => {
+            this.$api.Receiptdts.getCmoney({ rid: items.rId }).then((res) => {
               if (res.constructcost) {
                 this.m = res.constructcost;
               }
@@ -531,13 +564,13 @@ export default {
           this.getReceiver({ cuid: items.rCuid, size: 99 });
           let params = {
             rid: items.rId,
-            whid: items.rWhid
+            whid: items.rWhid,
           };
           // 商品回显
-          this.$api.Receiptdts.getReceiptDtsGoods(params).then(res => {
+          this.$api.Receiptdts.getReceiptDtsGoods(params).then((res) => {
             this.loading.close();
             this.load = true;
-            res.data.map(item => {
+            res.data.map((item) => {
               item.iSellingprice = item.rdSellingprice;
               item.gRemark = item.rdRemark;
               item.defNum = item.rdQuantity;
@@ -566,7 +599,7 @@ export default {
     },
     getReceiver(val) {
       this.contact = [];
-      this.$api.Contact.get(val).then(res => {
+      this.$api.Contact.get(val).then((res) => {
         let Items = res.data.records;
         if (!res.data.records.length) return (this.form.rCid = "");
         Items.map((item, index) => {
@@ -579,7 +612,7 @@ export default {
             value: item.cId,
             label: item.cName,
             rCmobile: item.cMobile,
-            rCaddr: item.cAddr
+            rCaddr: item.cAddr,
           });
         });
       });
@@ -611,37 +644,49 @@ export default {
       }
     },
     exportTable() {
-      let box = this.$xlsx.utils.table_to_book(
-        document.querySelector("#table-data")
-      );
-      let out = this.$xlsx.write(box, {
-        bookType: "xlsx",
-        bookSST: true,
-        type: "array"
+      this.showdata = true;
+      this.showtable1 = false;
+      this.$nextTick(() => {
+        this.showtable1 = true;
+        setTimeout(() => {
+          let box = this.$xlsx.utils.table_to_book(
+            document.querySelector("#table-data")
+          );
+          let out = this.$xlsx.write(box, {
+            bookType: "xlsx",
+            bookSST: true,
+            type: "array",
+          });
+          try {
+            this.$fileSaver.saveAs(
+              new Blob([out], {
+                type: "application/octet-stream",
+              }),
+              `回收商品入库单${getDate.getToday().starttime}.xlsx`
+            );
+          } catch (e) {
+            // 错误处理方式
+          }
+          this.showdata = false;
+          this.showtable1 = false;
+          this.$nextTick(() => {
+            this.showtable1 = true;
+          });
+          return out;
+        }, 400);
       });
-      try {
-        this.$fileSaver.saveAs(
-          new Blob([out], {
-            type: "application/octet-stream"
-          }),
-          `回收商品入库单${getDate.getToday().starttime}.xlsx`
-        );
-      } catch (e) {
-        // 错误处理方式
-      }
-      return out;
     },
     setcheck(v) {
       this.check = v;
 
       if (v) {
         let m = 0;
-        this.tableData.map(item => {
+        this.tableData.map((item) => {
           if (item.rdQuantity && item.rdConstructcostweight) {
             m += item.rdQuantity * item.rdConstructcostweight;
           }
         });
-        this.tableData.map(item => {
+        this.tableData.map((item) => {
           if (item.rdQuantity && item.rdConstructcostweight) {
             item.rdConstructcostproportion = (
               this.m *
@@ -667,7 +712,7 @@ export default {
           }
         });
       } else {
-        this.tableData.map(item => {
+        this.tableData.map((item) => {
           item.rdConstructcostproportion = 0;
           if (item.rdQuantity) {
             item.dj =
@@ -698,9 +743,9 @@ export default {
           sums[index] = "合计";
           return;
         }
-        const values = data.map(item => Number(item[column.property]));
+        const values = data.map((item) => Number(item[column.property]));
         if (
-          (!values.every(value => isNaN(value)) &&
+          (!values.every((value) => isNaN(value)) &&
             column.property === "money") ||
           column.property === "rdQuantity" ||
           column.property === "defNum" ||
@@ -763,7 +808,7 @@ export default {
       this.$confirm("是否保存草稿?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning"
+        type: "warning",
       })
         .then(() => {
           this.form.rDate = this.nowdata.replace(/\-/g, "");
@@ -772,10 +817,10 @@ export default {
             lock: true,
             text: "保存草稿中...",
             spinner: "el-icon-loading",
-            background: "rgba(0, 0, 0, 0.7)"
+            background: "rgba(0, 0, 0, 0.7)",
           });
           let tableData = [];
-          this.tableData.forEach(item => {
+          this.tableData.forEach((item) => {
             if (item.gName) {
               item.rdGid = item.gId;
               item.rdSellingprice = item.iSellingprice;
@@ -791,14 +836,14 @@ export default {
             approvers: [], //钉钉审批人ID
             cc: [],
             receiptDtsList: tableData, //商品+服务
-            receiptInfoVO: this.form //单据信息
+            receiptInfoVO: this.form, //单据信息
           };
-          this.$api.Receipt.saveall(params).then(res => {
+          this.$api.Receipt.saveall(params).then((res) => {
             loading.close();
             if (res.code == 200) {
               this.$message({
                 type: "success",
-                message: "保存草稿成功!"
+                message: "保存草稿成功!",
               });
             } else {
               this.$message.error(res.err);
@@ -816,7 +861,7 @@ export default {
       this.$confirm("此操作将直接入库, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning"
+        type: "warning",
       })
         .then(() => {
           this.form.rDate = this.nowdata.replace(/\-/g, "");
@@ -828,7 +873,7 @@ export default {
           let params = {
             approve: false,
             receiptInfoVO: this.form,
-            receiptDtsList: []
+            receiptDtsList: [],
           };
           let num = 0;
           this.tableData.forEach((item, index) => {
@@ -854,16 +899,16 @@ export default {
             lock: true,
             text: "入库中",
             spinner: "el-icon-loading",
-            background: "rgba(0, 0, 0, 0.7)"
+            background: "rgba(0, 0, 0, 0.7)",
           });
 
-          this.$api.Receipt.allRK(params).then(res => {
+          this.$api.Receipt.allRK(params).then((res) => {
             loading.close();
             if (res.code == 200) {
               sessionStorage.removeItem("keepAlive");
               this.$message({
                 type: "success",
-                message: "入库成功!"
+                message: "入库成功!",
               });
               this.$router.push("/warehouse/inbound/recoverInboundLista");
             } else {
@@ -879,7 +924,7 @@ export default {
       this.rowindex = val;
       if (e.target === this.icon) {
         this.idList = [];
-        this.tableData.map(item => {
+        this.tableData.map((item) => {
           if (item.gId && !this.idList.includes(item.gId)) {
             this.idList.push(item.gId);
           }
@@ -892,8 +937,8 @@ export default {
       this.reload();
       this.showtable = false;
       this.tableStatus = JSON.parse(sessionStorage.getItem("tableStatus"));
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>

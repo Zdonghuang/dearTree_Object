@@ -285,6 +285,7 @@ export default {
           //     // this.updateKeyChildren(e.pId)
           //   }
           // });
+            console.log(item)
           if (item.pPermission == "") {
             item.pPermission = index;
             return item;

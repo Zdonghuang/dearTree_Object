@@ -64,7 +64,7 @@ export default {
       "/recover/printingRecoverCon",
       "/recover/printingRecoverSettlement",
       "/warehouse/inventory/inventoryPrinting",
-      "/warehouse/inbound/leasePrinting",
+      "/warehouse/inbound/leasePrinting",//
       "/printingFinancePay",
       "/printingJK",
       "/printingBXHX",
